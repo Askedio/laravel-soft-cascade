@@ -2,11 +2,9 @@
 
 namespace Askedio\SoftCascade\Tests;
 
-use Illuminate\Events\Dispatcher;
 use Illuminate\Filesystem\ClassFinder;
 /* temporary */
 use Illuminate\Filesystem\Filesystem;
-use Illuminate\Routing\Router;
 
 class BaseTestCase extends \Illuminate\Foundation\Testing\TestCase
 {
@@ -34,7 +32,7 @@ class BaseTestCase extends \Illuminate\Foundation\Testing\TestCase
      */
     public function migrate()
     {
-        $fileSystem  = new Filesystem();
+        $fileSystem = new Filesystem();
         $classFinder = new ClassFinder();
 
         foreach ($fileSystem->files(__DIR__.'/app/database/migrations') as $file) {

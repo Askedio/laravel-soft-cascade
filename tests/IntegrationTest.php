@@ -2,17 +2,11 @@
 
 namespace Askedio\SoftCascade\Tests;
 
-use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-
 /**
  *  Not the best tests in the world.
  */
-
 class IntegrationTest extends BaseTestCase
 {
-
     /**
      * TO-DO: Factories are nicer. Mocks too, but this does the job.
      */
@@ -20,7 +14,7 @@ class IntegrationTest extends BaseTestCase
     {
         $user = \Askedio\SoftCascade\Tests\App\User::create([
             'name'     => 'admin',
-            'email'    => 'admin@localhost.com'.rand(0,10),
+            'email'    => 'admin@localhost.com'.rand(0, 10),
             'password' => bcrypt('password'),
         ])->profiles()->saveMany([
             new \Askedio\SoftCascade\Tests\App\Profiles(['phone' => '1231231234']),
@@ -39,7 +33,7 @@ class IntegrationTest extends BaseTestCase
               $query->withTrashed()->with(['address' => function ($query) {
                     $query->withTrashed();
               }]);
-          }
+          },
         ])->withTrashed()->first();
     }
 
@@ -68,6 +62,6 @@ class IntegrationTest extends BaseTestCase
 
     public function testNotCascadable()
     {
-        (new \Askedio\SoftCascade\Listeners\Cascade)->cascade('notamodel', 'delete');
+        (new \Askedio\SoftCascade\Listeners\Cascade())->cascade('notamodel', 'delete');
     }
 }

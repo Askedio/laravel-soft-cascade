@@ -4,9 +4,9 @@ namespace Askedio\SoftCascade\Traits;
 
 trait SoftCascadeTrait
 {
-
     /**
-     * Check if softcasde exists
+     * Check if softcasde exists.
+     *
      * @return mixed
      */
     public function getSoftCascade()
