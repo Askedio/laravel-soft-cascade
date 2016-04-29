@@ -26,17 +26,6 @@ class IntegrationTest extends BaseTestCase
         return $user;
     }
 
-    private function debugUser()
-    {
-        return \Askedio\SoftCascade\Tests\App\User::with([
-          'profiles' => function ($query) {
-              $query->withTrashed()->with(['address' => function ($query) {
-                    $query->withTrashed();
-              }]);
-          },
-        ])->withTrashed()->first();
-    }
-
     public function testDelete()
     {
         $this->createUserRaw();
