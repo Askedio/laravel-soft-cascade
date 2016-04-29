@@ -43,7 +43,7 @@ class Cascade
      * @param Illuminate\Database\Eloquent\Model $model
      * @param array                              $relations
      *
-     * @return void
+     * @return mixed
      */
     private function relations($model, $relations)
     {
@@ -76,7 +76,7 @@ class Cascade
      *
      * @param Illuminate\Database\Eloquent\Model $model
      *
-     * @return void
+     * @return boolean
      */
     private function cascadable($model)
     {
