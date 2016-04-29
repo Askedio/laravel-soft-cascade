@@ -1,0 +1,23 @@
+language: php
+php:
+  - "5.6"
+  - "7.0"
+  - "hhvm"
+
+before_script:
+  - curl -sS https://getcomposer.org/installer | php -- --filename=composer
+  - chmod +x composer
+  - composer install -n
+
+script:
+  - php vendor/bin/phpunit
+
+after_script:
+  - php vendor/bin/codacycoverage clover build/logs/clover.xml
+
+matrix:
+     allow_failures:
+         - php: "hhvm"
+branches:
+  only:
+    - master
