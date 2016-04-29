@@ -18,12 +18,16 @@ Register the service provider in your config/app.php
 Askedio\SoftCascade\Providers\GenericServiceProvider::class,
 ~~~
 
-Enable the trait and define what to cascade in $softcascade in your Models, [example](https://github.com/Askedio/laravel5-soft-cascade/blob/master/tests/app/User.php).
+In your Model(s), enable the trait and define $softcascade. [Example](https://github.com/Askedio/laravel5-soft-cascade/blob/master/tests/app/User.php).
 ~~~
 use \Askedio\SoftCascade\Traits\SoftCascadeTrait;
 
 protected $softcascade = ['profiles'];
 ~~~
+`$softcascade` is an array of your relation names, in the [example](https://github.com/Askedio/laravel5-soft-cascade/blob/master/tests/app/User.php) you'll see we've defined `function profiles()` for the relation.
+
+Nested relations work by defining `$softcascade` in the related Model as you can see [here](https://github.com/Askedio/laravel5-soft-cascade/blob/master/tests/app/Profiles.php).
+
 
 
 # Supported Databases
