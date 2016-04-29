@@ -8,8 +8,10 @@ class Cascade
 
     /**
      * Cascade over Eloquent items.
-     * @param  Illuminate\Database\Eloquent\Model $model
-     * @param  string $direction delete|restore
+     *
+     * @param Illuminate\Database\Eloquent\Model $model
+     * @param string                             $direction delete|restore
+     *
      * @return void
      */
     public function cascade($model, $direction)
@@ -21,7 +23,9 @@ class Cascade
 
     /**
      * Run the cascade.
-     * @param  Illuminate\Database\Eloquent\Model $model
+     *
+     * @param Illuminate\Database\Eloquent\Model $model
+     *
      * @return void
      */
     private function run($model)
@@ -35,8 +39,10 @@ class Cascade
 
     /**
      * Run the relations.
-     * @param  Illuminate\Database\Eloquent\Model $model
-     * @param  array $relations
+     *
+     * @param Illuminate\Database\Eloquent\Model $model
+     * @param array                              $relations
+     *
      * @return void
      */
     private function relations($model, $relations)
@@ -52,7 +58,9 @@ class Cascade
 
     /**
      * Run the items.
-     * @param  array $relation
+     *
+     * @param array $relation
+     *
      * @return void
      */
     private function items($relation)
@@ -65,7 +73,9 @@ class Cascade
 
     /**
      * Check if the model is enabled to cascade.
-     * @param  Illuminate\Database\Eloquent\Model $model
+     *
+     * @param Illuminate\Database\Eloquent\Model $model
+     *
      * @return void
      */
     private function cascadable($model)
