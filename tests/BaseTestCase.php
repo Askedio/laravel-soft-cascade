@@ -1,6 +1,6 @@
 <?php
 
-namespace Askedio\SoftCascade\Tests;
+namespace Askedio\Tests;
 
 use Illuminate\Filesystem\ClassFinder;
 /* temporary */

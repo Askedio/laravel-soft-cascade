@@ -1,6 +1,6 @@
 <?php
 
-namespace Askedio\SoftCascade\Tests;
+namespace Askedio\Tests;
 
 /**
  *  Not the best tests in the world.
@@ -12,16 +12,16 @@ class IntegrationTest extends BaseTestCase
      */
     private function createUserRaw()
     {
-        $user = \Askedio\SoftCascade\Tests\App\User::create([
+        $user = \Askedio\Tests\App\User::create([
             'name'     => 'admin',
             'email'    => 'admin@localhost.com'.rand(0, 10),
             'password' => bcrypt('password'),
         ])->profiles()->saveMany([
-            new \Askedio\SoftCascade\Tests\App\Profiles(['phone' => '1231231234']),
+            new \Askedio\Tests\App\Profiles(['phone' => '1231231234']),
         ]);
 
         // lazy
-        \Askedio\SoftCascade\Tests\App\Profiles::first()->address()->create(['city' => 'Los Angeles']);
+        \Askedio\Tests\App\Profiles::first()->address()->create(['city' => 'Los Angeles']);
 
         return $user;
     }
@@ -30,7 +30,7 @@ class IntegrationTest extends BaseTestCase
     {
         $this->createUserRaw();
 
-        \Askedio\SoftCascade\Tests\App\User::first()->delete();
+        \Askedio\Tests\App\User::first()->delete();
 
         $this->missingFromDatabase('users', ['deleted_at' => null]);
         $this->missingFromDatabase('profiles', ['deleted_at' => null]);
@@ -41,8 +41,8 @@ class IntegrationTest extends BaseTestCase
     {
         $this->createUserRaw();
 
-        \Askedio\SoftCascade\Tests\App\User::first()->delete();
-        \Askedio\SoftCascade\Tests\App\User::withTrashed()->first()->restore();
+        \Askedio\Tests\App\User::first()->delete();
+        \Askedio\Tests\App\User::withTrashed()->first()->restore();
 
         $this->seeInDatabase('users', ['deleted_at' => null]);
         $this->seeInDatabase('profiles', ['deleted_at' => null]);

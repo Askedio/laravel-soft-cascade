@@ -1,6 +1,6 @@
 <?php
 
-namespace Askedio\SoftCascade\Tests\App;
+namespace Askedio\Tests\App;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -15,6 +15,6 @@ class Profiles extends Model
 
     public function address()
     {
-        return $this->hasOne('Askedio\SoftCascade\Tests\App\Addresses');
+        return $this->hasOne('Askedio\Tests\App\Addresses');
     }
 }

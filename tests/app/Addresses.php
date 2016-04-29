@@ -1,6 +1,6 @@
 <?php
 
-namespace Askedio\SoftCascade\Tests\App;
+namespace Askedio\Tests\App;
 
 use Illuminate\Database\Eloquent\Model;
 
