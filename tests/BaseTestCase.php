@@ -35,7 +35,7 @@ class BaseTestCase extends \Illuminate\Foundation\Testing\TestCase
         $fileSystem = new Filesystem();
         $classFinder = new ClassFinder();
 
-        foreach ($fileSystem->files(__DIR__.'/app/database/migrations') as $file) {
+        foreach ($fileSystem->files(__DIR__.'/App/database/migrations') as $file) {
             $fileSystem->requireOnce($file);
             $migrationClass = $classFinder->findClass($file);
             (new $migrationClass())->down();
