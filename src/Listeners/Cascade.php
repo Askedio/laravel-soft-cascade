@@ -76,7 +76,7 @@ class Cascade
      *
      * @param Illuminate\Database\Eloquent\Model $model
      *
-     * @return boolean
+     * @return bool
      */
     private function cascadable($model)
     {
