@@ -11,10 +11,10 @@ trait SoftCascadeTrait
      */
     public function getSoftCascade()
     {
-        if (!property_exists($this, 'softcascade')) {
+        if (!property_exists($this, 'softCascade')) {
             return;
         }
 
-        return $this->softcascade;
+        return $this->softCascade;
     }
 }
