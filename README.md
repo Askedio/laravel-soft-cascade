@@ -42,3 +42,8 @@ Nested relations work by defining `$softcascade` in the related Model as you can
 # Testing
 I have written some very basic tests, certainly more needs to be done here. If you find this useful please help by testing other databases or writing better unit tests because I must move on.
 
+# Issues & Contributing
+I will be using this with MySQL in a new API so any issues I find related to my use will be resolved. If you find an issue with MySQL please report it and I will fix it.
+
+If you are using another database and have issues please contribute by submitting a pull request. I do not have time to test this with other database but assume all would work.
+
