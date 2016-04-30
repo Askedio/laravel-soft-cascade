@@ -7,7 +7,7 @@
 Cascade delete and restore when using the Laravel SoftDeletes feature.
 
 # Why do I need it?
-### To make it easy to soft delete and restore relations.
+### To make soft deleting and restoring relations easy.
 If you enjoy features like MySQL cascade deleting but want to use Laravels SoftDeletes feature you'll need to do some extra steps to ensure your relations are properly deleted or restored.
 
 This package is intended to replace those steps with a simple array that defines the relations you want to cascade.
