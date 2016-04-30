@@ -13,7 +13,7 @@ This package is intended to replace those steps with a simple array that defines
 # Installation
 Install with composer
 ~~~
-  composer require askedio/laravel5-soft-cascade
+composer require askedio/laravel5-soft-cascade
 ~~~
 
 Register the service provider in your config/app.php
