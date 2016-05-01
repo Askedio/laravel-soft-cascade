@@ -23,6 +23,7 @@ Register the service provider in your config/app.php
 Askedio\SoftCascade\Providers\GenericServiceProvider::class,
 ~~~
 
+# Usage
 In your Model(s), enable the trait and define $softCascade. [Example](https://github.com/Askedio/laravel5-soft-cascade/blob/master/tests/App/User.php).
 ~~~
 use \Askedio\SoftCascade\Traits\SoftCascadeTrait;
