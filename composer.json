@@ -20,5 +20,6 @@
         "psr-4": {
             "Askedio\\Tests\\" : "tests"
         }
-    }
+    },
+    "minimum-stability": "stable"
 }
