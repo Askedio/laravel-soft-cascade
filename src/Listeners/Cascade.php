@@ -66,7 +66,7 @@ class Cascade
      */
     private function items($relation)
     {
-        /** TO-DO: pretty sure we can do this on the query w/o getting. */
+        /* TO-DO: pretty sure we can do this on the query w/o getting. */
         foreach ($relation->withTrashed()->get() as $item) {
             $this->run($item);
         }
