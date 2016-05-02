@@ -24,7 +24,7 @@ Askedio\SoftCascade\Providers\GenericServiceProvider::class,
 ~~~
 
 # Usage
-In your Model(s), enable the trait and define $softCascade. [Example](https://github.com/Askedio/laravel5-soft-cascade/blob/master/tests/App/User.php).
+In your `Model` enable the trait and define `$softCascade`. [Example](https://github.com/Askedio/laravel5-soft-cascade/blob/master/tests/App/User.php).
 ~~~
 use \Askedio\SoftCascade\Traits\SoftCascadeTrait;
 
@@ -32,7 +32,7 @@ protected $softCascade = ['profiles'];
 ~~~
 `$softCascade` is an array of your relation names, in the [example](https://github.com/Askedio/laravel5-soft-cascade/blob/master/tests/App/User.php) you'll see we've defined `function profiles()` for the relation.
 
-Nested relations work by defining `$softCascade` in the related Model as you can see [here](https://github.com/Askedio/laravel5-soft-cascade/blob/master/tests/App/Profiles.php).
+Nested relations work by defining `$softCascade` in the related `Model` as you can see [here](https://github.com/Askedio/laravel5-soft-cascade/blob/master/tests/App/Profiles.php).
 
 
 
