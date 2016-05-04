@@ -51,6 +51,6 @@ class IntegrationTest extends BaseTestCase
 
     public function testNotCascadable()
     {
-        (new \Askedio\SoftCascade\Listeners\Cascade())->cascade('notamodel', 'delete');
+        (new \Askedio\SoftCascade\SoftCascade)->cascade('notamodel', 'delete');
     }
 }

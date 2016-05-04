@@ -2,7 +2,9 @@
 
 namespace Askedio\SoftCascade\Listeners;
 
-class CascadeRestoreListener extends Cascade
+use Askedio\SoftCascade\SoftCascade;
+
+class CascadeRestoreListener
 {
     /**
      * Handel the event for eloquent restore.
@@ -13,6 +15,6 @@ class CascadeRestoreListener extends Cascade
      */
     public function handle($model)
     {
-        $this->cascade($model, 'restore');
+        (new SoftCascade)->cascade($model, 'restore');
     }
 }

@@ -1,9 +1,8 @@
 <?php
 
-namespace Askedio\SoftCascade\Listeners;
+namespace Askedio\SoftCascade;
 
-/** TO-DO: Move outside Listeners */
-class Cascade
+class SoftCascade
 {
     protected $direction;
 
@@ -31,7 +30,7 @@ class Cascade
      */
     private function run($model)
     {
-        if (!$this->cascadable($model)) {
+        if (!$this->isCascadable($model)) {
             return;
         }
 
@@ -66,7 +65,7 @@ class Cascade
      */
     private function items($relation)
     {
-        /* TO-DO: pretty sure we can do this on the query w/o getting. */
+        /* TO-DO: pretty sure we can do this on the query w/o get(). */
         foreach ($relation->withTrashed()->get() as $item) {
             $this->run($item);
         }
@@ -80,7 +79,7 @@ class Cascade
      *
      * @return bool
      */
-    private function cascadable($model)
+    private function isCascadable($model)
     {
         return method_exists($model, 'getSoftCascade');
     }

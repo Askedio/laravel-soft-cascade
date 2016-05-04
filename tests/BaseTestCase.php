@@ -3,7 +3,6 @@
 namespace Askedio\Tests;
 
 use Illuminate\Filesystem\ClassFinder;
-/* temporary */
 use Illuminate\Filesystem\Filesystem;
 
 class BaseTestCase extends \Illuminate\Foundation\Testing\TestCase
@@ -28,7 +27,7 @@ class BaseTestCase extends \Illuminate\Foundation\Testing\TestCase
     }
 
     /**
-     * run package database migrations.
+     * Run package database migrations.
      */
     public function migrate()
     {
@@ -50,7 +49,6 @@ class BaseTestCase extends \Illuminate\Foundation\Testing\TestCase
      */
     public function createApplication()
     {
-        /** @var $app \Illuminate\Foundation\Application */
         $app = require __DIR__.'/../vendor/laravel/laravel/bootstrap/app.php';
 
         $app->make(\Illuminate\Contracts\Console\Kernel::class)->bootstrap();
