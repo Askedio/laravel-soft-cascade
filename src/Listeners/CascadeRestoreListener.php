@@ -15,6 +15,6 @@ class CascadeRestoreListener
      */
     public function handle($model)
     {
-        (new SoftCascade)->cascade($model, 'restore');
+        (new SoftCascade())->cascade($model, 'restore');
     }
 }
