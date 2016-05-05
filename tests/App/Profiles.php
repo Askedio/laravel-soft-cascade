@@ -17,4 +17,9 @@ class Profiles extends Model
     {
         return $this->hasOne('Askedio\Tests\App\Addresses');
     }
+
+    public function badrelation()
+    {
+      return $this->hasMany('Askedio\Tests\App\Profile');
+    }
 }

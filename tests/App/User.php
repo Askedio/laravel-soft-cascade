@@ -9,6 +9,8 @@ class User extends Model
     use \Illuminate\Database\Eloquent\SoftDeletes;
     use \Askedio\SoftCascade\Traits\SoftCascadeTrait;
 
+    protected $table = 'users';
+
     protected $fillable = ['name', 'email', 'password'];
 
     protected $softCascade = ['profiles'];

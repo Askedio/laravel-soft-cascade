@@ -2,35 +2,56 @@
 
 namespace Askedio\Tests;
 
+use Askedio\Tests\App\User;
+use Askedio\Tests\App\Profiles;
+use Askedio\Tests\App\BadRelation;
+use Askedio\Tests\App\BadRelationB;
+
 /**
- *  Not the best tests in the world.
+ *  TO-DO: Need better testing.
+ *  Factories, Mocks, etc, but this does the job.
  */
+
 class IntegrationTest extends BaseTestCase
 {
-    /**
-     * TO-DO: Factories are nicer. Mocks too, but this does the job.
-     */
     private function createUserRaw()
     {
-        $user = \Askedio\Tests\App\User::create([
+        $user = User::create([
             'name'     => 'admin',
-            'email'    => 'admin@localhost.com'.rand(0, 10),
+            'email'    => uniqid().'@localhost.com',
             'password' => bcrypt('password'),
         ])->profiles()->saveMany([
-            new \Askedio\Tests\App\Profiles(['phone' => '1231231234']),
+            new Profiles(['phone' => '1231231234'])
         ]);
 
         // lazy
-        \Askedio\Tests\App\Profiles::first()->address()->create(['city' => 'Los Angeles']);
+        Profiles::first()->address()->create(['city' => 'Los Angeles']);
 
         return $user;
+    }
+
+
+    public function testBadRelation()
+    {
+        $this->createUserRaw();
+
+        $this->setExpectedException(\LogicException::class);
+        BadRelation::first()->delete();
+    }
+
+    public function testBadRelationB()
+    {
+        $this->createUserRaw();
+
+        $this->setExpectedException(\LogicException::class);
+        BadRelationB::first()->delete();
     }
 
     public function testDelete()
     {
         $this->createUserRaw();
 
-        \Askedio\Tests\App\User::first()->delete();
+        User::first()->delete();
 
         $this->missingFromDatabase('users', ['deleted_at' => null]);
         $this->missingFromDatabase('profiles', ['deleted_at' => null]);
@@ -41,16 +62,50 @@ class IntegrationTest extends BaseTestCase
     {
         $this->createUserRaw();
 
-        \Askedio\Tests\App\User::first()->delete();
-        \Askedio\Tests\App\User::withTrashed()->first()->restore();
+        User::first()->delete();
+        User::withTrashed()->first()->restore();
 
         $this->seeInDatabase('users', ['deleted_at' => null]);
         $this->seeInDatabase('profiles', ['deleted_at' => null]);
         $this->seeInDatabase('addresses', ['deleted_at' => null]);
     }
 
+    public function testMultipleDelete()
+    {
+        $this->createUserRaw();
+        $this->createUserRaw();
+
+        User::first()->delete();
+
+        $this->assertEquals(2, User::withTrashed()->count());
+        $this->assertEquals(1, User::count());
+
+        $this->assertEquals(2, Profiles::withTrashed()->count());
+        $this->assertEquals(1, Profiles::count());
+    }
+
+    public function testMultipleRestore()
+    {
+        $this->createUserRaw();
+        $this->createUserRaw();
+
+        User::first()->delete();
+        User::withTrashed()->first()->restore();
+
+        $this->assertEquals(2, User::withTrashed()->count());
+        $this->assertEquals(2, User::count());
+
+        $this->assertEquals(2, Profiles::withTrashed()->count());
+        $this->assertEquals(2, Profiles::count());
+
+        User::first()->restore();
+    }
+
     public function testNotCascadable()
     {
+        /**
+         * TO-DO: Need a 'test' here, not just code coverage.
+         */
         (new \Askedio\SoftCascade\SoftCascade())->cascade('notamodel', 'delete');
     }
 }

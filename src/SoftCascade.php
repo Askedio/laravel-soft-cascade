@@ -38,7 +38,7 @@ class SoftCascade
     }
 
     /**
-     * Run the relations.
+     * Iterate over the relations.
      *
      * @param Illuminate\Database\Eloquent\Model $model
      * @param array                              $relations
@@ -52,24 +52,56 @@ class SoftCascade
         }
 
         foreach ($relations as $relation) {
-            $this->items($model->$relation());
+            $this->validateRelation($model, $relation);
+            $this->execute($model->$relation());
         }
     }
 
     /**
-     * Run the items.
+     * Execute delete, or restore.
      *
-     * @param array $relation
+     * @param Illuminate\Database\Eloquent\Relations\Relation $relation
      *
      * @return void
      */
-    private function items($relation)
+    private function execute($relation)
+    {
+        $this->runNestedRelations($relation);
+        $relation->{$this->direction}();
+    }
+
+    /**
+     * Run nested relations
+     *
+     * @param Illuminate\Database\Eloquent\Relations\Relation $relation
+     *
+     * @return void
+     */
+    private function runNestedRelations($relation)
     {
         /* TO-DO: pretty sure we can do this on the query w/o get(). */
-        foreach ($relation->withTrashed()->get() as $item) {
-            $this->run($item);
+        foreach ($relation->withTrashed()->get() as $model) {
+            $this->run($model);
         }
-        $relation->{$this->direction}();
+    }
+
+    /**
+     * Validate the relation method exists and is a type of Eloquent Relation.
+     * @param Illuminate\Database\Eloquent\Model $model
+     * @param string $relation
+     * @return void
+     */
+    private function validateRelation($model, $relation)
+    {
+        $class = get_class($model);
+
+        if (!method_exists($model, $relation)) {
+            throw new \LogicException(sprintf('%s does not have method \'%s\'.', $class, $relation));
+        }
+
+        if (!$model->$relation() instanceof \Illuminate\Database\Eloquent\Relations\Relation) {
+            throw new \LogicException(sprintf('%s \'%s\' is not an instance of Illuminate\Database\Eloquent\Relations\Relation.', $class, $relation));
+        }
     }
 
     /**

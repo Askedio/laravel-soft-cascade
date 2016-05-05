@@ -7,12 +7,12 @@ trait SoftCascadeTrait
     /**
      * Check if softcasde exists.
      *
-     * @return mixed
+     * @return array
      */
     public function getSoftCascade()
     {
         if (!property_exists($this, 'softCascade')) {
-            return;
+            return [];
         }
 
         return $this->softCascade;
