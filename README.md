@@ -34,7 +34,11 @@ protected $softCascade = ['profiles'];
 
 Nested relations work by defining `$softCascade` in the related `Model` as you can see [here](https://github.com/Askedio/laravel5-soft-cascade/blob/master/tests/App/Profiles.php).
 
+After you've defined your relations you can simply trigger `delete()` or `restore()` on your `Model` and your relations will have the same task performed.
 
+~~~
+User::first()->delete();
+~~~
 
 # Supported Databases
 * MySQL
