@@ -20,6 +20,6 @@ class Profiles extends Model
 
     public function badrelation()
     {
-      return $this->hasMany('Askedio\Tests\App\Profile');
+        return $this->hasMany('Askedio\Tests\App\Profile');
     }
 }
