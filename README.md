@@ -38,6 +38,7 @@ After you've defined your relations you can simply trigger `delete()` or `restor
 
 ~~~
 User::first()->delete();
+User::withTrashed()->first()->restore();
 ~~~
 
 # Supported Databases
