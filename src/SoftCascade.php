@@ -71,7 +71,7 @@ class SoftCascade
     }
 
     /**
-     * Run nested relations
+     * Run nested relations.
      *
      * @param Illuminate\Database\Eloquent\Relations\Relation $relation
      *
@@ -87,8 +87,10 @@ class SoftCascade
 
     /**
      * Validate the relation method exists and is a type of Eloquent Relation.
+     *
      * @param Illuminate\Database\Eloquent\Model $model
-     * @param string $relation
+     * @param string                             $relation
+     *
      * @return void
      */
     private function validateRelation($model, $relation)
