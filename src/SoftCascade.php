@@ -2,6 +2,12 @@
 
 namespace Askedio\SoftCascade;
 
+/**
+ * TO-DO:
+ * - Support for ON CASCADE SET NULL
+ * - Support for ON CASCADE RESTRICT
+ */
+ 
 class SoftCascade
 {
     protected $direction;
@@ -80,6 +86,7 @@ class SoftCascade
     private function runNestedRelations($relation)
     {
         /* TO-DO: pretty sure we can do this on the query w/o get(). */
+        /* To-DO: only run withTrashed when restore is triggered. */
         foreach ($relation->withTrashed()->get() as $model) {
             $this->run($model);
         }
