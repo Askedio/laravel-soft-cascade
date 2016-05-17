@@ -5,9 +5,9 @@ namespace Askedio\SoftCascade;
 /**
  * TO-DO:
  * - Support for ON CASCADE SET NULL
- * - Support for ON CASCADE RESTRICT
+ * - Support for ON CASCADE RESTRICT.
  */
- 
+
 class SoftCascade
 {
     protected $direction;
