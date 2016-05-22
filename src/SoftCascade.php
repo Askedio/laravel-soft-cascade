@@ -90,7 +90,9 @@ class SoftCascade
             foreach ($relation->get() as $model) {
                 $this->run($model);
             }
-        } else {
+        } 
+
+        if ($this->direction == 'restore') {
             foreach ($relation->withTrashed()->get() as $model) {
                 $this->run($model);
             }
