@@ -86,9 +86,14 @@ class SoftCascade
     private function runNestedRelations($relation)
     {
         /* TO-DO: pretty sure we can do this on the query w/o get(). */
-        /* To-DO: only run withTrashed when restore is triggered. */
-        foreach ($relation->withTrashed()->get() as $model) {
-            $this->run($model);
+        if ($this->direction == 'delete') {
+            foreach ($relation->get() as $model) {
+                $this->run($model);
+            }
+        } else {
+            foreach ($relation->withTrashed()->get() as $model) {
+                $this->run($model);
+            }
         }
     }
 
