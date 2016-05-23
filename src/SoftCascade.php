@@ -7,7 +7,6 @@ namespace Askedio\SoftCascade;
  * - Support for ON CASCADE SET NULL
  * - Support for ON CASCADE RESTRICT.
  */
-
 class SoftCascade
 {
     protected $direction;
@@ -90,7 +89,7 @@ class SoftCascade
             foreach ($relation->get() as $model) {
                 $this->run($model);
             }
-        } 
+        }
 
         if ($this->direction == 'restore') {
             foreach ($relation->withTrashed()->get() as $model) {
