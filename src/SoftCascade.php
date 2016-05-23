@@ -84,18 +84,23 @@ class SoftCascade
      */
     private function runNestedRelations($relation)
     {
-        /* TO-DO: pretty sure we can do this on the query w/o get(). */
-        if ($this->direction == 'delete') {
-            foreach ($relation->get() as $model) {
-                $this->run($model);
-            }
+        foreach ($this->nestedRelation($relation)->get() as $model) {
+            $this->run($model);
+        }
+    }
+
+    /**
+     * Return the relation withTrashed if being restored.
+     * @param Illuminate\Database\Eloquent\Relations\Relation $relation
+     * @return Illuminate\Database\Eloquent\Relations\Relatio
+     */
+    private function nestedRelation($relation)
+    {
+        if ($this->direction == 'restore') {
+            return $relation->withTrashed();
         }
 
-        if ($this->direction == 'restore') {
-            foreach ($relation->withTrashed()->get() as $model) {
-                $this->run($model);
-            }
-        }
+        return $relation;
     }
 
     /**
