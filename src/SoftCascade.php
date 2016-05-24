@@ -91,7 +91,9 @@ class SoftCascade
 
     /**
      * Return the relation withTrashed if being restored.
+     *
      * @param Illuminate\Database\Eloquent\Relations\Relation $relation
+     *
      * @return Illuminate\Database\Eloquent\Relations\Relatio
      */
     private function nestedRelation($relation)
