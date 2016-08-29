@@ -16,16 +16,4 @@ class EventServiceProvider extends ServiceProvider
       'eloquent.deleting: *'  => ['Askedio\SoftCascade\Listeners\CascadeDeleteListener'],
       'eloquent.restoring: *' => ['Askedio\SoftCascade\Listeners\CascadeRestoreListener'],
     ];
-
-    /**
-     * Register any other events for your application.
-     *
-     * @param \Illuminate\Contracts\Events\Dispatcher $events
-     *
-     * @return void
-     */
-    public function boot(DispatcherContract $events)
-    {
-        parent::boot($events);
-    }
 }
