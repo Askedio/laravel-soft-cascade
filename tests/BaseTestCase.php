@@ -60,6 +60,6 @@ class BaseTestCase extends \Illuminate\Foundation\Testing\TestCase
 
     public function testNothing()
     {
-      //
+        //
     }
 }
