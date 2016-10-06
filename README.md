@@ -3,8 +3,8 @@
 [![Build Status](https://travis-ci.org/Askedio/laravel5-soft-cascade.svg?branch=master)](https://travis-ci.org/Askedio/laravel5-soft-cascade)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/019b9dbd700f42b6a165742c72e64445)](https://www.codacy.com/app/gcphost/laravel5-soft-cascade?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Askedio/laravel5-soft-cascade&amp;utm_campaign=Badge_Grade) [![StyleCI Badge](https://styleci.io/repos/57394710/shield)](https://styleci.io/repos/57394710)
 
-# Laravel 5 Soft Cascade Delete & Restore
-Cascade delete and restore when using the Laravel SoftDeletes feature.
+# Laravel/Lumen 5 Soft Cascade Delete & Restore
+Cascade delete and restore when using the Laravel or Lumen SoftDeletes feature.
 
 # Why do I need it?
 ### To make soft deleting and restoring relations easy.
@@ -19,9 +19,18 @@ composer require askedio/laravel5-soft-cascade
 ~~~
 
 Register the service provider in your config/app.php
+
+Laravel:
 ~~~
 Askedio\SoftCascade\Providers\GenericServiceProvider::class,
 ~~~
+
+Lumen:
+~~~
+Askedio\SoftCascade\Providers\LumenServiceProvider::class,
+~~~
+
+
 
 # Usage
 In your `Model` enable the trait and define `$softCascade`. [Example](https://github.com/Askedio/laravel5-soft-cascade/blob/master/tests/App/User.php).
