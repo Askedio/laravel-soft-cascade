@@ -2,9 +2,6 @@
 
 namespace Askedio\Tests;
 
-use Illuminate\Filesystem\ClassFinder;
-use Illuminate\Filesystem\Filesystem;
-
 class LumenBaseTestCase extends BaseTestCase
 {
     /**
