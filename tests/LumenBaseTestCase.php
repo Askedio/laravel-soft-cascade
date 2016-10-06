@@ -14,7 +14,6 @@ class LumenBaseTestCase extends BaseTestCase
         $app = require __DIR__.'/../vendor/laravel/laravel/bootstrap/app.php';
 
         $app->make(\Illuminate\Contracts\Console\Kernel::class)->bootstrap();
-
         $app->register(\Askedio\SoftCascade\Providers\LumenServiceProvider::class);
 
         return $app;

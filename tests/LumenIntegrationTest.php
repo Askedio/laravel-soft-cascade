@@ -11,7 +11,7 @@ use Askedio\Tests\App\User;
  *  TO-DO: Need better testing.
  *  Factories, Mocks, etc, but this does the job.
  */
-class LumenIntegrationTest extends BaseTestCase
+class LumenIntegrationTest extends LumenBaseTestCase
 {
     private function createUserRaw()
     {
