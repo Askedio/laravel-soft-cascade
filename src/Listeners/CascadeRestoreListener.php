@@ -9,11 +9,12 @@ class CascadeRestoreListener
     /**
      * Handel the event for eloquent restore.
      *
+     * @param  $event
      * @param  $model
      *
      * @return void
      */
-    public function handle($model)
+    public function handle($event, $model)
     {
         (new SoftCascade())->cascade($model, 'restore');
     }

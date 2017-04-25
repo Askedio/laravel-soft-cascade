@@ -1,7 +1,8 @@
 vendor/
 node_modules/
+composer.lock
 
-# Laravel 4 specific
+# Laravel 5 specific
 bootstrap/compiled.php
 app/storage/
 

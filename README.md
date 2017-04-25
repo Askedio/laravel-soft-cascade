@@ -50,6 +50,13 @@ User::first()->delete();
 User::withTrashed()->first()->restore();
 ~~~
 
+It can also be used with query builder in this way
+
+~~~
+User::limit(2)->delete();
+User::withTrashed()->limit(2)->restore();
+~~~
+
 # Supported Databases
 * MySQL
 * SQLite
