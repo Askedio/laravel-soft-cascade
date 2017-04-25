@@ -48,10 +48,12 @@ class CascadeQueryListener
             isset($debugBacktrace[12]['function']) && $debugBacktrace[12]['class'] == $this->listenClass && 
             $debugBacktrace[12]['function'] == '__call'
         ) { //For __call
-            $checkBacktrace = [
-                'object' => $debugBacktrace[12]['object'],
-                'function' => $debugBacktrace[12]['args'][0]
-            ];
+            if (in_array($debugBacktrace[12]['args'][0], $listenFunctionsKeys)) {
+                $checkBacktrace = [
+                    'object' => $debugBacktrace[12]['object'],
+                    'function' => $debugBacktrace[12]['args'][0]
+                ];
+            }
         }
         if (!is_null($checkBacktrace)) {
             $model = $checkBacktrace['object'];
@@ -61,7 +63,6 @@ class CascadeQueryListener
                     $model = call_user_func_array(array($model, $method), $arguments);
                 }
             }
-            // dd($checkBacktrace['function']);
             $model = $model->get();
             (new SoftCascade())->cascade($model, $checkBacktrace['function']);
         }

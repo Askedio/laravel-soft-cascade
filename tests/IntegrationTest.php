@@ -74,11 +74,11 @@ class IntegrationTest extends BaseTestCase
         $this->createUserRaw();
 
         User::first()->delete();
-        $this->assertEquals(2, User::withTrashed()->get()->count());
-        $this->assertEquals(1, User::get()->count());
+        $this->assertEquals(2, User::withTrashed()->count());
+        $this->assertEquals(1, User::count());
 
-        $this->assertEquals(2, Profiles::withTrashed()->get()->count());
-        $this->assertEquals(1, Profiles::get()->count());
+        $this->assertEquals(2, Profiles::withTrashed()->count());
+        $this->assertEquals(1, Profiles::count());
     }
 
     public function testMultipleRestore()
@@ -89,11 +89,11 @@ class IntegrationTest extends BaseTestCase
         User::first()->delete();
         User::withTrashed()->first()->restore();
 
-        $this->assertEquals(2, User::withTrashed()->get()->count());
-        $this->assertEquals(2, User::get()->count());
+        $this->assertEquals(2, User::withTrashed()->count());
+        $this->assertEquals(2, User::count());
 
-        $this->assertEquals(2, Profiles::withTrashed()->get()->count());
-        $this->assertEquals(2, Profiles::get()->count());
+        $this->assertEquals(2, Profiles::withTrashed()->count());
+        $this->assertEquals(2, Profiles::count());
 
         User::first()->restore();
     }
