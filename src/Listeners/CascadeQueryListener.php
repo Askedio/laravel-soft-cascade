@@ -29,27 +29,23 @@ class CascadeQueryListener
     private function getBacktraceUse()
     {
         $listenFunctionsKeys = array_keys($this->listenFuncions);
-        $debugBacktrace = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT, 14);
+        $debugBacktrace = collect(debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT, 14));
         $checkBacktrace = null;
-        if (
-            isset($debugBacktrace[13]) && @$debugBacktrace[13]['class'] == $this->listenClass && 
-            in_array(@$debugBacktrace[13]['function'], $listenFunctionsKeys)
-        ) { //For direct method
-            $checkBacktrace = [
-                'object' => $debugBacktrace[13]['object'],
-                'function' => $debugBacktrace[13]['function']
-            ];
-        } else if (
-            isset($debugBacktrace[12]) && @$debugBacktrace[12]['class'] == $this->listenClass && 
-            @$debugBacktrace[12]['function'] == '__call'
-        ) { //For __call
-            if (in_array($debugBacktrace[12]['args'][0], $listenFunctionsKeys)) {
+        $debugBacktrace->each(function($backtrace) use ($listenFunctionsKeys, &$checkBacktrace) { 
+            if (@$$backtrace['class'] == $this->listenClass && in_array(@$$backtrace['function'], $listenFunctionsKeys)) { //For direct method
                 $checkBacktrace = [
-                    'object' => $debugBacktrace[12]['object'],
-                    'function' => $debugBacktrace[12]['args'][0]
+                    'object' => $backtrace['object'],
+                    'function' => $backtrace['function']
                 ];
+            } else if (@$backtrace['class'] == $this->listenClass && @$backtrace['function'] == '__call') { //For __call
+                if (in_array($backtrace['args'][0], $listenFunctionsKeys)) {
+                    $checkBacktrace = [
+                        'object' => $backtrace['object'],
+                        'function' => $backtrace['args'][0]
+                    ];
+                }
             }
-        }
+        });
         return $checkBacktrace;
     }
 
@@ -62,6 +58,7 @@ class CascadeQueryListener
     {
         $checkBacktrace = $this->getBacktraceUse();
         $model = null;
+        dd($checkBacktrace);
         if (!is_null($checkBacktrace)) {
             $model = $checkBacktrace['object'];
             $modelFilters = $this->listenFuncions[$checkBacktrace['function']];
@@ -71,6 +68,7 @@ class CascadeQueryListener
                 }
             }
             $model = $model->get();
+            dd($model);
             (new SoftCascade())->cascade($model, $checkBacktrace['function']);
         }
     }
