@@ -23,7 +23,7 @@ class SoftCascade
     {
         $models = collect($models);
         $this->direction = $direction;
-        $models->each(function($model, $index) {
+        $models->each(function($model) {
             $this->run($model);
         });
     }

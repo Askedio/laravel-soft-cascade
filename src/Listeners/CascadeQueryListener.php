@@ -22,18 +22,15 @@ class CascadeQueryListener
     protected $listenClass = 'Illuminate\Database\Eloquent\Builder';
 
     /**
-     * Handel the event for eloquent delete.
-     *
-     * @param  $queryExecuted
-     *
-     * @return void
+     * Return the backtrace will be use to get model object and function
+     * 
+     * @param type $debugBacktrace 
+     * @return type
      */
-    public function handle($queryExecuted)
+    private function getBacktraceUse($debugBacktrace)
     {
         $debugBacktrace = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT, 14);
-        $listenFunctionsKeys = array_keys($this->listenFuncions);
         $checkBacktrace = null;
-        $model = null;
         if (
             isset($debugBacktrace[13]) && isset($debugBacktrace[13]['class']) && 
             isset($debugBacktrace[13]['function']) && $debugBacktrace[13]['class'] == $this->listenClass && 
@@ -55,6 +52,19 @@ class CascadeQueryListener
                 ];
             }
         }
+        return $checkBacktrace;
+    }
+
+    /**
+     * Handel the event for eloquent delete.
+     *
+     * @return void
+     */
+    public function handle()
+    {
+        $listenFunctionsKeys = array_keys($this->listenFuncions);
+        $checkBacktrace = $this->getBacktraceUse();
+        $model = null;
         if (!is_null($checkBacktrace)) {
             $model = $checkBacktrace['object'];
             $modelFilters = $this->listenFuncions[$checkBacktrace['function']];
