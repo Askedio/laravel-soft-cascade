@@ -12,8 +12,8 @@ class CascadeRestoreListener
      * @param  $event
      * @param  $model
      *
-     * @SuppressWarnings(PHPMD.UnusedLocalVariable)
      * @return void
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter("event"))
      */
     public function handle($event, $model)
     {
