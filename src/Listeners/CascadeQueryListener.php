@@ -24,26 +24,24 @@ class CascadeQueryListener
     /**
      * Return the backtrace will be use to get model object and function
      * 
-     * @param type $debugBacktrace 
      * @return type
      */
-    private function getBacktraceUse($debugBacktrace)
+    private function getBacktraceUse()
     {
+        $listenFunctionsKeys = array_keys($this->listenFuncions);
         $debugBacktrace = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT, 14);
         $checkBacktrace = null;
         if (
-            isset($debugBacktrace[13]) && isset($debugBacktrace[13]['class']) && 
-            isset($debugBacktrace[13]['function']) && $debugBacktrace[13]['class'] == $this->listenClass && 
-            in_array($debugBacktrace[13]['function'], $listenFunctionsKeys)
+            isset($debugBacktrace[13]) && @$debugBacktrace[13]['class'] == $this->listenClass && 
+            in_array(@$debugBacktrace[13]['function'], $listenFunctionsKeys)
         ) { //For direct method
             $checkBacktrace = [
                 'object' => $debugBacktrace[13]['object'],
                 'function' => $debugBacktrace[13]['function']
             ];
         } else if (
-            isset($debugBacktrace[12]) && isset($debugBacktrace[12]['class']) && 
-            isset($debugBacktrace[12]['function']) && $debugBacktrace[12]['class'] == $this->listenClass && 
-            $debugBacktrace[12]['function'] == '__call'
+            isset($debugBacktrace[12]) && @$debugBacktrace[12]['class'] == $this->listenClass && 
+            @$debugBacktrace[12]['function'] == '__call'
         ) { //For __call
             if (in_array($debugBacktrace[12]['args'][0], $listenFunctionsKeys)) {
                 $checkBacktrace = [
@@ -62,7 +60,6 @@ class CascadeQueryListener
      */
     public function handle()
     {
-        $listenFunctionsKeys = array_keys($this->listenFuncions);
         $checkBacktrace = $this->getBacktraceUse();
         $model = null;
         if (!is_null($checkBacktrace)) {
