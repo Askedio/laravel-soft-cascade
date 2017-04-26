@@ -51,9 +51,9 @@ class LumenIntegrationTest extends LumenBaseTestCase
 
         User::first()->delete();
 
-        $this->missingFromDatabase('users', ['deleted_at' => null]);
-        $this->missingFromDatabase('profiles', ['deleted_at' => null]);
-        $this->missingFromDatabase('addresses', ['deleted_at' => null]);
+        $this->assertDatabaseMissing('users', ['deleted_at' => null]);
+        $this->assertDatabaseMissing('profiles', ['deleted_at' => null]);
+        $this->assertDatabaseMissing('addresses', ['deleted_at' => null]);
     }
 
     public function testRestore()
@@ -63,9 +63,9 @@ class LumenIntegrationTest extends LumenBaseTestCase
         User::first()->delete();
         User::withTrashed()->first()->restore();
 
-        $this->seeInDatabase('users', ['deleted_at' => null]);
-        $this->seeInDatabase('profiles', ['deleted_at' => null]);
-        $this->seeInDatabase('addresses', ['deleted_at' => null]);
+        $this->assertDatabaseHas('users', ['deleted_at' => null]);
+        $this->assertDatabaseHas('profiles', ['deleted_at' => null]);
+        $this->assertDatabaseHas('addresses', ['deleted_at' => null]);
     }
 
     public function testMultipleDelete()
