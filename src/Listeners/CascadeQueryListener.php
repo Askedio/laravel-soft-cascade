@@ -58,7 +58,6 @@ class CascadeQueryListener
     {
         $checkBacktrace = $this->getBacktraceUse();
         $model = null;
-        dd($checkBacktrace);
         if (!is_null($checkBacktrace)) {
             $model = $checkBacktrace['object'];
             $modelFilters = $this->listenFuncions[$checkBacktrace['function']];
@@ -68,7 +67,6 @@ class CascadeQueryListener
                 }
             }
             $model = $model->get();
-            dd($model);
             (new SoftCascade())->cascade($model, $checkBacktrace['function']);
         }
     }
