@@ -17,7 +17,6 @@ class CascadeDeleteListener
      */
     public function handle($event, $model)
     {
-        dd($event);
         (new SoftCascade())->cascade($model, 'delete');
     }
 }
