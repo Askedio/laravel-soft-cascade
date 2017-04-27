@@ -61,11 +61,6 @@ User::withTrashed()->limit(2)->restore();
 * 5.6
 * 7.0
 * 7.1
-* HHVM 3.3
-* HHVM 3.6
-* HHVM 3.9
-* HHVM 3.12
-* HHVM 3.15
 
 # Supported Databases
 * MySQL
