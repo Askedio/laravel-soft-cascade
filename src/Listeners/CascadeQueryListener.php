@@ -20,13 +20,15 @@ class CascadeQueryListener
             return @$backtrace['class'] === $this->listenClass;
         });
         $checkBacktrace = null;
-        if (!is_null($debugBacktrace) && str_contains(@$debugBacktrace['file'], 'Illuminate/Database/Eloquent/SoftDeletingScope.php') && @$debugBacktrace['function'] == 'update') {
+        if (!is_null($debugBacktrace)) {
             $debugBacktrace = $debugBacktrace->first();
-            $checkBacktrace = [
-                'object' => $debugBacktrace['object'],
-                'function' => $debugBacktrace['function'],
-                'args' => $debugBacktrace['args'][0]
-            ];
+            if (str_contains(@$debugBacktrace['file'], 'Illuminate/Database/Eloquent/SoftDeletingScope.php') && @$debugBacktrace['function'] == 'update') {
+                $checkBacktrace = [
+                    'object' => $debugBacktrace['object'],
+                    'function' => $debugBacktrace['function'],
+                    'args' => $debugBacktrace['args'][0]
+                ];
+            }
         }
         return $checkBacktrace;
     }
