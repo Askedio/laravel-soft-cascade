@@ -56,11 +56,34 @@ class IntegrationTest extends BaseTestCase
         $this->assertDatabaseMissing('addresses', ['deleted_at' => null]);
     }
 
+    public function testDeleteQueryBuilder()
+    {
+        $this->createUserRaw();
+
+        User::whereIn('id',[1])->delete();
+
+        $this->assertDatabaseMissing('users', ['deleted_at' => null]);
+        $this->assertDatabaseMissing('profiles', ['deleted_at' => null]);
+        $this->assertDatabaseMissing('addresses', ['deleted_at' => null]);
+    }
+
     public function testRestore()
     {
         $this->createUserRaw();
 
         User::first()->delete();
+        User::withTrashed()->first()->restore();
+
+        $this->assertDatabaseHas('users', ['deleted_at' => null]);
+        $this->assertDatabaseHas('profiles', ['deleted_at' => null]);
+        $this->assertDatabaseHas('addresses', ['deleted_at' => null]);
+    }
+
+    public function testRestoreQueryBuilder()
+    {
+        $this->createUserRaw();
+
+        User::whereIn('id',[1])->delete();
         User::withTrashed()->first()->restore();
 
         $this->assertDatabaseHas('users', ['deleted_at' => null]);

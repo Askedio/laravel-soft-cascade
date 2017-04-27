@@ -2,22 +2,10 @@
 
 namespace Askedio\SoftCascade\Listeners;
 
-use Askedio\SoftCascade\SoftCascade;
+use Askedio\SoftCascade\QueryBuilderSoftCascade;
 
 class CascadeQueryListener
 {
-    protected $listenFuncions = [
-        'delete'  => [
-            'withTrashed' => [
-                []
-            ]
-        ],
-        'restore' => [
-            'withTrashed' => [
-                []
-            ]
-        ]
-    ];
 
     protected $listenClass = 'Illuminate\Database\Eloquent\Builder';
 
@@ -28,24 +16,23 @@ class CascadeQueryListener
      */
     private function getBacktraceUse()
     {
-        $listenFunctionsKeys = array_keys($this->listenFuncions);
-        $debugBacktrace = collect(debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT, 14));
+        $debugBacktrace = collect(debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT, 30))->filter(function($backtrace)  {
+            return @$backtrace['class'] === $this->listenClass;
+        })->first();
+        $prueba = collect(debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT, 30))->filter(function($backtrace)  {
+            return str_contains(@$debugBacktrace['file'], 'SoftDeletingScope.php');
+        })->first();
+        if (!is_null($prueba)) {
+            dd($prueba);
+        }
         $checkBacktrace = null;
-        $debugBacktrace->each(function($backtrace) use ($listenFunctionsKeys, &$checkBacktrace) { 
-            if (@$$backtrace['class'] == $this->listenClass && in_array(@$$backtrace['function'], $listenFunctionsKeys)) { //For direct method
-                $checkBacktrace = [
-                    'object' => $backtrace['object'],
-                    'function' => $backtrace['function']
-                ];
-            } else if (@$backtrace['class'] == $this->listenClass && @$backtrace['function'] == '__call') { //For __call
-                if (in_array($backtrace['args'][0], $listenFunctionsKeys)) {
-                    $checkBacktrace = [
-                        'object' => $backtrace['object'],
-                        'function' => $backtrace['args'][0]
-                    ];
-                }
-            }
-        });
+        if (!is_null($debugBacktrace) && str_contains(@$debugBacktrace['file'], 'Illuminate/Database/Eloquent/SoftDeletingScope.php') && @$debugBacktrace['function'] == 'update') {
+            $checkBacktrace = [
+                'object' => $debugBacktrace['object'],
+                'function' => $debugBacktrace['function'],
+                'args' => $debugBacktrace['args'][0]
+            ];
+        }
         return $checkBacktrace;
     }
 
@@ -54,20 +41,12 @@ class CascadeQueryListener
      *
      * @return void
      */
-    public function handle()
+    public function handle($query)
     {
         $checkBacktrace = $this->getBacktraceUse();
-        $model = null;
         if (!is_null($checkBacktrace)) {
-            $model = $checkBacktrace['object'];
-            $modelFilters = $this->listenFuncions[$checkBacktrace['function']];
-            foreach ($modelFilters as $method => $calls) {
-                foreach ($calls as $arguments) {
-                    $model = call_user_func_array(array($model, $method), $arguments);
-                }
-            }
-            $model = $model->get();
-            (new SoftCascade())->cascade($model, $checkBacktrace['function']);
+            $model = $checkBacktrace['object']->withTrashed()->get([$checkBacktrace['object']->getModel()->getKeyName()]);
+            (new QueryBuilderSoftCascade())->cascade($model, $checkBacktrace['function'], $checkBacktrace['args']);
         }
     }
 }

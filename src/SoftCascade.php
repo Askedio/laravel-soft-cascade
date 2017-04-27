@@ -2,65 +2,81 @@
 
 namespace Askedio\SoftCascade;
 
+use Askedio\SoftCascade\Contracts\SoftCascadeable;
+use Illuminate\Support\Str;
+
 /**
  * TO-DO:
  * - Support for ON CASCADE SET NULL
  * - Support for ON CASCADE RESTRICT.
  */
-class SoftCascade
+class SoftCascade implements SoftCascadeable
 {
     protected $direction;
+    protected $directionData;
 
     /**
      * Cascade over Eloquent items.
      *
-     * @param Illuminate\Database\Eloquent\Model $model
-     * @param string                             $direction delete|restore
+     * @param Illuminate\Database\Eloquent\Model $models
+     * @param string                             $direction update|delete|restore
+     * @param array                              $directionData
      *
      * @return void
      */
-    public function cascade($models, $direction)
+    public function cascade($models, $direction, $directionData = [])
     {
-        $models = collect($models);
         $this->direction = $direction;
-        $models->each(function($model) {
-            $this->run($model);
-        });
+        $this->directionData = $directionData;
+        $this->run($models);
     }
 
     /**
      * Run the cascade.
      *
-     * @param Illuminate\Database\Eloquent\Model $model
+     * @param Illuminate\Database\Eloquent\Model $models
      *
      * @return void
      */
-    private function run($model)
+    protected function run($models)
     {
-        if (!$this->isCascadable($model)) {
-            return;
-        }
+        $models = collect($models);
+        if ($models->count() > 0) {
+            $model = $models->first();
 
-        $this->relations($model, $model->getSoftCascade());
+            if (!is_object($model)) {
+                return;
+            }
+
+            if (!$this->isCascadable($model)) {
+                return;
+            }
+
+            $this->relations($model, $model->getForeignKey(), $models->pluck($model->getKeyName()));
+        }
+        return;
     }
 
     /**
      * Iterate over the relations.
      *
      * @param Illuminate\Database\Eloquent\Model $model
-     * @param array                              $relations
+     * @param string                             $foreignKey
+     * @param array                              $foreignKeyIds
      *
      * @return mixed
      */
-    private function relations($model, $relations)
+    protected function relations($model, $foreignKey, $foreignKeyIds)
     {
+        $relations = $model->getSoftCascade();
+
         if (empty($relations)) {
             return;
         }
 
         foreach ($relations as $relation) {
             $this->validateRelation($model, $relation);
-            $this->execute($model->$relation());
+            $this->execute($model->$relation(), $foreignKey, $foreignKeyIds);
         }
     }
 
@@ -68,43 +84,22 @@ class SoftCascade
      * Execute delete, or restore.
      *
      * @param Illuminate\Database\Eloquent\Relations\Relation $relation
+     * @param string                                          $foreignKey
+     * @param array                                           $foreignKeyIds
      *
      * @return void
      */
-    private function execute($relation)
+    protected function execute($relation, $foreignKey, $foreignKeyIds)
     {
-        $this->runNestedRelations($relation);
-        $relation->{$this->direction}();
-    }
-
-    /**
-     * Run nested relations.
-     *
-     * @param Illuminate\Database\Eloquent\Relations\Relation $relation
-     *
-     * @return void
-     */
-    private function runNestedRelations($relation)
-    {
-        foreach ($this->nestedRelation($relation)->get() as $model) {
-            $this->run($model);
+        $relationModel = $relation->getQuery()->getModel();
+        $relationModel = new $relationModel();
+        $relationModel = $relationModel->withTrashed()->whereIn($foreignKey, $foreignKeyIds);
+        $this->run($relationModel->get([$relationModel->getModel()->getKeyName()]));
+        if (empty($this->directionData)) {
+            $relationModel->{$this->direction}();
+        } else {
+            $relationModel->{$this->direction}($this->directionData);
         }
-    }
-
-    /**
-     * Return the relation withTrashed if being restored.
-     *
-     * @param Illuminate\Database\Eloquent\Relations\Relation $relation
-     *
-     * @return Illuminate\Database\Eloquent\Relations\Relatio
-     */
-    private function nestedRelation($relation)
-    {
-        if ($this->direction == 'restore') {
-            return $relation->withTrashed();
-        }
-
-        return $relation;
     }
 
     /**
@@ -115,7 +110,7 @@ class SoftCascade
      *
      * @return void
      */
-    private function validateRelation($model, $relation)
+    protected function validateRelation($model, $relation)
     {
         $class = get_class($model);
 
@@ -135,7 +130,7 @@ class SoftCascade
      *
      * @return bool
      */
-    private function isCascadable($model)
+    protected function isCascadable($model)
     {
         return method_exists($model, 'getSoftCascade');
     }
