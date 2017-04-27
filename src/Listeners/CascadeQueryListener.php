@@ -18,9 +18,10 @@ class CascadeQueryListener
     {
         $debugBacktrace = collect(debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT, 30))->filter(function($backtrace)  {
             return @$backtrace['class'] === $this->listenClass;
-        })->first();
+        });
         $checkBacktrace = null;
         if (!is_null($debugBacktrace) && str_contains(@$debugBacktrace['file'], 'Illuminate/Database/Eloquent/SoftDeletingScope.php') && @$debugBacktrace['function'] == 'update') {
+            $debugBacktrace = $debugBacktrace->first();
             $checkBacktrace = [
                 'object' => $debugBacktrace['object'],
                 'function' => $debugBacktrace['function'],
