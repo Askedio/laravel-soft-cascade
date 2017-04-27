@@ -57,6 +57,11 @@ User::limit(2)->delete();
 User::withTrashed()->limit(2)->restore();
 ~~~
 
+# Supported PHP Versions
+* 5.6
+* 7.0
+* 7.1
+
 # Supported Databases
 * MySQL
 * SQLite
