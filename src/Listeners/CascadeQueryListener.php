@@ -41,7 +41,7 @@ class CascadeQueryListener
      *
      * @return void
      */
-    public function handle($query)
+    public function handle()
     {
         $checkBacktrace = $this->getBacktraceUse();
         if (!is_null($checkBacktrace)) {

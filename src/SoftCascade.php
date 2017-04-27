@@ -95,11 +95,7 @@ class SoftCascade implements SoftCascadeable
         $relationModel = new $relationModel();
         $relationModel = $relationModel->withTrashed()->whereIn($foreignKey, $foreignKeyIds);
         $this->run($relationModel->get([$relationModel->getModel()->getKeyName()]));
-        if (empty($this->directionData)) {
-            $relationModel->{$this->direction}();
-        } else {
-            $relationModel->{$this->direction}($this->directionData);
-        }
+        $relationModel->{$this->direction}($this->directionData);
     }
 
     /**
