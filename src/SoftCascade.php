@@ -28,8 +28,8 @@ class SoftCascade implements SoftCascadeable
         DB::beginTransaction(); //Start db transaction for rollback when error
         $this->direction = $direction;
         $this->directionData = $directionData;
-        DB::commit(); //All ok we commit all database queries
         $this->run($models);
+        DB::commit(); //All ok we commit all database queries
     }
 
     /**
