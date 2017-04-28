@@ -38,7 +38,7 @@ In your `Model` enable the trait and define `$softCascade`. [Example](https://gi
 use \Askedio\SoftCascade\Traits\SoftCascadeTrait;
 
 protected $softCascade = ['profiles'];
-
+~~~
 For restricted relation use. [Example](https://github.com/Askedio/laravel5-soft-cascade/blob/master/tests/App/Languages.php).
 ~~~
 use \Askedio\SoftCascade\Traits\SoftCascadeTrait;

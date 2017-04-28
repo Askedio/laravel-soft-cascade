@@ -11,7 +11,6 @@ use Illuminate\Support\Str;
 /**
  * TO-DO:
  * - Support for ON CASCADE SET NULL
- * - Support for ON CASCADE RESTRICT.
  */
 class SoftCascade implements SoftCascadeable
 {
