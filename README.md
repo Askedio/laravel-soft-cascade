@@ -38,6 +38,12 @@ In your `Model` enable the trait and define `$softCascade`. [Example](https://gi
 use \Askedio\SoftCascade\Traits\SoftCascadeTrait;
 
 protected $softCascade = ['profiles'];
+
+For restricted relation use. [Example](https://github.com/Askedio/laravel5-soft-cascade/blob/master/tests/App/Languages.php).
+~~~
+use \Askedio\SoftCascade\Traits\SoftCascadeTrait;
+
+protected $softCascade = ['addresses@restrict'];
 ~~~
 `$softCascade` is an array of your relation names, in the [example](https://github.com/Askedio/laravel5-soft-cascade/blob/master/tests/App/User.php) you'll see we've defined `function profiles()` for the relation.
 

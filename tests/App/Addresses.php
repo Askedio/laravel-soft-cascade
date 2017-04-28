@@ -7,7 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 class Addresses extends Model
 {
     use \Illuminate\Database\Eloquent\SoftDeletes;
-    use \Askedio\SoftCascade\Traits\SoftCascadeTrait;
 
-    protected $fillable = ['city'];
+    protected $fillable = ['languages_id', 'city'];
+
+    public function language()
+    {
+        return $this->belongsTo('Askedio\Tests\App\Languages');
+    }
+
+    public function profile()
+    {
+        return $this->belongsTo('Askedio\Tests\App\Profile');
+    }
 }

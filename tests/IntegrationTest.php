@@ -2,8 +2,12 @@
 
 namespace Askedio\Tests;
 
+use Askedio\SoftCascade\Exceptions\SoftCascadeNonExistentRelationActionException;
+use Askedio\SoftCascade\Exceptions\SoftCascadeRestrictedException;
 use Askedio\Tests\App\BadRelation;
+use Askedio\Tests\App\BadRelationAction;
 use Askedio\Tests\App\BadRelationB;
+use Askedio\Tests\App\Languages;
 use Askedio\Tests\App\Profiles;
 use Askedio\Tests\App\User;
 
@@ -13,6 +17,17 @@ use Askedio\Tests\App\User;
  */
 class IntegrationTest extends BaseTestCase
 {
+    /**
+     * Setup Language before each test.
+     */
+    public function setUp()
+    {
+        parent::setUp();
+        Languages::create([
+            'language' => 'English'
+        ]);
+    }
+
     private function createUserRaw()
     {
         $user = User::create([
@@ -24,8 +39,7 @@ class IntegrationTest extends BaseTestCase
         ]);
 
         // lazy
-        Profiles::first()->address()->create(['city' => 'Los Angeles']);
-
+        Profiles::first()->address()->create(['languages_id' => 1, 'city' => 'Los Angeles']);
         return $user;
     }
 
@@ -119,6 +133,25 @@ class IntegrationTest extends BaseTestCase
         $this->assertEquals(2, Profiles::count());
 
         User::first()->restore();
+    }
+
+    public function testRestrictedRelationWithoutRestrictedRows()
+    {
+        Languages::first()->delete();
+    }
+
+    public function testRestrictedRelation()
+    {
+        $this->createUserRaw();
+        $this->setExpectedException(SoftCascadeRestrictedException::class);
+        Languages::first()->delete();
+    }
+
+    public function testInexistentRestrictedAction()
+    {
+        $this->createUserRaw();
+        $this->setExpectedException(SoftCascadeNonExistentRelationActionException::class);
+        BadRelationAction::first()->delete();
     }
 
     public function testNotCascadable()
