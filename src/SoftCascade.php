@@ -8,10 +8,6 @@ use Askedio\SoftCascade\Contracts\SoftCascadeable;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
-/**
- * TO-DO:
- * - Support for ON CASCADE SET NULL
- */
 class SoftCascade implements SoftCascadeable
 {
     protected $direction;
