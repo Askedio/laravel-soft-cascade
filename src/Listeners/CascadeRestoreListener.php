@@ -2,7 +2,7 @@
 
 namespace Askedio\SoftCascade\Listeners;
 
-use Askedio\SoftCascade\SoftCascade;
+use Askedio\SoftCascade\EloquentSoftCascade;
 
 class CascadeRestoreListener
 {
@@ -17,6 +17,6 @@ class CascadeRestoreListener
      */
     public function handle($event, $model)
     {
-        (new SoftCascade())->cascade($model, 'restore');
+        (new EloquentSoftCascade())->cascade($model, 'restore');
     }
 }

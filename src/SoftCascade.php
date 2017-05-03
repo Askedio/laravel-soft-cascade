@@ -2,65 +2,91 @@
 
 namespace Askedio\SoftCascade;
 
-/**
- * TO-DO:
- * - Support for ON CASCADE SET NULL
- * - Support for ON CASCADE RESTRICT.
- */
-class SoftCascade
+use Askedio\SoftCascade\Exceptions\SoftCascadeNonExistentRelationActionException;
+use Askedio\SoftCascade\Exceptions\SoftCascadeRestrictedException;
+use Askedio\SoftCascade\Contracts\SoftCascadeable;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
+
+class SoftCascade implements SoftCascadeable
 {
     protected $direction;
+    protected $directionData;
+    protected $availableActions = ['update', 'restrict'];
 
     /**
      * Cascade over Eloquent items.
      *
-     * @param Illuminate\Database\Eloquent\Model $model
-     * @param string                             $direction delete|restore
+     * @param Illuminate\Database\Eloquent\Model $models
+     * @param string                             $direction update|delete|restore
+     * @param array                              $directionData
      *
      * @return void
      */
-    public function cascade($models, $direction)
+    public function cascade($models, $direction, $directionData = [])
     {
-        $models = collect($models);
+        DB::beginTransaction(); //Start db transaction for rollback when error
         $this->direction = $direction;
-        $models->each(function($model) {
-            $this->run($model);
-        });
+        $this->directionData = $directionData;
+        $this->run($models);
+        DB::commit(); //All ok we commit all database queries
     }
 
     /**
      * Run the cascade.
      *
-     * @param Illuminate\Database\Eloquent\Model $model
+     * @param Illuminate\Database\Eloquent\Model $models
      *
      * @return void
      */
-    private function run($model)
+    protected function run($models)
     {
-        if (!$this->isCascadable($model)) {
-            return;
-        }
+        $models = collect($models);
+        if ($models->count() > 0) {
+            $model = $models->first();
 
-        $this->relations($model, $model->getSoftCascade());
+            if (!is_object($model)) {
+                return;
+            }
+
+            if (!$this->isCascadable($model)) {
+                return;
+            }
+
+            $this->relations($model, $model->getForeignKey(), $models->pluck($model->getKeyName()));
+        }
+        return;
     }
 
     /**
      * Iterate over the relations.
      *
      * @param Illuminate\Database\Eloquent\Model $model
-     * @param array                              $relations
+     * @param string                             $foreignKey
+     * @param array                              $foreignKeyIds
      *
      * @return mixed
      */
-    private function relations($model, $relations)
+    protected function relations($model, $foreignKey, $foreignKeyIds)
     {
+        $relations = $model->getSoftCascade();
+
         if (empty($relations)) {
             return;
         }
 
         foreach ($relations as $relation) {
+            extract($this->relationResolver($relation));
             $this->validateRelation($model, $relation);
-            $this->execute($model->$relation());
+            
+            $affectedRowsOnExecute = $this->affectedRowsOnExecute($model->$relation(), $foreignKey, $foreignKeyIds);
+
+            if ($action === 'restrict' && $affectedRowsOnExecute > 0) {
+                DB::rollBack(); //Rollback the transaction before throw exception
+                throw (new SoftCascadeRestrictedException)->setModel(get_class($model->$relation()->getModel()), $foreignKey, $foreignKeyIds->toArray());
+            }
+
+            $this->execute($model->$relation(), $foreignKey, $foreignKeyIds, $affectedRowsOnExecute);
         }
     }
 
@@ -68,43 +94,21 @@ class SoftCascade
      * Execute delete, or restore.
      *
      * @param Illuminate\Database\Eloquent\Relations\Relation $relation
+     * @param string                                          $foreignKey
+     * @param array                                           $foreignKeyIds
+     * @param int                                             $$affectedRowsOnExecute
      *
      * @return void
      */
-    private function execute($relation)
+    protected function execute($relation, $foreignKey, $foreignKeyIds, $affectedRowsOnExecute)
     {
-        $this->runNestedRelations($relation);
-        $relation->{$this->direction}();
-    }
-
-    /**
-     * Run nested relations.
-     *
-     * @param Illuminate\Database\Eloquent\Relations\Relation $relation
-     *
-     * @return void
-     */
-    private function runNestedRelations($relation)
-    {
-        foreach ($this->nestedRelation($relation)->get() as $model) {
-            $this->run($model);
+        $relationModel = $relation->getQuery()->getModel();
+        $relationModel = new $relationModel();
+        if ($affectedRowsOnExecute > 0) {
+            $relationModel = $relationModel->withTrashed()->whereIn($foreignKey, $foreignKeyIds)->limit($affectedRowsOnExecute);
+            $this->run($relationModel->get([$relationModel->getModel()->getKeyName()]));
+            $relationModel->{$this->direction}($this->directionData);
         }
-    }
-
-    /**
-     * Return the relation withTrashed if being restored.
-     *
-     * @param Illuminate\Database\Eloquent\Relations\Relation $relation
-     *
-     * @return Illuminate\Database\Eloquent\Relations\Relatio
-     */
-    private function nestedRelation($relation)
-    {
-        if ($this->direction == 'restore') {
-            return $relation->withTrashed();
-        }
-
-        return $relation;
     }
 
     /**
@@ -115,15 +119,16 @@ class SoftCascade
      *
      * @return void
      */
-    private function validateRelation($model, $relation)
+    protected function validateRelation($model, $relation)
     {
         $class = get_class($model);
-
         if (!method_exists($model, $relation)) {
+            DB::rollBack(); //Rollback the transaction before throw exception
             throw new \LogicException(sprintf('%s does not have method \'%s\'.', $class, $relation));
         }
 
         if (!$model->$relation() instanceof \Illuminate\Database\Eloquent\Relations\Relation) {
+            DB::rollBack(); //Rollback the transaction before throw exception
             throw new \LogicException(sprintf('%s \'%s\' is not an instance of Illuminate\Database\Eloquent\Relations\Relation.', $class, $relation));
         }
     }
@@ -135,8 +140,50 @@ class SoftCascade
      *
      * @return bool
      */
-    private function isCascadable($model)
+    protected function isCascadable($model)
     {
         return method_exists($model, 'getSoftCascade');
+    }
+
+    /**
+     * Affected rows if we do execute.
+     *
+     * @param Illuminate\Database\Eloquent\Relations\Relation $relation
+     * @param string                                          $foreignKey
+     * @param array                                           $foreignKeyIds
+     *
+     * @return void
+     */
+    protected function affectedRowsOnExecute($relation, $foreignKey, $foreignKeyIds)
+    {
+        $relationModel = $relation->getQuery()->getModel();
+        $relationModel = new $relationModel();
+        return $relationModel->withTrashed()->whereIn($foreignKey, $foreignKeyIds)->count();
+    }
+
+    /**
+     * Resolve relation string
+     * 
+     * @param string $relation 
+     * 
+     * @return array
+     */
+    protected function relationResolver($relation)
+    {
+        $return = ['relation' => '', 'action' => 'update'];
+
+        try {
+            list($relation, $action) = explode('@', $relation);
+            $return = ['relation' => $relation, 'action' => $action];
+        } catch (\Exception $e) {
+            $return['relation'] = $relation;
+        }
+
+        if (!in_array($return['action'], $this->availableActions)) {
+            DB::rollBack(); //Rollback the transaction before throw exception
+            throw (new SoftCascadeNonExistentRelationActionException)->setRelation(implode('@', $return));
+        }
+
+        return $return;
     }
 }

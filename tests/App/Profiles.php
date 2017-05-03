@@ -18,6 +18,11 @@ class Profiles extends Model
         return $this->hasOne('Askedio\Tests\App\Addresses');
     }
 
+    public function user()
+    {
+        return $this->belongsTo('Askedio\Tests\App\Use');
+    }
+
     public function badrelation()
     {
         return $this->hasMany('Askedio\Tests\App\Profile');

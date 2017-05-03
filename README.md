@@ -39,6 +39,12 @@ use \Askedio\SoftCascade\Traits\SoftCascadeTrait;
 
 protected $softCascade = ['profiles'];
 ~~~
+For restricted relation use. [Example](https://github.com/Askedio/laravel5-soft-cascade/blob/master/tests/App/Languages.php).
+~~~
+use \Askedio\SoftCascade\Traits\SoftCascadeTrait;
+
+protected $softCascade = ['addresses@restrict'];
+~~~
 `$softCascade` is an array of your relation names, in the [example](https://github.com/Askedio/laravel5-soft-cascade/blob/master/tests/App/User.php) you'll see we've defined `function profiles()` for the relation.
 
 Nested relations work by defining `$softCascade` in the related `Model` as you can see [here](https://github.com/Askedio/laravel5-soft-cascade/blob/master/tests/App/Profiles.php).
@@ -56,6 +62,11 @@ It can also be used with query builder in this way
 User::limit(2)->delete();
 User::withTrashed()->limit(2)->restore();
 ~~~
+
+# Supported PHP Versions
+* 5.6
+* 7.0
+* 7.1
 
 # Supported Databases
 * MySQL

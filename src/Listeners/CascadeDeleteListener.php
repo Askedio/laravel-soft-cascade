@@ -2,7 +2,7 @@
 
 namespace Askedio\SoftCascade\Listeners;
 
-use Askedio\SoftCascade\SoftCascade;
+use Askedio\SoftCascade\EloquentSoftCascade;
 
 class CascadeDeleteListener
 {
@@ -17,6 +17,6 @@ class CascadeDeleteListener
      */
     public function handle($event, $model)
     {
-        (new SoftCascade())->cascade($model, 'delete');
+        (new EloquentSoftCascade())->cascade($model, 'delete');
     }
 }

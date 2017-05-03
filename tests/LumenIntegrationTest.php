@@ -2,8 +2,12 @@
 
 namespace Askedio\Tests;
 
+use Askedio\SoftCascade\Exceptions\SoftCascadeNonExistentRelationActionException;
+use Askedio\SoftCascade\Exceptions\SoftCascadeRestrictedException;
 use Askedio\Tests\App\BadRelation;
+use Askedio\Tests\App\BadRelationAction;
 use Askedio\Tests\App\BadRelationB;
+use Askedio\Tests\App\Languages;
 use Askedio\Tests\App\Profiles;
 use Askedio\Tests\App\User;
 
@@ -13,8 +17,23 @@ use Askedio\Tests\App\User;
  */
 class LumenIntegrationTest extends LumenBaseTestCase
 {
+    /**
+     * Setup Language before each test.
+     */
+    public function setUp()
+    {
+        parent::setUp();
+        Languages::create([
+            'language' => 'English'
+        ]);
+    }
+    
     private function createUserRaw()
     {
+        Languages::create([
+            'language' => 'English'
+        ]);
+
         $user = User::create([
             'name'     => 'admin',
             'email'    => uniqid().'@localhost.com',
@@ -24,8 +43,7 @@ class LumenIntegrationTest extends LumenBaseTestCase
         ]);
 
         // lazy
-        Profiles::first()->address()->create(['city' => 'Los Angeles']);
-
+        Profiles::first()->address()->create(['languages_id' => 1, 'city' => 'Los Angeles']);
         return $user;
     }
 
@@ -56,11 +74,34 @@ class LumenIntegrationTest extends LumenBaseTestCase
         $this->assertDatabaseMissing('addresses', ['deleted_at' => null]);
     }
 
+    public function testDeleteQueryBuilder()
+    {
+        $this->createUserRaw();
+
+        User::whereIn('id',[1])->delete();
+
+        $this->assertDatabaseMissing('users', ['deleted_at' => null]);
+        $this->assertDatabaseMissing('profiles', ['deleted_at' => null]);
+        $this->assertDatabaseMissing('addresses', ['deleted_at' => null]);
+    }
+
     public function testRestore()
     {
         $this->createUserRaw();
 
         User::first()->delete();
+        User::withTrashed()->first()->restore();
+
+        $this->assertDatabaseHas('users', ['deleted_at' => null]);
+        $this->assertDatabaseHas('profiles', ['deleted_at' => null]);
+        $this->assertDatabaseHas('addresses', ['deleted_at' => null]);
+    }
+
+    public function testRestoreQueryBuilder()
+    {
+        $this->createUserRaw();
+
+        User::whereIn('id',[1])->delete();
         User::withTrashed()->first()->restore();
 
         $this->assertDatabaseHas('users', ['deleted_at' => null]);
@@ -97,6 +138,25 @@ class LumenIntegrationTest extends LumenBaseTestCase
         $this->assertEquals(2, Profiles::count());
 
         User::first()->restore();
+    }
+
+    public function testRestrictedRelationWithoutRestrictedRows()
+    {
+        Languages::first()->delete();
+    }
+
+    public function testRestrictedRelation()
+    {
+        $this->createUserRaw();
+        $this->setExpectedException(SoftCascadeRestrictedException::class);
+        Languages::first()->delete();
+    }
+
+    public function testInexistentRestrictedAction()
+    {
+        $this->createUserRaw();
+        $this->setExpectedException(SoftCascadeNonExistentRelationActionException::class);
+        BadRelationAction::first()->delete();
     }
 
     public function testNotCascadable()

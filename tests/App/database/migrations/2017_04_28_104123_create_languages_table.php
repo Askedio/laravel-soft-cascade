@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateProfilesTable extends Migration
+class CreateLanguagesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,13 +12,11 @@ class CreateProfilesTable extends Migration
      */
     public function up()
     {
-        DB::connection()->getSchemaBuilder()->create('profiles', function (Blueprint $table) {
+        DB::connection()->getSchemaBuilder()->create('languages', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id');
-            $table->string('phone');
+            $table->string('language');
             $table->timestamps();
             $table->softDeletes();
-            $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 
@@ -29,6 +27,6 @@ class CreateProfilesTable extends Migration
      */
     public function down()
     {
-        DB::connection()->getSchemaBuilder()->dropIfExists('profiles');
+        DB::connection()->getSchemaBuilder()->dropIfExists('languages');
     }
 }

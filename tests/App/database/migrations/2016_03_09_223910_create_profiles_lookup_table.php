@@ -15,6 +15,8 @@ class CreateProfilesLookupTable extends Migration
         DB::connection()->getSchemaBuilder()->create('profiles_user', function (Blueprint $table) {
             $table->integer('user_id');
             $table->integer('profiles_id');
+            $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('profiles_id')->references('id')->on('profiles')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 
