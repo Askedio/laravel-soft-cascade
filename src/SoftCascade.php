@@ -6,9 +6,6 @@ use Askedio\SoftCascade\Contracts\SoftCascadeable;
 use Askedio\SoftCascade\Exceptions\SoftCascadeLogicException;
 use Askedio\SoftCascade\Exceptions\SoftCascadeNonExistentRelationActionException;
 use Askedio\SoftCascade\Exceptions\SoftCascadeRestrictedException;
-use Carbon\Carbon;
-use Illuminate\Database\QueryException;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
