@@ -2,8 +2,7 @@
 
 namespace Askedio\SoftCascade\Providers;
 
-use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-
+use Illuminate\Support\ServiceProvider;
 class EventServiceProvider extends ServiceProvider
 {
     /**
@@ -16,4 +15,14 @@ class EventServiceProvider extends ServiceProvider
       'eloquent.restoring: *' => ['Askedio\SoftCascade\Listeners\CascadeRestoreListener'],
       'Illuminate\Database\Events\QueryExecuted' => ['Askedio\SoftCascade\Listeners\CascadeQueryListener']
     ];
+
+    /**
+     * Register the service provider.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        //
+    }
 }
