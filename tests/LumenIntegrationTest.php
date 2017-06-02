@@ -2,8 +2,7 @@
 
 namespace Askedio\Tests;
 
-use Askedio\SoftCascade\Exceptions\SoftCascadeNonExistentRelationActionException;
-use Askedio\SoftCascade\Exceptions\SoftCascadeRestrictedException;
+use Askedio\SoftCascade\Exceptions\SoftCascadeLogicException;
 use Askedio\Tests\App\BadRelation;
 use Askedio\Tests\App\BadRelationAction;
 use Askedio\Tests\App\BadRelationB;
@@ -51,7 +50,7 @@ class LumenIntegrationTest extends LumenBaseTestCase
     {
         $this->createUserRaw();
 
-        $this->setExpectedException(\LogicException::class);
+        $this->setExpectedException(SoftCascadeLogicException::class);
         BadRelation::first()->delete();
     }
 
@@ -59,7 +58,7 @@ class LumenIntegrationTest extends LumenBaseTestCase
     {
         $this->createUserRaw();
 
-        $this->setExpectedException(\LogicException::class);
+        $this->setExpectedException(SoftCascadeLogicException::class);
         BadRelationB::first()->delete();
     }
 
@@ -148,14 +147,14 @@ class LumenIntegrationTest extends LumenBaseTestCase
     public function testRestrictedRelation()
     {
         $this->createUserRaw();
-        $this->setExpectedException(SoftCascadeRestrictedException::class);
+        $this->setExpectedException(SoftCascadeLogicException::class);
         Languages::first()->delete();
     }
 
     public function testInexistentRestrictedAction()
     {
         $this->createUserRaw();
-        $this->setExpectedException(SoftCascadeNonExistentRelationActionException::class);
+        $this->setExpectedException(SoftCascadeLogicException::class);
         BadRelationAction::first()->delete();
     }
 
