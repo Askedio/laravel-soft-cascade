@@ -18,5 +18,5 @@ interface SoftCascadeable
      *
      * @return void
      */
-    public function cascade($models, $direction, $directionData = []);
+    public function cascade($models, string $direction, array $directionData = []);
 }
