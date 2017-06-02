@@ -56,11 +56,19 @@ User::first()->delete();
 User::withTrashed()->first()->restore();
 ~~~
 
-It can also be used with query builder in this way
+It can also be used with query builder in this way because query builder listener is executed after query, we need to use transaction for rollback query on error due to restricted relationships
 
 ~~~
-User::limit(2)->delete();
-User::withTrashed()->limit(2)->restore();
+try {
+    DB::beginTransaction(); //Start db transaction for rollback query when error
+    User::limit(2)->delete();
+	User::withTrashed()->limit(2)->restore();
+    DB::commit(); //Commit the query
+} catch (\Exception $e) {
+    DB::rollBack(); //Rollback the query
+    //Optional, if we need to continue execution only rollback transaction and save message on variable
+    throw new \Askedio\SoftCascade\Exceptions\SoftCascadeLogicException($e->getMessage()); 
+}
 ~~~
 
 # Supported PHP Versions
