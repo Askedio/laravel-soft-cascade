@@ -24,7 +24,7 @@ class SoftCascade implements SoftCascadeable
      *
      * @return void
      */
-    public function cascade($models, string $direction, array $directionData = [])
+    public function cascade($models, $direction, array $directionData = [])
     {
         DB::beginTransaction(); //Start db transaction for rollback when error
         try {
@@ -73,7 +73,7 @@ class SoftCascade implements SoftCascadeable
      *
      * @return mixed
      */
-    protected function relations($model, string $foreignKey, $foreignKeyIds)
+    protected function relations($model, $foreignKey, $foreignKeyIds)
     {
         $relations = $model->getSoftCascade();
 
@@ -142,7 +142,7 @@ class SoftCascade implements SoftCascadeable
      *
      * @return void
      */
-    protected function execute($relation, string $foreignKey, $foreignKeyIds, $affectedRowsOnExecute)
+    protected function execute($relation, $foreignKey, $foreignKeyIds, $affectedRowsOnExecute)
     {
         $relationModel = $relation->getQuery()->getModel();
         $relationModel = new $relationModel();
@@ -196,7 +196,7 @@ class SoftCascade implements SoftCascadeable
      *
      * @return void
      */
-    protected function affectedRowsOnExecute($relation, string $foreignKey, $foreignKeyIds)
+    protected function affectedRowsOnExecute($relation, $foreignKey, $foreignKeyIds)
     {
         $relationModel = $relation->getQuery()->getModel();
         $relationModel = new $relationModel();

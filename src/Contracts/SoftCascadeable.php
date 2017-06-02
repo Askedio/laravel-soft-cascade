@@ -2,11 +2,6 @@
 
 namespace Askedio\SoftCascade\Contracts;
 
-/**
- * TO-DO:
- * - Support for ON CASCADE SET NULL
- * - Support for ON CASCADE RESTRICT.
- */
 interface SoftCascadeable
 {
     /**
@@ -18,5 +13,5 @@ interface SoftCascadeable
      *
      * @return void
      */
-    public function cascade($models, string $direction, array $directionData = []);
+    public function cascade($models, $direction, array $directionData = []);
 }
