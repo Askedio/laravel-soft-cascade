@@ -83,23 +83,25 @@ class SoftCascade implements SoftCascadeable
         foreach ($relations as $relation) {
             extract($this->relationResolver($relation));
             $this->validateRelation($model, $relation);
-            
-            $foreignKeyUse = $model->$relation()->getQualifiedForeignKeyName();
+
+            $modelRelation = $model->$relation();
+
+            $foreignKeyUse = (method_exists($modelRelation, 'getQualifiedForeignKeyName')) ? $modelRelation->getQualifiedForeignKeyName() : $modelRelation->getQualifiedOwnerKeyName();
             $foreignKeyIdsUse = $foreignKeyIds;
 
             //Many to many relations need to get related ids and related local key 
-            if (get_class($model->$relation()) == 'Illuminate\Database\Eloquent\Relations\BelongsToMany') {
-                extract($this->gettBelongsToManyData($model->$relation(), $foreignKeyIds));
+            if (get_class($modelRelation) == 'Illuminate\Database\Eloquent\Relations\BelongsToMany') {
+                extract($this->gettBelongsToManyData($modelRelation, $foreignKeyIds));
             }
 
-            $affectedRowsOnExecute = $this->affectedRowsOnExecute($model->$relation(), $foreignKeyUse, $foreignKeyIdsUse);
+            $affectedRowsOnExecute = $this->affectedRowsOnExecute($modelRelation, $foreignKeyUse, $foreignKeyIdsUse);
 
             if ($action === 'restrict' && $affectedRowsOnExecute > 0) {
                 DB::rollBack(); //Rollback the transaction before throw exception
-                throw (new SoftCascadeRestrictedException)->setModel(get_class($model->$relation()->getModel()), $foreignKeyUse, $foreignKeyIdsUse->toArray());
+                throw (new SoftCascadeRestrictedException)->setModel(get_class($modelRelation->getModel()), $foreignKeyUse, $foreignKeyIdsUse->toArray());
             }
 
-            $this->execute($model->$relation(), $foreignKeyUse, $foreignKeyIdsUse, $affectedRowsOnExecute);
+            $this->execute($modelRelation, $foreignKeyUse, $foreignKeyIdsUse, $affectedRowsOnExecute);
         }
     }
 
