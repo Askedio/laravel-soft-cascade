@@ -91,7 +91,7 @@ class SoftCascade implements SoftCascadeable
 
             //Many to many relations need to get related ids and related local key 
             if (get_class($modelRelation) == 'Illuminate\Database\Eloquent\Relations\BelongsToMany') {
-                extract($this->gettBelongsToManyData($modelRelation, $foreignKeyIds));
+                extract($this->getBelongsToManyData($modelRelation, $foreignKeyIds));
             }
 
             $affectedRowsOnExecute = $this->affectedRowsOnExecute($modelRelation, $foreignKeyUse, $foreignKeyIdsUse);
@@ -112,7 +112,7 @@ class SoftCascade implements SoftCascadeable
      * @param array $foreignKeyIds 
      * @return array
      */
-    protected function gettBelongsToManyData($relation, $foreignKeyIds)
+    protected function getBelongsToManyData($relation, $foreignKeyIds)
     {
         $relationConnectionName = $relation->getConnection()->getName();
         $relationTable = $relation->getTable();
