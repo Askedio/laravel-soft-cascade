@@ -69,6 +69,9 @@ class IntegrationTest extends BaseTestCase
         $this->createCommentRaw();
 
         Post::first()->delete();
+
+        $this->assertDatabaseHas('videos', ['deleted_at' => null]);
+        $this->assertDatabaseMissing('posts', ['deleted_at' => null]);
     }
 
     public function testBadRelation()
