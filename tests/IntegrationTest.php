@@ -6,9 +6,12 @@ use Askedio\SoftCascade\Exceptions\SoftCascadeLogicException;
 use Askedio\Tests\App\BadRelation;
 use Askedio\Tests\App\BadRelationAction;
 use Askedio\Tests\App\BadRelationB;
+use Askedio\Tests\App\Comment;
 use Askedio\Tests\App\Languages;
+use Askedio\Tests\App\Post;
 use Askedio\Tests\App\Profiles;
 use Askedio\Tests\App\User;
+use Askedio\Tests\App\Video;
 
 /**
  *  TO-DO: Need better testing.
@@ -40,6 +43,32 @@ class IntegrationTest extends BaseTestCase
         // lazy
         Profiles::first()->address()->create(['languages_id' => 1, 'city' => 'Los Angeles']);
         return $user;
+    }
+
+    private function createCommentRaw()
+    {
+        $post = Post::create([
+            'title'   => 'Post',
+            'body'    => 'Post chulo'
+        ])->comments()->saveMany([
+            new Comment(['body' => 'comentario post']),
+        ]);
+
+        $video = Video::create([
+            'title'   => 'Video',
+            'url'    => 'Video chulo'
+        ])->comments()->saveMany([
+            new Comment(['body' => 'comentario video']),
+        ]);
+
+        return $this;
+    }
+
+    public function testPolymorphicRelation()
+    {
+        $this->createCommentRaw();
+
+        Post::first()->delete();
     }
 
     public function testBadRelation()
