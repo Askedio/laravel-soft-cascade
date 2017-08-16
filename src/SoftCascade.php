@@ -90,12 +90,15 @@ class SoftCascade implements SoftCascadeable
             $foreignKeyIdsUse = $foreignKeyIds;
 
             //Many to many relations need to get related ids and related local key 
-            if (get_class($modelRelation) == 'Illuminate\Database\Eloquent\Relations\BelongsToMany') {
-                extract($this->gettBelongsToManyData($modelRelation, $foreignKeyIds));
+            $classModelRelation = get_class($modelRelation);
+            if ($classModelRelation == 'Illuminate\Database\Eloquent\Relations\BelongsToMany') {
+                extract($this->getBelongsToManyData($modelRelation, $foreignKeyIds));
+            } else if ($classModelRelation == 'Illuminate\Database\Eloquent\Relations\MorphMany') {
+                extract($this->getMorphManyData($modelRelation, $foreignKeyIds));
             }
 
             $affectedRowsOnExecute = $this->affectedRowsOnExecute($modelRelation, $foreignKeyUse, $foreignKeyIdsUse);
-
+            
             if ($action === 'restrict' && $affectedRowsOnExecute > 0) {
                 DB::rollBack(); //Rollback the transaction before throw exception
                 throw (new SoftCascadeRestrictedException)->setModel(get_class($modelRelation->getModel()), $foreignKeyUse, $foreignKeyIdsUse->toArray());
@@ -112,7 +115,7 @@ class SoftCascade implements SoftCascadeable
      * @param array $foreignKeyIds 
      * @return array
      */
-    protected function gettBelongsToManyData($relation, $foreignKeyIds)
+    protected function getBelongsToManyData($relation, $foreignKeyIds)
     {
         $relationConnectionName = $relation->getConnection()->getName();
         $relationTable = $relation->getTable();
@@ -127,6 +130,30 @@ class SoftCascade implements SoftCascadeable
         $foreignKeyUse = explode('.',$relationRelatedKey);
         $foreignKeyUse = end($foreignKeyUse);
         $foreignKeyIdsUse = array_column($foreignKeyIdsUse, $foreignKeyUse);
+        return [
+            'foreignKeyIdsUse' => collect($foreignKeyIdsUse),
+            'foreignKeyUse' => $relation->getRelated()->getKeyName()
+        ];
+    }
+
+    /**
+     * Get morph many related key ids and key use
+     * 
+     * @param Illuminate\Database\Eloquent\Relations\Relation $relation 
+     * @param array $foreignKeyIds 
+     * @return array
+     */
+    protected function getMorphManyData($relation, $foreignKeyIds)
+    {
+        $relationConnectionName = $relation->getConnection()->getName();
+        $relatedClass = $relation->getRelated();
+        $foreignKeyUse = $relatedClass->getKeyName();
+        $foreignKeyIdsUse = $relatedClass::where($relation->getMorphType(), $relation->getMorphClass())
+            ->whereIn($relation->getQualifiedForeignKeyName(), $foreignKeyIds)
+            ->select($foreignKeyUse)
+            ->get()->toArray();
+        $foreignKeyIdsUse = array_column($foreignKeyIdsUse, $foreignKeyUse);
+
         return [
             'foreignKeyIdsUse' => collect($foreignKeyIdsUse),
             'foreignKeyUse' => $relation->getRelated()->getKeyName()
