@@ -30,9 +30,10 @@ class SoftCascadeRestrictedException extends RuntimeException
     /**
      * Set the affected Eloquent model and instance foreignKeyIds.
      *
-     * @param  string  $model
-     * @param  string  $foreignKey
-     * @param  int|array  $foreignKeyIds
+     * @param string    $model
+     * @param string    $foreignKey
+     * @param int|array $foreignKeyIds
+     *
      * @return $this
      */
     public function setModel($model, $foreignKey, $foreignKeyIds)
@@ -41,7 +42,7 @@ class SoftCascadeRestrictedException extends RuntimeException
         $this->foreignKey = $foreignKey;
         $this->foreignKeyIds = array_wrap($foreignKeyIds);
 
-        $this->message = "Integrity constraint violation [{$model}] where $foreignKey in (".implode(', ', $foreignKeyIds).")";
+        $this->message = "Integrity constraint violation [{$model}] where $foreignKey in (".implode(', ', $foreignKeyIds).')';
 
         return $this;
     }

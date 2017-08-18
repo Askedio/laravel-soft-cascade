@@ -26,7 +26,7 @@ class IntegrationTest extends BaseTestCase
     {
         parent::setUp();
         Languages::create([
-            'language' => 'English'
+            'language' => 'English',
         ]);
     }
 
@@ -42,6 +42,7 @@ class IntegrationTest extends BaseTestCase
 
         // lazy
         Profiles::first()->address()->create(['languages_id' => 1, 'city' => 'Los Angeles']);
+
         return $user;
     }
 
@@ -49,14 +50,14 @@ class IntegrationTest extends BaseTestCase
     {
         $post = Post::create([
             'title'   => 'Post',
-            'body'    => 'Post chulo'
+            'body'    => 'Post chulo',
         ])->comments()->saveMany([
             new Comment(['body' => 'comentario post']),
         ]);
 
         $video = Video::create([
             'title'   => 'Video',
-            'url'    => 'Video chulo'
+            'url'     => 'Video chulo',
         ])->comments()->saveMany([
             new Comment(['body' => 'comentario video']),
         ]);
@@ -105,7 +106,7 @@ class IntegrationTest extends BaseTestCase
     {
         $this->createUserRaw();
 
-        User::whereIn('id',[1])->delete();
+        User::whereIn('id', [1])->delete();
 
         $this->assertDatabaseMissing('users', ['deleted_at' => null]);
         $this->assertDatabaseMissing('profiles', ['deleted_at' => null]);
@@ -128,7 +129,7 @@ class IntegrationTest extends BaseTestCase
     {
         $this->createUserRaw();
 
-        User::whereIn('id',[1])->delete();
+        User::whereIn('id', [1])->delete();
         User::withTrashed()->first()->restore();
 
         $this->assertDatabaseHas('users', ['deleted_at' => null]);
