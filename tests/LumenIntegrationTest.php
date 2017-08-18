@@ -26,14 +26,14 @@ class LumenIntegrationTest extends LumenBaseTestCase
     {
         parent::setUp();
         Languages::create([
-            'language' => 'English'
+            'language' => 'English',
         ]);
     }
-    
+
     private function createUserRaw()
     {
         Languages::create([
-            'language' => 'English'
+            'language' => 'English',
         ]);
 
         $user = User::create([
@@ -46,6 +46,7 @@ class LumenIntegrationTest extends LumenBaseTestCase
 
         // lazy
         Profiles::first()->address()->create(['languages_id' => 1, 'city' => 'Los Angeles']);
+
         return $user;
     }
 
@@ -53,14 +54,14 @@ class LumenIntegrationTest extends LumenBaseTestCase
     {
         $post = Post::create([
             'title'   => 'Post',
-            'body'    => 'Post chulo'
+            'body'    => 'Post chulo',
         ])->comments()->saveMany([
             new Comment(['body' => 'comentario post']),
         ]);
 
         $video = Video::create([
             'title'   => 'Video',
-            'url'    => 'Video chulo'
+            'url'     => 'Video chulo',
         ])->comments()->saveMany([
             new Comment(['body' => 'comentario video']),
         ]);
@@ -109,7 +110,7 @@ class LumenIntegrationTest extends LumenBaseTestCase
     {
         $this->createUserRaw();
 
-        User::whereIn('id',[1])->delete();
+        User::whereIn('id', [1])->delete();
 
         $this->assertDatabaseMissing('users', ['deleted_at' => null]);
         $this->assertDatabaseMissing('profiles', ['deleted_at' => null]);
@@ -132,7 +133,7 @@ class LumenIntegrationTest extends LumenBaseTestCase
     {
         $this->createUserRaw();
 
-        User::whereIn('id',[1])->delete();
+        User::whereIn('id', [1])->delete();
         User::withTrashed()->first()->restore();
 
         $this->assertDatabaseHas('users', ['deleted_at' => null]);

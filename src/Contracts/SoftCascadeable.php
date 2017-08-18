@@ -8,7 +8,7 @@ interface SoftCascadeable
      * Cascade over Eloquent items.
      *
      * @param Illuminate\Database\Eloquent\Model $models
-     * @param string                             $direction update|delete|restore
+     * @param string                             $direction     update|delete|restore
      * @param array                              $directionData
      *
      * @return void
