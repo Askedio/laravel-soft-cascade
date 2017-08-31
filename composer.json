@@ -3,13 +3,13 @@
     "description": "Soft Delete & Restore Cascader",
     "type": "library",
     "require": {
-        "php": ">=5.5.9"
+        "php": ">=7.0.0"
      },
      "require-dev": {
-         "laravel/laravel": "5.4.*",
-         "phpunit/phpunit": "4.*",
-         "laravel/framework": "5.4.*",
-         "laravel/lumen-framework": "5.4.*",
+         "laravel/laravel": "5.5.*",
+         "phpunit/phpunit": "~6.0",
+         "laravel/framework": "5.5.*",
+         "laravel/lumen-framework": "5.5.*",
          "codacy/coverage": "dev-master"
      },
     "autoload": {
