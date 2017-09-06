@@ -57,4 +57,9 @@ class BaseTestCase extends \Illuminate\Foundation\Testing\TestCase
 
         return $app;
     }
+
+    public function testNothing()
+    {
+        //
+    }
 }

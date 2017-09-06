@@ -78,7 +78,7 @@ class IntegrationTest extends BaseTestCase
     {
         $this->createUserRaw();
 
-        $this->expectException(SoftCascadeLogicException::class);
+        $this->setExpectedException(SoftCascadeLogicException::class);
         BadRelation::first()->delete();
     }
 
@@ -86,7 +86,7 @@ class IntegrationTest extends BaseTestCase
     {
         $this->createUserRaw();
 
-        $this->expectException(SoftCascadeLogicException::class);
+        $this->setExpectedException(SoftCascadeLogicException::class);
         BadRelationB::first()->delete();
     }
 
@@ -168,31 +168,28 @@ class IntegrationTest extends BaseTestCase
 
     public function testRestrictedRelationWithoutRestrictedRows()
     {
-        $language = Languages::first();
-        $language->delete();
-
-        $this->assertDatabaseMissing('languages', ['id' => $language->id, 'deleted_at' => null]);
+        Languages::first()->delete();
     }
 
     public function testRestrictedRelation()
     {
         $this->createUserRaw();
-        $this->expectException(SoftCascadeLogicException::class);
+        $this->setExpectedException(SoftCascadeLogicException::class);
         Languages::first()->delete();
     }
 
     public function testInexistentRestrictedAction()
     {
         $this->createUserRaw();
-        $this->expectException(SoftCascadeLogicException::class);
+        $this->setExpectedException(SoftCascadeLogicException::class);
         BadRelationAction::first()->delete();
     }
 
-    // public function testNotCascadable()
-    // {
+    public function testNotCascadable()
+    {
         /*
          * TO-DO: Need a 'test' here, not just code coverage.
          */
-    //     (new \Askedio\SoftCascade\SoftCascade())->cascade('notamodel', 'delete');
-    // }
+        (new \Askedio\SoftCascade\SoftCascade())->cascade('notamodel', 'delete');
+    }
 }
