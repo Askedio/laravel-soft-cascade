@@ -42,6 +42,7 @@ class IntegrationTest extends BaseTestCase
 
         // lazy
         Profiles::first()->address()->create(['languages_id' => 1, 'city' => 'Los Angeles']);
+        
         return $user;
     }
 
