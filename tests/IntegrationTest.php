@@ -56,7 +56,7 @@ class IntegrationTest extends BaseTestCase
 
         $video = Video::create([
             'title'   => 'Video',
-            'url'    => 'Video chulo',
+            'url'     => 'Video chulo',
         ])->comments()->saveMany([
             new Comment(['body' => 'comentario video']),
         ]);
