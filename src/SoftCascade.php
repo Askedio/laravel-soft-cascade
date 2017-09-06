@@ -7,7 +7,6 @@ use Askedio\SoftCascade\Exceptions\SoftCascadeLogicException;
 use Askedio\SoftCascade\Exceptions\SoftCascadeNonExistentRelationActionException;
 use Askedio\SoftCascade\Exceptions\SoftCascadeRestrictedException;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 
 class SoftCascade implements SoftCascadeable
 {
@@ -19,7 +18,7 @@ class SoftCascade implements SoftCascadeable
      * Cascade over Eloquent items.
      *
      * @param Illuminate\Database\Eloquent\Model $models
-     * @param string                             $direction update|delete|restore
+     * @param string                             $direction     update|delete|restore
      * @param array                              $directionData
      *
      * @return void
@@ -61,14 +60,14 @@ class SoftCascade implements SoftCascadeable
 
             $this->relations($model, $models->pluck($model->getKeyName()));
         }
-        return;
     }
 
     /**
      * Iterate over the relations.
      *
      * @param Illuminate\Database\Eloquent\Model $model
-     * @param array      $foreignKeyIds
+     * @param array                              $foreignKeyIds
+     * @param array                              $foreignKeyIds
      *
      * @return mixed
      */
@@ -89,19 +88,19 @@ class SoftCascade implements SoftCascadeable
             $foreignKeyUse = (method_exists($modelRelation, 'getQualifiedForeignKeyName')) ? $modelRelation->getQualifiedForeignKeyName() : $modelRelation->getQualifiedOwnerKeyName();
             $foreignKeyIdsUse = $foreignKeyIds;
 
-            //Many to many relations need to get related ids and related local key 
+            //Many to many relations need to get related ids and related local key
             $classModelRelation = get_class($modelRelation);
             if ($classModelRelation == 'Illuminate\Database\Eloquent\Relations\BelongsToMany') {
                 extract($this->getBelongsToManyData($modelRelation, $foreignKeyIds));
-            } else if ($classModelRelation == 'Illuminate\Database\Eloquent\Relations\MorphMany') {
+            } elseif ($classModelRelation == 'Illuminate\Database\Eloquent\Relations\MorphMany') {
                 extract($this->getMorphManyData($modelRelation, $foreignKeyIds));
             }
 
             $affectedRowsOnExecute = $this->affectedRowsOnExecute($modelRelation, $foreignKeyUse, $foreignKeyIdsUse);
-            
+
             if ($action === 'restrict' && $affectedRowsOnExecute > 0) {
                 DB::rollBack(); //Rollback the transaction before throw exception
-                throw (new SoftCascadeRestrictedException)->setModel(get_class($modelRelation->getModel()), $foreignKeyUse, $foreignKeyIdsUse->toArray());
+                throw (new SoftCascadeRestrictedException())->setModel(get_class($modelRelation->getModel()), $foreignKeyUse, $foreignKeyIdsUse->toArray());
             }
 
             $this->execute($modelRelation, $foreignKeyUse, $foreignKeyIdsUse, $affectedRowsOnExecute);
@@ -109,10 +108,11 @@ class SoftCascade implements SoftCascadeable
     }
 
     /**
-     * Get many to many related key ids and key use
-     * 
-     * @param Illuminate\Database\Eloquent\Relations\Relation $relation 
-     * @param array $foreignKeyIds 
+     * Get many to many related key ids and key use.
+     *
+     * @param Illuminate\Database\Eloquent\Relations\Relation $relation
+     * @param array                                           $foreignKeyIds
+     *
      * @return array
      */
     protected function getBelongsToManyData($relation, $foreignKeyIds)
@@ -121,26 +121,28 @@ class SoftCascade implements SoftCascadeable
         $relationTable = $relation->getTable();
         $relationForeignKey = $relation->getQualifiedForeignKeyName();
         $relationRelatedKey = $relation->getQualifiedRelatedKeyName();
-        //Get related ids 
+        //Get related ids
         $foreignKeyIdsUse = DB::connection($relationConnectionName)
             ->table($relationTable)
             ->whereIn($relationForeignKey, $foreignKeyIds)
             ->select([$relationRelatedKey])
             ->get()->toArray();
-        $foreignKeyUse = explode('.',$relationRelatedKey);
+        $foreignKeyUse = explode('.', $relationRelatedKey);
         $foreignKeyUse = end($foreignKeyUse);
         $foreignKeyIdsUse = array_column($foreignKeyIdsUse, $foreignKeyUse);
+
         return [
             'foreignKeyIdsUse' => collect($foreignKeyIdsUse),
-            'foreignKeyUse' => $relation->getRelated()->getKeyName()
+            'foreignKeyUse'    => $relation->getRelated()->getKeyName(),
         ];
     }
 
     /**
-     * Get morph many related key ids and key use
-     * 
-     * @param Illuminate\Database\Eloquent\Relations\Relation $relation 
-     * @param array $foreignKeyIds 
+     * Get morph many related key ids and key use.
+     *
+     * @param Illuminate\Database\Eloquent\Relations\Relation $relation
+     * @param array                                           $foreignKeyIds
+     *
      * @return array
      */
     protected function getMorphManyData($relation, $foreignKeyIds)
@@ -156,7 +158,7 @@ class SoftCascade implements SoftCascadeable
 
         return [
             'foreignKeyIdsUse' => collect($foreignKeyIdsUse),
-            'foreignKeyUse' => $relation->getRelated()->getKeyName()
+            'foreignKeyUse'    => $relation->getRelated()->getKeyName(),
         ];
     }
 
@@ -228,14 +230,15 @@ class SoftCascade implements SoftCascadeable
     {
         $relationModel = $relation->getQuery()->getModel();
         $relationModel = new $relationModel();
+
         return $relationModel->withTrashed()->whereIn($foreignKey, $foreignKeyIds)->count();
     }
 
     /**
-     * Resolve relation string
-     * 
-     * @param string $relation 
-     * 
+     * Resolve relation string.
+     *
+     * @param string $relation
+     *
      * @return array
      */
     protected function relationResolver($relation)
@@ -251,7 +254,7 @@ class SoftCascade implements SoftCascadeable
 
         if (!in_array($return['action'], $this->availableActions)) {
             DB::rollBack(); //Rollback the transaction before throw exception
-            throw (new SoftCascadeNonExistentRelationActionException)->setRelation(implode('@', $return));
+            throw (new SoftCascadeNonExistentRelationActionException())->setRelation(implode('@', $return));
         }
 
         return $return;
