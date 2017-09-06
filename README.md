@@ -72,7 +72,7 @@ try {
 ~~~
 
 # Supported PHP Versions
-* >=7.0
+* \>=7.0
 
 # Supported Databases
 * MySQL
