@@ -30,9 +30,9 @@ class SoftCascadeRestrictedException extends RuntimeException
     /**
      * Set the affected Eloquent model and instance foreignKeyIds.
      *
-     * @param  string    $model
-     * @param  string    $foreignKey
-     * @param  int|array $foreignKeyIds
+     * @param string    $model
+     * @param string    $foreignKey
+     * @param int|array $foreignKeyIds
      * @return $this
      */
     public function setModel($model, $foreignKey, $foreignKeyIds)

@@ -66,7 +66,7 @@ class SoftCascade implements SoftCascadeable
      * Iterate over the relations.
      *
      * @param Illuminate\Database\Eloquent\Model $model
-     * @param array      $foreignKeyIds
+     * @param array                              $foreignKeyIds
      * @param array                              $foreignKeyIds
      *
      * @return mixed
@@ -110,8 +110,8 @@ class SoftCascade implements SoftCascadeable
     /**
      * Get many to many related key ids and key use.
      *
-     * @param Illuminate\Database\Eloquent\Relations\Relation $relation 
-     * @param array                                           $foreignKeyIds 
+     * @param Illuminate\Database\Eloquent\Relations\Relation $relation
+     * @param array                                           $foreignKeyIds
      *
      * @return array
      */
@@ -157,7 +157,7 @@ class SoftCascade implements SoftCascadeable
 
         return [
             'foreignKeyIdsUse' => collect($foreignKeyIdsUse),
-            'foreignKeyUse' => $relation->getRelated()->getKeyName()
+            'foreignKeyUse'    => $relation->getRelated()->getKeyName()
         ];
     }
 
@@ -235,7 +235,7 @@ class SoftCascade implements SoftCascadeable
     /**
      * Resolve relation string.
      *
-     * @param string $relation 
+     * @param string $relation
      *
      * @return array
      */
