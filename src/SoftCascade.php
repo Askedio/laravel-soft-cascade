@@ -139,8 +139,8 @@ class SoftCascade implements SoftCascadeable
     /**
      * Get morph many related key ids and key use.
      *
-     * @param Illuminate\Database\Eloquent\Relations\Relation $relation 
-     * @param array                                           $foreignKeyIds 
+     * @param Illuminate\Database\Eloquent\Relations\Relation $relation
+     * @param array                                           $foreignKeyIds
      *
      * @return array
      */
@@ -157,7 +157,7 @@ class SoftCascade implements SoftCascadeable
 
         return [
             'foreignKeyIdsUse' => collect($foreignKeyIdsUse),
-            'foreignKeyUse'    => $relation->getRelated()->getKeyName()
+            'foreignKeyUse'    => $relation->getRelated()->getKeyName(),
         ];
     }
 

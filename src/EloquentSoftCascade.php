@@ -2,6 +2,6 @@
 
 namespace Askedio\SoftCascade;
 
-class EloquentSoftCascade extends SoftCascade 
+class EloquentSoftCascade extends SoftCascade
 {
 }

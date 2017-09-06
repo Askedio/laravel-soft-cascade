@@ -6,7 +6,6 @@ use Askedio\SoftCascade\QueryBuilderSoftCascade;
 
 class CascadeQueryListener
 {
-
     protected $listenClass = 'Illuminate\Database\Eloquent\Builder';
 
     /**
@@ -18,6 +17,7 @@ class CascadeQueryListener
     {
         $debugBacktrace = collect(debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT, 30))->filter(function ($backtrace) {
             $backtraceClass = (isset($backtrace['class'])) ? $backtrace['class'] : null;
+
             return $backtraceClass === $this->listenClass;
         })->first();
         $checkBacktrace = null;
@@ -30,6 +30,7 @@ class CascadeQueryListener
                 'args'     => $debugBacktrace['args'][0],
             ];
         }
+
         return $checkBacktrace;
     }
 

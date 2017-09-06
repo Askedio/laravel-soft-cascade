@@ -33,6 +33,7 @@ class SoftCascadeRestrictedException extends RuntimeException
      * @param string    $model
      * @param string    $foreignKey
      * @param int|array $foreignKeyIds
+     *
      * @return $this
      */
     public function setModel($model, $foreignKey, $foreignKeyIds)
