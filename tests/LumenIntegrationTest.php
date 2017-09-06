@@ -29,7 +29,7 @@ class LumenIntegrationTest extends LumenBaseTestCase
             'language' => 'English',
         ]);
     }
-    
+
     private function createUserRaw()
     {
         $user = User::create([
@@ -42,6 +42,7 @@ class LumenIntegrationTest extends LumenBaseTestCase
 
         // lazy
         Profiles::first()->address()->create(['languages_id' => 1, 'city' => 'Los Angeles']);
+
         return $user;
     }
 
