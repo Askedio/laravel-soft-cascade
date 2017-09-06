@@ -130,6 +130,7 @@ class SoftCascade implements SoftCascadeable
         $foreignKeyUse = explode('.', $relationRelatedKey);
         $foreignKeyUse = end($foreignKeyUse);
         $foreignKeyIdsUse = array_column($foreignKeyIdsUse, $foreignKeyUse);
+
         return [
             'foreignKeyIdsUse' => collect($foreignKeyIdsUse),
             'foreignKeyUse'    => $relation->getRelated()->getKeyName(),
@@ -229,6 +230,7 @@ class SoftCascade implements SoftCascadeable
     {
         $relationModel = $relation->getQuery()->getModel();
         $relationModel = new $relationModel();
+
         return $relationModel->withTrashed()->whereIn($foreignKey, $foreignKeyIds)->count();
     }
 
