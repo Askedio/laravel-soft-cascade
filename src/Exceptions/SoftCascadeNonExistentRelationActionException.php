@@ -16,7 +16,7 @@ class SoftCascadeNonExistentRelationActionException extends RuntimeException
     /**
      * Set the affected relation.
      *
-     * @param  string  $relation
+     * @param  string $relation
      * @return $this
      */
     public function setRelation($relation)

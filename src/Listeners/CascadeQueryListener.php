@@ -10,13 +10,13 @@ class CascadeQueryListener
     protected $listenClass = 'Illuminate\Database\Eloquent\Builder';
 
     /**
-     * Return the backtrace will be use to get model object and function
-     * 
+     * Return the backtrace will be use to get model object and function.
+     *
      * @return type
      */
     private function getBacktraceUse()
     {
-        $debugBacktrace = collect(debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT, 30))->filter(function($backtrace)  {
+        $debugBacktrace = collect(debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT, 30))->filter(function ($backtrace)  {
             $backtraceClass = (isset($backtrace['class'])) ? $backtrace['class'] : null;
             return $backtraceClass === $this->listenClass;
         })->first();
@@ -25,9 +25,9 @@ class CascadeQueryListener
         $backtraceFunction = (isset($debugBacktrace['function'])) ? $debugBacktrace['function'] : null;
         if (!is_null($debugBacktrace) && str_contains($backtraceFile, 'Illuminate/Database/Eloquent/SoftDeletingScope.php') && $backtraceFunction == 'update') {
             $checkBacktrace = [
-                'object' => $debugBacktrace['object'],
+                'object' =>   $debugBacktrace['object'],
                 'function' => $debugBacktrace['function'],
-                'args' => $debugBacktrace['args'][0]
+                'args' =>     $debugBacktrace['args'][0],
             ];
         }
         return $checkBacktrace;
