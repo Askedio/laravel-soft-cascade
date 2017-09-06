@@ -2,7 +2,6 @@
 
 namespace Askedio\Tests;
 
-use Askedio\Tests\ClassFinder;
 use Illuminate\Filesystem\Filesystem;
 
 class BaseTestCase extends \Illuminate\Foundation\Testing\TestCase
@@ -56,10 +55,5 @@ class BaseTestCase extends \Illuminate\Foundation\Testing\TestCase
         $app->register(\Askedio\SoftCascade\Providers\GenericServiceProvider::class);
 
         return $app;
-    }
-
-    public function testNothing()
-    {
-        //
     }
 }

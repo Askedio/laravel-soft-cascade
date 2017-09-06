@@ -26,16 +26,12 @@ class LumenIntegrationTest extends LumenBaseTestCase
     {
         parent::setUp();
         Languages::create([
-            'language' => 'English'
+            'language' => 'English',
         ]);
     }
-    
+
     private function createUserRaw()
     {
-        Languages::create([
-            'language' => 'English'
-        ]);
-
         $user = User::create([
             'name'     => 'admin',
             'email'    => uniqid().'@localhost.com',
@@ -46,6 +42,7 @@ class LumenIntegrationTest extends LumenBaseTestCase
 
         // lazy
         Profiles::first()->address()->create(['languages_id' => 1, 'city' => 'Los Angeles']);
+
         return $user;
     }
 
@@ -53,14 +50,14 @@ class LumenIntegrationTest extends LumenBaseTestCase
     {
         $post = Post::create([
             'title'   => 'Post',
-            'body'    => 'Post chulo'
+            'body'    => 'Post chulo',
         ])->comments()->saveMany([
             new Comment(['body' => 'comentario post']),
         ]);
 
         $video = Video::create([
             'title'   => 'Video',
-            'url'    => 'Video chulo'
+            'url'     => 'Video chulo',
         ])->comments()->saveMany([
             new Comment(['body' => 'comentario video']),
         ]);
@@ -82,7 +79,7 @@ class LumenIntegrationTest extends LumenBaseTestCase
     {
         $this->createUserRaw();
 
-        $this->setExpectedException(SoftCascadeLogicException::class);
+        $this->expectException(SoftCascadeLogicException::class);
         BadRelation::first()->delete();
     }
 
@@ -90,7 +87,7 @@ class LumenIntegrationTest extends LumenBaseTestCase
     {
         $this->createUserRaw();
 
-        $this->setExpectedException(SoftCascadeLogicException::class);
+        $this->expectException(SoftCascadeLogicException::class);
         BadRelationB::first()->delete();
     }
 
@@ -109,7 +106,7 @@ class LumenIntegrationTest extends LumenBaseTestCase
     {
         $this->createUserRaw();
 
-        User::whereIn('id',[1])->delete();
+        User::whereIn('id', [1])->delete();
 
         $this->assertDatabaseMissing('users', ['deleted_at' => null]);
         $this->assertDatabaseMissing('profiles', ['deleted_at' => null]);
@@ -132,7 +129,7 @@ class LumenIntegrationTest extends LumenBaseTestCase
     {
         $this->createUserRaw();
 
-        User::whereIn('id',[1])->delete();
+        User::whereIn('id', [1])->delete();
         User::withTrashed()->first()->restore();
 
         $this->assertDatabaseHas('users', ['deleted_at' => null]);
@@ -173,28 +170,31 @@ class LumenIntegrationTest extends LumenBaseTestCase
 
     public function testRestrictedRelationWithoutRestrictedRows()
     {
-        Languages::first()->delete();
+        $language = Languages::first();
+        $language->delete();
+
+        $this->assertDatabaseMissing('languages', ['id' => $language->id, 'deleted_at' => null]);
     }
 
     public function testRestrictedRelation()
     {
         $this->createUserRaw();
-        $this->setExpectedException(SoftCascadeLogicException::class);
+        $this->expectException(SoftCascadeLogicException::class);
         Languages::first()->delete();
     }
 
     public function testInexistentRestrictedAction()
     {
         $this->createUserRaw();
-        $this->setExpectedException(SoftCascadeLogicException::class);
+        $this->expectException(SoftCascadeLogicException::class);
         BadRelationAction::first()->delete();
     }
 
-    public function testNotCascadable()
-    {
+    // public function testNotCascadable()
+    // {
         /*
          * TO-DO: Need a 'test' here, not just code coverage.
          */
-        (new \Askedio\SoftCascade\SoftCascade())->cascade('notamodel', 'delete');
-    }
+    //     (new \Askedio\SoftCascade\SoftCascade())->cascade('notamodel', 'delete');
+    // }
 }
