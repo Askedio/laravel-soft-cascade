@@ -2,7 +2,6 @@
 
 namespace Askedio\Tests;
 
-use Askedio\Tests\ClassFinder;
 use Illuminate\Filesystem\Filesystem;
 
 class BaseTestCase extends \Illuminate\Foundation\Testing\TestCase
