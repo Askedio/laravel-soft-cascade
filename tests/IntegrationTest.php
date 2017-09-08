@@ -10,8 +10,8 @@ use Askedio\Tests\App\Comment;
 use Askedio\Tests\App\Languages;
 use Askedio\Tests\App\Post;
 use Askedio\Tests\App\Profiles;
-use Askedio\Tests\App\RoleWriter;
 use Askedio\Tests\App\RoleReader;
+use Askedio\Tests\App\RoleWriter;
 use Askedio\Tests\App\User;
 use Askedio\Tests\App\Video;
 
@@ -71,7 +71,7 @@ class IntegrationTest extends BaseTestCase
     {
         $writer = RoleWriter::create([
             'writer_name' => 'Lisa',
-            'id'          => 1
+            'id'          => 1,
         ])->user()->save(new User([
             'name'     => 'admin',
             'email'    => uniqid().'@localhost.com',
@@ -80,7 +80,7 @@ class IntegrationTest extends BaseTestCase
 
         $reader = RoleReader::create([
             'reader_name' => 'Frank',
-            'id'          => 1
+            'id'          => 1,
         ])->user()->save(new User([
             'name'     => 'admin',
             'email'    => uniqid().'@localhost.com',
