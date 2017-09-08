@@ -35,7 +35,7 @@ class SoftCascade implements SoftCascadeable
             DB::commit(); //All ok we commit all database queries
         } catch (\Exception $e) {
             DB::rollBack(); //Rollback the transaction before throw exception
-            throw new SoftCascadeLogicException($e->getMessage());
+            throw new SoftCascadeLogicException($e->getMessage(), null, $e);
         }
     }
 
