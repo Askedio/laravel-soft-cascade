@@ -12,7 +12,7 @@ class RoleReader extends Model
     protected $table = 'readers';
 
     protected $fillable = ['reader_name'];
-    
+
     protected $softCascade = ['user'];
 
     /**

@@ -12,9 +12,9 @@ class RoleWriter extends Model
     protected $table = 'writers';
 
     protected $fillable = ['writer_name'];
-    
+
     protected $softCascade = ['user'];
-    
+
     /**
      * Get all of the post's comments.
      */

@@ -10,10 +10,10 @@ use Askedio\Tests\App\Comment;
 use Askedio\Tests\App\Languages;
 use Askedio\Tests\App\Post;
 use Askedio\Tests\App\Profiles;
-use Askedio\Tests\App\User;
-use Askedio\Tests\App\Video;
 use Askedio\Tests\App\RoleWriter;
 use Askedio\Tests\App\RoleReader;
+use Askedio\Tests\App\User;
+use Askedio\Tests\App\Video;
 
 /**
  *  TO-DO: Need better testing.
@@ -44,6 +44,7 @@ class IntegrationTest extends BaseTestCase
 
         // lazy
         Profiles::first()->address()->create(['languages_id' => 1, 'city' => 'Los Angeles']);
+
         return $user;
     }
 
@@ -65,21 +66,21 @@ class IntegrationTest extends BaseTestCase
 
         return $this;
     }
-    
+
     private function createRoleRaw()
     {
         $writer = RoleWriter::create([
             'writer_name' => 'Lisa',
-            'id' => 1
+            'id'          => 1
         ])->user()->save(new User([
             'name'     => 'admin',
             'email'    => uniqid().'@localhost.com',
             'password' => bcrypt('password'),
         ]));
-            
+
         $reader = RoleReader::create([
             'reader_name' => 'Frank',
-            'id' => 1
+            'id'          => 1
         ])->user()->save(new User([
             'name'     => 'admin',
             'email'    => uniqid().'@localhost.com',
@@ -92,7 +93,7 @@ class IntegrationTest extends BaseTestCase
     public function testPolymorphicManyRelation()
     {
         $this->createCommentRaw();
-        
+
         Post::first()->delete();
 
         $this->assertDatabaseHas('videos', ['deleted_at' => null]);
@@ -100,18 +101,17 @@ class IntegrationTest extends BaseTestCase
         $this->assertDatabaseMissing('posts', ['deleted_at' => null]);
         $this->assertDatabaseMissing('comments', ['commentable_type' => 'Askedio\Tests\App\Post', 'deleted_at' => null]);
     }
-    
+
     public function testPolymorphicOneRelation()
     {
         $this->createRoleRaw();
 
         RoleWriter::first()->delete();
-        
+
         $this->assertDatabaseMissing('writers', ['deleted_at' => null]);
         $this->assertDatabaseMissing('users', ['role_type' => 'Askedio\Tests\App\RoleWriter', 'deleted_at' => null]);
         $this->assertDatabaseHas('readers', ['deleted_at' => null]);
         $this->assertDatabaseHas('users', ['role_type' => 'Askedio\Tests\App\RoleReader', 'deleted_at' => null]);
-        
     }
 
     public function testBadRelation()
