@@ -6,6 +6,8 @@ use Askedio\SoftCascade\Contracts\SoftCascadeable;
 use Askedio\SoftCascade\Exceptions\SoftCascadeLogicException;
 use Askedio\SoftCascade\Exceptions\SoftCascadeNonExistentRelationActionException;
 use Askedio\SoftCascade\Exceptions\SoftCascadeRestrictedException;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\MorphOneOrMany;
 use Illuminate\Support\Facades\DB;
 
 class SoftCascade implements SoftCascadeable
@@ -89,10 +91,9 @@ class SoftCascade implements SoftCascadeable
             $foreignKeyIdsUse = $foreignKeyIds;
 
             //Many to many relations need to get related ids and related local key
-            $classModelRelation = get_class($modelRelation);
-            if ($classModelRelation == 'Illuminate\Database\Eloquent\Relations\BelongsToMany') {
+            if ($modelRelation instanceof BelongsToMany) {
                 extract($this->getBelongsToManyData($modelRelation, $foreignKeyIds));
-            } elseif ($classModelRelation == 'Illuminate\Database\Eloquent\Relations\MorphMany') {
+            } elseif ($modelRelation instanceof MorphOneOrMany) {
                 extract($this->getMorphManyData($modelRelation, $foreignKeyIds));
             }
 
