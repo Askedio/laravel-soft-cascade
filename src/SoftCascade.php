@@ -151,7 +151,7 @@ class SoftCascade implements SoftCascadeable
         $relationConnectionName = $relation->getConnection()->getName();
         $relatedClass = $relation->getRelated();
         $foreignKeyUse = $relatedClass->getKeyName();
-        $foreignKeyIdsUse = $relatedClass::where($relation->getMorphType(), $relation->getMorphClass())
+        $foreignKeyIdsUse = $relatedClass::withTrashed()->where($relation->getMorphType(), $relation->getMorphClass())
             ->whereIn($relation->getQualifiedForeignKeyName(), $foreignKeyIds)
             ->select($foreignKeyUse)
             ->get()->toArray();

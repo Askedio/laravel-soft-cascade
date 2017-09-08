@@ -102,6 +102,17 @@ class IntegrationTest extends BaseTestCase
         $this->assertDatabaseMissing('comments', ['commentable_type' => 'Askedio\Tests\App\Post', 'deleted_at' => null]);
     }
 
+    public function testReportPolymorphicManyRelation()
+    {
+        $this->createCommentRaw();
+
+        Post::first()->delete();
+        Post::withTrashed()->first()->restore();
+
+        $this->assertDatabaseHas('posts', ['deleted_at' => null]);
+        $this->assertDatabaseHas('comments', ['commentable_type' => 'Askedio\Tests\App\Post', 'deleted_at' => null]);
+    }
+
     public function testPolymorphicOneRelation()
     {
         $this->createRoleRaw();
@@ -110,6 +121,17 @@ class IntegrationTest extends BaseTestCase
 
         $this->assertDatabaseMissing('writers', ['deleted_at' => null]);
         $this->assertDatabaseMissing('users', ['role_type' => 'Askedio\Tests\App\RoleWriter', 'deleted_at' => null]);
+    }
+
+    public function testRestorePolymorphicOneRelation()
+    {
+        $this->createRoleRaw();
+
+        RoleWriter::first()->delete();
+        RoleWriter::withTrashed()->first()->restore();
+
+        $this->assertDatabaseHas('writers', ['deleted_at' => null]);
+        $this->assertDatabaseHas('users', ['role_type' => 'Askedio\Tests\App\RoleWriter', 'deleted_at' => null]);
         $this->assertDatabaseHas('readers', ['deleted_at' => null]);
         $this->assertDatabaseHas('users', ['role_type' => 'Askedio\Tests\App\RoleReader', 'deleted_at' => null]);
     }
