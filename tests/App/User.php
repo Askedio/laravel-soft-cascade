@@ -19,4 +19,11 @@ class User extends Model
     {
         return $this->hasMany('Askedio\Tests\App\Profiles');
     }
+    
+    public function role()
+    {
+        return $this->morphTo();
+    }
+    
+    
 }
