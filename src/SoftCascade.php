@@ -34,12 +34,12 @@ class SoftCascade implements SoftCascadeable
             $this->run($models);
             //All ok we commit all database queries
             foreach ($this->connectionsToTransact as $connectionToTransact) {
-                DB::commit($connectionToTransact);
+                DB::connection($connectionToTransact)->commit();
             }
         } catch (\Exception $e) {
             //Rollback the transaction before throw exception
             foreach ($this->connectionsToTransact as $connectionToTransact) {
-                DB::rollBack($connectionToTransact);
+                DB::connection($connectionToTransact)->rollBack();
             }
 
             throw new SoftCascadeLogicException($e->getMessage(), null, $e);
@@ -59,9 +59,9 @@ class SoftCascade implements SoftCascadeable
         if ($models->count() > 0) {
             $model = $models->first();
 
-            if (!in_array($model->getConnectionName, $this->connectionsToTransact)) {
-                $this->connectionsToTransact[] = $model->getConnectionName;
-                DB::beginTransaction($model->getConnectionName);
+            if (!in_array($model->getConnectionName(), $this->connectionsToTransact)) {
+                $this->connectionsToTransact[] = $model->getConnectionName();
+                DB::connection($model->getConnectionName())->beginTransaction();
             }
 
             if (!is_object($model)) {
