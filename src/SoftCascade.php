@@ -41,6 +41,7 @@ class SoftCascade implements SoftCascadeable
             foreach ($this->connectionsToTransact as $connectionToTransact) {
                 DB::rollBack($connectionToTransact);
             }
+            
             throw new SoftCascadeLogicException($e->getMessage(), null, $e);
         }
     }
