@@ -28,7 +28,6 @@ class SoftCascade implements SoftCascadeable
      */
     public function cascade($models, $direction, array $directionData = [])
     {
-        DB::beginTransaction(); //Start db transaction for rollback when error
         try {
             $this->direction = $direction;
             $this->directionData = $directionData;
