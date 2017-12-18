@@ -15,6 +15,7 @@ class SoftCascade implements SoftCascadeable
     protected $direction;
     protected $directionData;
     protected $availableActions = ['update', 'restrict'];
+    protected $connectionsToTransact = [];
 
     /**
      * Cascade over Eloquent items.
@@ -32,9 +33,15 @@ class SoftCascade implements SoftCascadeable
             $this->direction = $direction;
             $this->directionData = $directionData;
             $this->run($models);
-            DB::commit(); //All ok we commit all database queries
+            //All ok we commit all database queries
+            foreach ($this->connectionsToTransact as $connectionToTransact) {
+                DB::commit($connectionToTransact);
+            }
         } catch (\Exception $e) {
-            DB::rollBack(); //Rollback the transaction before throw exception
+            //Rollback the transaction before throw exception
+            foreach ($this->connectionsToTransact as $connectionToTransact) {
+                DB::rollBack($connectionToTransact);
+            }
             throw new SoftCascadeLogicException($e->getMessage(), null, $e);
         }
     }
@@ -51,6 +58,11 @@ class SoftCascade implements SoftCascadeable
         $models = collect($models);
         if ($models->count() > 0) {
             $model = $models->first();
+
+            if (!in_array($model->getConnectionName, $this->connectionsToTransact)) {
+                $this->connectionsToTransact[] = $model->getConnectionName;
+                DB::beginTransaction($model->getConnectionName);
+            }
 
             if (!is_object($model)) {
                 return;
