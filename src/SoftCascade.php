@@ -109,14 +109,14 @@ class SoftCascade implements SoftCascadeable
                 extract($this->getMorphManyData($modelRelation, $foreignKeyIds));
             }
 
-            $affectedRowsOnExecute = $this->affectedRowsOnExecute($modelRelation, $foreignKeyUse, $foreignKeyIdsUse);
+            $affectedRows = $this->affectedRows($modelRelation, $foreignKeyUse, $foreignKeyIdsUse);
 
-            if ($action === 'restrict' && $affectedRowsOnExecute > 0) {
+            if ($action === 'restrict' && $affectedRows > 0) {
                 DB::rollBack(); //Rollback the transaction before throw exception
                 throw (new SoftCascadeRestrictedException())->setModel(get_class($modelRelation->getModel()), $foreignKeyUse, $foreignKeyIdsUse->toArray());
             }
 
-            $this->execute($modelRelation, $foreignKeyUse, $foreignKeyIdsUse, $affectedRowsOnExecute);
+            $this->execute($modelRelation, $foreignKeyUse, $foreignKeyIdsUse, $affectedRows);
         }
     }
 
@@ -130,12 +130,12 @@ class SoftCascade implements SoftCascadeable
      */
     protected function getBelongsToManyData($relation, $foreignKeyIds)
     {
-        $relationConnectionName = $relation->getConnection()->getName();
+        $relationConnection = $relation->getConnection()->getName();
         $relationTable = $relation->getTable();
         $relationForeignKey = $relation->getQualifiedForeignKeyName();
         $relationRelatedKey = $relation->getQualifiedRelatedKeyName();
         //Get related ids
-        $foreignKeyIdsUse = DB::connection($relationConnectionName)
+        $foreignKeyIdsUse = DB::connection($relationConnection)
             ->table($relationTable)
             ->whereIn($relationForeignKey, $foreignKeyIds)
             ->select([$relationRelatedKey])
@@ -160,7 +160,6 @@ class SoftCascade implements SoftCascadeable
      */
     protected function getMorphManyData($relation, $foreignKeyIds)
     {
-        $relationConnectionName = $relation->getConnection()->getName();
         $relatedClass = $relation->getRelated();
         $foreignKeyUse = $relatedClass->getKeyName();
         $foreignKeyIdsUse = $relatedClass::withTrashed()->where($relation->getMorphType(), $relation->getMorphClass())
@@ -181,16 +180,16 @@ class SoftCascade implements SoftCascadeable
      * @param Illuminate\Database\Eloquent\Relations\Relation $relation
      * @param string                                          $foreignKey
      * @param array                                           $foreignKeyIds
-     * @param int                                             $$affectedRowsOnExecute
+     * @param int                                             $affectedRows
      *
      * @return void
      */
-    protected function execute($relation, $foreignKey, $foreignKeyIds, $affectedRowsOnExecute)
+    protected function execute($relation, $foreignKey, $foreignKeyIds, $affectedRows)
     {
         $relationModel = $relation->getQuery()->getModel();
         $relationModel = new $relationModel();
-        if ($affectedRowsOnExecute > 0) {
-            $relationModel = $relationModel->withTrashed()->whereIn($foreignKey, $foreignKeyIds)->limit($affectedRowsOnExecute);
+        if ($affectedRows > 0) {
+            $relationModel = $relationModel->withTrashed()->whereIn($foreignKey, $foreignKeyIds)->limit($affectedRows);
             $this->run($relationModel->get([$relationModel->getModel()->getKeyName()]));
             $relationModel->{$this->direction}($this->directionData);
         }
@@ -239,7 +238,7 @@ class SoftCascade implements SoftCascadeable
      *
      * @return void
      */
-    protected function affectedRowsOnExecute($relation, $foreignKey, $foreignKeyIds)
+    protected function affectedRows($relation, $foreignKey, $foreignKeyIds)
     {
         $relationModel = $relation->getQuery()->getModel();
         $relationModel = new $relationModel();
