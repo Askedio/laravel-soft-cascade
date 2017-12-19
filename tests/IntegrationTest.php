@@ -204,7 +204,7 @@ class IntegrationTest extends BaseTestCase
         $this->createUserRaw();
 
         User::first()->delete();
-        
+
         $this->assertEquals(2, User::withTrashed()->count());
         $this->assertEquals(1, User::count());
 
