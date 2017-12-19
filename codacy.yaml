@@ -1,2 +1,3 @@
 ---
-base_sub_dir: src
+engines:
+ base_sub_dir: src
