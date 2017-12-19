@@ -1,3 +1,4 @@
 ---
-engines:
- base_sub_dir: src
+exclude_paths:
+  - tests/**/*
+  - vendor/**/*
