@@ -10,6 +10,8 @@ use Askedio\Tests\App\Comment;
 use Askedio\Tests\App\Languages;
 use Askedio\Tests\App\Post;
 use Askedio\Tests\App\Profiles;
+use Askedio\Tests\App\RoleReader;
+use Askedio\Tests\App\RoleWriter;
 use Askedio\Tests\App\User;
 use Askedio\Tests\App\Video;
 
@@ -48,14 +50,14 @@ class LumenIntegrationTest extends LumenBaseTestCase
 
     private function createCommentRaw()
     {
-        $post = Post::create([
+        Post::create([
             'title'   => 'Post',
             'body'    => 'Post chulo',
         ])->comments()->saveMany([
             new Comment(['body' => 'comentario post']),
         ]);
 
-        $video = Video::create([
+        Video::create([
             'title'   => 'Video',
             'url'     => 'Video chulo',
         ])->comments()->saveMany([
@@ -65,14 +67,73 @@ class LumenIntegrationTest extends LumenBaseTestCase
         return $this;
     }
 
-    public function testPolymorphicRelation()
+    private function createRoleRaw()
+    {
+        RoleWriter::create([
+            'writer_name' => 'Lisa',
+            'id'          => 1,
+        ])->user()->save(new User([
+            'name'     => 'admin',
+            'email'    => uniqid().'@localhost.com',
+            'password' => bcrypt('password'),
+        ]));
+
+        RoleReader::create([
+            'reader_name' => 'Frank',
+            'id'          => 1,
+        ])->user()->save(new User([
+            'name'     => 'admin',
+            'email'    => uniqid().'@localhost.com',
+            'password' => bcrypt('password'),
+        ]));
+
+        return $this;
+    }
+
+    public function testPolymorphicManyRelation()
     {
         $this->createCommentRaw();
 
         Post::first()->delete();
 
         $this->assertDatabaseHas('videos', ['deleted_at' => null]);
+        $this->assertDatabaseHas('comments', ['commentable_type' => 'Askedio\Tests\App\Video',  'deleted_at' => null]);
         $this->assertDatabaseMissing('posts', ['deleted_at' => null]);
+        $this->assertDatabaseMissing('comments', ['commentable_type' => 'Askedio\Tests\App\Post', 'deleted_at' => null]);
+    }
+
+    public function testReportPolymorphicManyRelation()
+    {
+        $this->createCommentRaw();
+
+        Post::first()->delete();
+        Post::withTrashed()->first()->restore();
+
+        $this->assertDatabaseHas('posts', ['deleted_at' => null]);
+        $this->assertDatabaseHas('comments', ['commentable_type' => 'Askedio\Tests\App\Post', 'deleted_at' => null]);
+    }
+
+    public function testPolymorphicOneRelation()
+    {
+        $this->createRoleRaw();
+
+        RoleWriter::first()->delete();
+
+        $this->assertDatabaseMissing('writers', ['deleted_at' => null]);
+        $this->assertDatabaseMissing('users', ['role_type' => 'Askedio\Tests\App\RoleWriter', 'deleted_at' => null]);
+    }
+
+    public function testRestorePolymorphicOneRelation()
+    {
+        $this->createRoleRaw();
+
+        RoleWriter::first()->delete();
+        RoleWriter::withTrashed()->first()->restore();
+
+        $this->assertDatabaseHas('writers', ['deleted_at' => null]);
+        $this->assertDatabaseHas('users', ['role_type' => 'Askedio\Tests\App\RoleWriter', 'deleted_at' => null]);
+        $this->assertDatabaseHas('readers', ['deleted_at' => null]);
+        $this->assertDatabaseHas('users', ['role_type' => 'Askedio\Tests\App\RoleReader', 'deleted_at' => null]);
     }
 
     public function testBadRelation()

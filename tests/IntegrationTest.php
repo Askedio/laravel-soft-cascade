@@ -50,14 +50,14 @@ class IntegrationTest extends BaseTestCase
 
     private function createCommentRaw()
     {
-        $post = Post::create([
+        Post::create([
             'title'   => 'Post',
             'body'    => 'Post chulo',
         ])->comments()->saveMany([
             new Comment(['body' => 'comentario post']),
         ]);
 
-        $video = Video::create([
+        Video::create([
             'title'   => 'Video',
             'url'     => 'Video chulo',
         ])->comments()->saveMany([
@@ -69,7 +69,7 @@ class IntegrationTest extends BaseTestCase
 
     private function createRoleRaw()
     {
-        $writer = RoleWriter::create([
+        RoleWriter::create([
             'writer_name' => 'Lisa',
             'id'          => 1,
         ])->user()->save(new User([
@@ -78,7 +78,7 @@ class IntegrationTest extends BaseTestCase
             'password' => bcrypt('password'),
         ]));
 
-        $reader = RoleReader::create([
+        RoleReader::create([
             'reader_name' => 'Frank',
             'id'          => 1,
         ])->user()->save(new User([
@@ -204,6 +204,7 @@ class IntegrationTest extends BaseTestCase
         $this->createUserRaw();
 
         User::first()->delete();
+
         $this->assertEquals(2, User::withTrashed()->count());
         $this->assertEquals(1, User::count());
 
