@@ -25,7 +25,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Askedio\\SoftCascade\\Providers\\GenericServiceProvider::class,"
+                "Askedio\\SoftCascade\\Providers\\GenericServiceProvider::class"
             ]
         }
     }
