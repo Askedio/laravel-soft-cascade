@@ -18,14 +18,15 @@ Install with composer
 composer require askedio/laravel5-soft-cascade
 ~~~
 
-Register the service provider in your config/app.php
+From Laravel 5.5 onwards, it's possible to take advantage of auto-discovery of the service provider.
+For Laravel versions before 5.5, you must register the service provider in your config/app.php
 
-Laravel:
 ~~~
 Askedio\SoftCascade\Providers\GenericServiceProvider::class,
 ~~~
 
-Lumen:
+Lumen does not support the auto-discovery feature, you should manually add the provider.
+
 ~~~
 Askedio\SoftCascade\Providers\LumenServiceProvider::class,
 ~~~
