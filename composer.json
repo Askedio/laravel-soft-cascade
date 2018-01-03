@@ -21,5 +21,12 @@
         "psr-4": {
             "Askedio\\Tests\\" : "tests"
         }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Askedio\\SoftCascade\\Providers\\GenericServiceProvider"
+            ]
+        }
     }
 }
