@@ -99,7 +99,7 @@ class SoftCascade implements SoftCascadeable
 
             $modelRelation = $model->$relation();
 
-            $foreignKeyUse = (method_exists($modelRelation, 'getQualifiedForeignKeyName')) ? $modelRelation->getQualifiedForeignKeyName() : $modelRelation->getQualifiedOwnerKeyName();
+            $foreignKeyUse = (method_exists($modelRelation, 'getQualifiedForeignPivotKeyName')) ? $modelRelation->getQualifiedForeignPivotKeyName() : $modelRelation->getQualifiedOwnerKeyName();
             $foreignKeyIdsUse = $foreignKeyIds;
 
             //Many to many relations need to get related ids and related local key
@@ -132,8 +132,8 @@ class SoftCascade implements SoftCascadeable
     {
         $relationConnection = $relation->getConnection()->getName();
         $relationTable = $relation->getTable();
-        $relationForeignKey = $relation->getQualifiedForeignKeyName();
-        $relationRelatedKey = $relation->getQualifiedRelatedKeyName();
+        $relationForeignKey = $relation->getQualifiedForeignPivotKeyName();
+        $relationRelatedKey = $relation->getQualifiedRelatedPivotKeyName();
         //Get related ids
         $foreignKeyIdsUse = DB::connection($relationConnection)
             ->table($relationTable)
