@@ -101,7 +101,7 @@ class SoftCascade implements SoftCascadeable
 
             /**
              * Maintains compatibility fot get foreign key name on laravel old and new methods.
-             * 
+             *
              * @link https://github.com/laravel/framework/issues/20869
              */
             $methodsCheck = collect(['getQualifiedForeignKeyName', 'getQualifiedOwnerKeyName', 'getForeignPivotKeyName']);
