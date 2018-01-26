@@ -99,7 +99,15 @@ class SoftCascade implements SoftCascadeable
 
             $modelRelation = $model->$relation();
 
-            $foreignKeyUse = (method_exists($modelRelation, 'getQualifiedForeignKeyName')) ? $modelRelation->getQualifiedForeignKeyName() : $modelRelation->getQualifiedOwnerKeyName();
+            /**
+             * Maintains compatibility fot get foreign key name on laravel old and new methods
+             * @link https://github.com/laravel/framework/issues/20869
+             */
+            $methodsCheck = collect(['getQualifiedForeignKeyName', 'getQualifiedOwnerKeyName', 'getForeignPivotKeyName']);
+            $methodUse = $methodsCheck->intersect(get_class_methods($modelRelation))->first();
+
+            //Get foreign key and foreign key ids
+            $foreignKeyUse = $modelRelation->{$methodUse}();
             $foreignKeyIdsUse = $foreignKeyIds;
 
             //Many to many relations need to get related ids and related local key
