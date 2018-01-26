@@ -15,6 +15,7 @@ class SoftCascade implements SoftCascadeable
     protected $direction;
     protected $directionData;
     protected $availableActions = ['update', 'restrict'];
+    protected $methodsGetForeignKeyName = ['getQualifiedForeignKeyName', 'getQualifiedOwnerKeyName', 'getForeignPivotKeyName'];
     protected $connectionsToTransact = [];
 
     /**
@@ -104,16 +105,16 @@ class SoftCascade implements SoftCascadeable
              *
              * @link https://github.com/laravel/framework/issues/20869
              */
-            $methodsCheck = collect(['getQualifiedForeignKeyName', 'getQualifiedOwnerKeyName', 'getForeignPivotKeyName']);
-            $methodUse = $methodsCheck->intersect(get_class_methods($modelRelation))->first();
+            $methodUseGetForeignKey = array_intersect($this->methodsGetForeignKeyName, get_class_methods($modelRelation));
+            $methodUseGetForeignKey = reset($methodUseGetForeignKey);
 
             //Get foreign key and foreign key ids
-            $foreignKeyUse = $modelRelation->{$methodUse}();
+            $foreignKeyUse = $modelRelation->{$methodUseGetForeignKey}();
             $foreignKeyIdsUse = $foreignKeyIds;
 
             //Many to many relations need to get related ids and related local key
             if ($modelRelation instanceof BelongsToMany) {
-                extract($this->getBelongsToManyData($modelRelation, $foreignKeyIds));
+                extract($this->getBelongsToManyData($modelRelation, $foreignKeyUse, $foreignKeyIds));
             } elseif ($modelRelation instanceof MorphOneOrMany) {
                 extract($this->getMorphManyData($modelRelation, $foreignKeyIds));
             }
@@ -133,16 +134,16 @@ class SoftCascade implements SoftCascadeable
      * Get many to many related key ids and key use.
      *
      * @param Illuminate\Database\Eloquent\Relations\Relation $relation
+     * @param string                                          $relationForeignKey
      * @param array                                           $foreignKeyIds
      *
      * @return array
      */
-    protected function getBelongsToManyData($relation, $foreignKeyIds)
+    protected function getBelongsToManyData($relation, $relationForeignKey, $foreignKeyIds)
     {
         $relationConnection = $relation->getConnection()->getName();
         $relationTable = $relation->getTable();
-        $relationForeignKey = $relation->getQualifiedForeignKeyName();
-        $relationRelatedKey = $relation->getQualifiedRelatedKeyName();
+        $relationRelatedKey = $relation->getQualifiedForeignPivotKeyName();
         //Get related ids
         $foreignKeyIdsUse = DB::connection($relationConnection)
             ->table($relationTable)
