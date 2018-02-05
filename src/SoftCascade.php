@@ -60,17 +60,17 @@ class SoftCascade implements SoftCascadeable
         if ($models->count() > 0) {
             $model = $models->first();
 
-            if (!in_array($model->getConnectionName(), $this->connectionsToTransact)) {
-                $this->connectionsToTransact[] = $model->getConnectionName();
-                DB::connection($model->getConnectionName())->beginTransaction();
-            }
-
             if (!is_object($model)) {
                 return;
             }
 
             if (!$this->isCascadable($model)) {
                 return;
+            }
+
+            if (!in_array($model->getConnectionName(), $this->connectionsToTransact)) {
+                $this->connectionsToTransact[] = $model->getConnectionName();
+                DB::connection($model->getConnectionName())->beginTransaction();
             }
 
             $this->relations($model, $models->pluck($model->getKeyName()));
