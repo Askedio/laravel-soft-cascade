@@ -19,7 +19,7 @@ use Askedio\Tests\App\Video;
  *  TO-DO: Need better testing.
  *  Factories, Mocks, etc, but this does the job.
  */
-class IntegrationTest extends BaseTestCase
+class IntegrationTest extends TestCase
 {
     /**
      * Setup Language before each test.
