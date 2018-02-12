@@ -6,6 +6,13 @@
 # Laravel/Lumen 5 Soft Cascade Delete & Restore
 Cascade delete and restore when using the Laravel or Lumen SoftDeletes feature.
 
+| **Laravel**  |  **laravel5-soft-cascade** |
+|---|---|
+| 5.3  | ^1.8  |
+| 5.4  | ^2.6  |
+| 5.5  | ^5.5  |
+| 5.6  | ^5.6  |
+
 # Why do I need it?
 ### To make soft deleting and restoring relations easy.
 If you enjoy features like MySQL cascade deleting but want to use Laravels SoftDeletes feature you'll need to do some extra steps to ensure your relations are properly deleted or restored.
@@ -73,11 +80,13 @@ try {
 ~~~
 
 # Supported PHP Versions
-* \>=7.0
+* \>=7.1.13
 
 # Supported Databases
 * MySQL
+* PostgreSQL
 * SQLite
+* SQL Server
 
 # Testing
 I have written some very basic tests, certainly more needs to be done here. If you find this useful please help by testing other databases or writing better unit tests because I must move on.
