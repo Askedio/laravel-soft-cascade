@@ -2,8 +2,8 @@
 
 namespace Askedio\Tests;
 
-use Orchestra\Testbench\TestCase as BaseTestCase;
 use Illuminate\Filesystem\Filesystem;
+use Orchestra\Testbench\TestCase as BaseTestCase;
 
 class TestCase extends BaseTestCase
 {
