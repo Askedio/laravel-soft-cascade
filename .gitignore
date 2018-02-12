@@ -14,4 +14,3 @@ storage/
 .env
 .env.example
 tests/logs
-build

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="Application Test Suite" tests="15" assertions="37" errors="0" failures="0" skipped="0" time="0.586837">
+    <testsuite name="Askedio\Tests\IntegrationTest" file="/Users/mario/Documents/webs/laravel5-soft-cascade/tests/IntegrationTest.php" tests="15" assertions="37" errors="0" failures="0" skipped="0" time="0.586837">
+      <testcase name="testPolymorphicManyRelation" class="Askedio\Tests\IntegrationTest" classname="Askedio.Tests.IntegrationTest" file="/Users/mario/Documents/webs/laravel5-soft-cascade/tests/IntegrationTest.php" line="93" assertions="4" time="0.116984"/>
+      <testcase name="testReportPolymorphicManyRelation" class="Askedio\Tests\IntegrationTest" classname="Askedio.Tests.IntegrationTest" file="/Users/mario/Documents/webs/laravel5-soft-cascade/tests/IntegrationTest.php" line="105" assertions="2" time="0.031594"/>
+      <testcase name="testPolymorphicOneRelation" class="Askedio\Tests\IntegrationTest" classname="Askedio.Tests.IntegrationTest" file="/Users/mario/Documents/webs/laravel5-soft-cascade/tests/IntegrationTest.php" line="116" assertions="2" time="0.047162"/>
+      <testcase name="testRestorePolymorphicOneRelation" class="Askedio\Tests\IntegrationTest" classname="Askedio.Tests.IntegrationTest" file="/Users/mario/Documents/webs/laravel5-soft-cascade/tests/IntegrationTest.php" line="126" assertions="4" time="0.041700"/>
+      <testcase name="testBadRelation" class="Askedio\Tests\IntegrationTest" classname="Askedio.Tests.IntegrationTest" file="/Users/mario/Documents/webs/laravel5-soft-cascade/tests/IntegrationTest.php" line="139" assertions="1" time="0.025805"/>
+      <testcase name="testBadRelationB" class="Askedio\Tests\IntegrationTest" classname="Askedio.Tests.IntegrationTest" file="/Users/mario/Documents/webs/laravel5-soft-cascade/tests/IntegrationTest.php" line="147" assertions="1" time="0.024957"/>
+      <testcase name="testDelete" class="Askedio\Tests\IntegrationTest" classname="Askedio.Tests.IntegrationTest" file="/Users/mario/Documents/webs/laravel5-soft-cascade/tests/IntegrationTest.php" line="155" assertions="3" time="0.030953"/>
+      <testcase name="testDeleteQueryBuilder" class="Askedio\Tests\IntegrationTest" classname="Askedio.Tests.IntegrationTest" file="/Users/mario/Documents/webs/laravel5-soft-cascade/tests/IntegrationTest.php" line="166" assertions="3" time="0.030426"/>
+      <testcase name="testRestore" class="Askedio\Tests\IntegrationTest" classname="Askedio.Tests.IntegrationTest" file="/Users/mario/Documents/webs/laravel5-soft-cascade/tests/IntegrationTest.php" line="177" assertions="3" time="0.039956"/>
+      <testcase name="testRestoreQueryBuilder" class="Askedio\Tests\IntegrationTest" classname="Askedio.Tests.IntegrationTest" file="/Users/mario/Documents/webs/laravel5-soft-cascade/tests/IntegrationTest.php" line="189" assertions="3" time="0.035367"/>
+      <testcase name="testMultipleDelete" class="Askedio\Tests\IntegrationTest" classname="Askedio.Tests.IntegrationTest" file="/Users/mario/Documents/webs/laravel5-soft-cascade/tests/IntegrationTest.php" line="201" assertions="4" time="0.041038"/>
+      <testcase name="testMultipleRestore" class="Askedio\Tests\IntegrationTest" classname="Askedio.Tests.IntegrationTest" file="/Users/mario/Documents/webs/laravel5-soft-cascade/tests/IntegrationTest.php" line="215" assertions="4" time="0.055518"/>
+      <testcase name="testRestrictedRelationWithoutRestrictedRows" class="Askedio\Tests\IntegrationTest" classname="Askedio.Tests.IntegrationTest" file="/Users/mario/Documents/webs/laravel5-soft-cascade/tests/IntegrationTest.php" line="232" assertions="1" time="0.016833"/>
+      <testcase name="testRestrictedRelation" class="Askedio\Tests\IntegrationTest" classname="Askedio.Tests.IntegrationTest" file="/Users/mario/Documents/webs/laravel5-soft-cascade/tests/IntegrationTest.php" line="240" assertions="1" time="0.023902"/>
+      <testcase name="testInexistentRestrictedAction" class="Askedio\Tests\IntegrationTest" classname="Askedio.Tests.IntegrationTest" file="/Users/mario/Documents/webs/laravel5-soft-cascade/tests/IntegrationTest.php" line="247" assertions="1" time="0.024642"/>
+    </testsuite>
+  </testsuite>
+</testsuites>
