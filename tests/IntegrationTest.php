@@ -15,7 +15,6 @@ use Askedio\Tests\App\RoleReader;
 use Askedio\Tests\App\RoleWriter;
 use Askedio\Tests\App\User;
 use Askedio\Tests\App\Video;
-use Illuminate\Database\Eloquent\Faker;
 
 /**
  *  TO-DO: Need better testing.
@@ -72,18 +71,18 @@ class IntegrationTest extends TestCase
     private function createPostAndCategoriesRaw()
     {
         $categories = collect();
-        for ($i=0; $i<5; $i++) {
+        for ($i = 0; $i < 5; $i++) {
             $categories->push(Category::create([
-                'name' => 'Category '.$i
+                'name' => 'Category '.$i,
             ]));
         }
 
-        for ($i=0; $i<15; $i++) {
+        for ($i = 0; $i < 15; $i++) {
             $post = Post::create([
                 'title' => 'Post '.$i,
-                'body' => 'Post chulo'.$i
+                'body'  => 'Post chulo'.$i,
             ]);
-            $categories->each(function($category) use ($post) {
+            $categories->each(function ($category) use ($post) {
                 $category->posts()->attach($post->id);
             });
 
@@ -123,7 +122,7 @@ class IntegrationTest extends TestCase
         $categoryToDelete->delete();
 
         $this->assertSoftDeleted('categories', ['id' => $categoryToDelete->id]);
-        $categoryToDelete->posts->each(function($post) {
+        $categoryToDelete->posts->each(function ($post) {
             $this->assertSoftDeleted('posts', ['id' => $post->id]);
         });
     }
