@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1523943701">
+  <project timestamp="1523943701">
+    <file name="/Users/mario/Documents/proyectos/laravel5-soft-cascade/src/Contracts/SoftCascadeable.php">
+      <metrics loc="17" ncloc="8" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+    </file>
+    <package name="Askedio\SoftCascade">
+      <file name="/Users/mario/Documents/proyectos/laravel5-soft-cascade/src/EloquentSoftCascade.php">
+        <class name="Askedio\SoftCascade\EloquentSoftCascade" namespace="Askedio\SoftCascade">
+          <metrics complexity="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+        </class>
+        <metrics loc="7" ncloc="7" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+      </file>
+      <file name="/Users/mario/Documents/proyectos/laravel5-soft-cascade/src/QueryBuilderSoftCascade.php">
+        <class name="Askedio\SoftCascade\QueryBuilderSoftCascade" namespace="Askedio\SoftCascade">
+          <metrics complexity="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+        </class>
+        <metrics loc="7" ncloc="7" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+      </file>
+      <file name="/Users/mario/Documents/proyectos/laravel5-soft-cascade/src/SoftCascade.php">
+        <class name="Askedio\SoftCascade\SoftCascade" namespace="Askedio\SoftCascade">
+          <metrics complexity="28" methods="10" coveredmethods="8" conditionals="0" coveredconditionals="0" statements="93" coveredstatements="91" elements="103" coveredelements="99"/>
+        </class>
+        <line num="30" type="method" name="cascade" visibility="public" complexity="4" crap="4" count="16"/>
+        <line num="33" type="stmt" count="16"/>
+        <line num="34" type="stmt" count="16"/>
+        <line num="35" type="stmt" count="16"/>
+        <line num="37" type="stmt" count="12"/>
+        <line num="38" type="stmt" count="12"/>
+        <line num="40" type="stmt" count="4"/>
+        <line num="42" type="stmt" count="4"/>
+        <line num="43" type="stmt" count="4"/>
+        <line num="46" type="stmt" count="4"/>
+        <line num="48" type="stmt" count="12"/>
+        <line num="57" type="method" name="run" visibility="protected" complexity="5" crap="5.01" count="16"/>
+        <line num="59" type="stmt" count="16"/>
+        <line num="60" type="stmt" count="16"/>
+        <line num="61" type="stmt" count="16"/>
+        <line num="63" type="stmt" count="16"/>
+        <line num="64" type="stmt" count="0"/>
+        <line num="67" type="stmt" count="16"/>
+        <line num="68" type="stmt" count="8"/>
+        <line num="71" type="stmt" count="16"/>
+        <line num="72" type="stmt" count="16"/>
+        <line num="73" type="stmt" count="16"/>
+        <line num="76" type="stmt" count="16"/>
+        <line num="78" type="stmt" count="12"/>
+        <line num="89" type="method" name="relations" visibility="protected" complexity="7" crap="7" count="16"/>
+        <line num="91" type="stmt" count="16"/>
+        <line num="93" type="stmt" count="16"/>
+        <line num="94" type="stmt" count="0"/>
+        <line num="97" type="stmt" count="16"/>
+        <line num="98" type="stmt" count="16"/>
+        <line num="99" type="stmt" count="15"/>
+        <line num="101" type="stmt" count="13"/>
+        <line num="108" type="stmt" count="13"/>
+        <line num="109" type="stmt" count="13"/>
+        <line num="112" type="stmt" count="13"/>
+        <line num="113" type="stmt" count="13"/>
+        <line num="116" type="stmt" count="13"/>
+        <line num="117" type="stmt" count="1"/>
+        <line num="118" type="stmt" count="13"/>
+        <line num="119" type="stmt" count="5"/>
+        <line num="122" type="stmt" count="13"/>
+        <line num="124" type="stmt" count="13"/>
+        <line num="125" type="stmt" count="1"/>
+        <line num="126" type="stmt" count="1"/>
+        <line num="129" type="stmt" count="12"/>
+        <line num="131" type="stmt" count="12"/>
+        <line num="142" type="method" name="getBelongsToManyData" visibility="protected" complexity="1" crap="1" count="1"/>
+        <line num="144" type="stmt" count="1"/>
+        <line num="145" type="stmt" count="1"/>
+        <line num="146" type="stmt" count="1"/>
+        <line num="148" type="stmt" count="1"/>
+        <line num="149" type="stmt" count="1"/>
+        <line num="150" type="stmt" count="1"/>
+        <line num="151" type="stmt" count="1"/>
+        <line num="152" type="stmt" count="1"/>
+        <line num="153" type="stmt" count="1"/>
+        <line num="154" type="stmt" count="1"/>
+        <line num="155" type="stmt" count="1"/>
+        <line num="158" type="stmt" count="1"/>
+        <line num="159" type="stmt" count="1"/>
+        <line num="171" type="method" name="getMorphManyData" visibility="protected" complexity="1" crap="1" count="5"/>
+        <line num="173" type="stmt" count="5"/>
+        <line num="174" type="stmt" count="5"/>
+        <line num="175" type="stmt" count="5"/>
+        <line num="176" type="stmt" count="5"/>
+        <line num="177" type="stmt" count="5"/>
+        <line num="178" type="stmt" count="5"/>
+        <line num="179" type="stmt" count="5"/>
+        <line num="182" type="stmt" count="5"/>
+        <line num="183" type="stmt" count="5"/>
+        <line num="197" type="method" name="execute" visibility="protected" complexity="2" crap="2" count="12"/>
+        <line num="199" type="stmt" count="12"/>
+        <line num="200" type="stmt" count="12"/>
+        <line num="201" type="stmt" count="12"/>
+        <line num="202" type="stmt" count="11"/>
+        <line num="203" type="stmt" count="11"/>
+        <line num="204" type="stmt" count="11"/>
+        <line num="206" type="stmt" count="12"/>
+        <line num="216" type="method" name="validateRelation" visibility="protected" complexity="3" crap="3" count="15"/>
+        <line num="218" type="stmt" count="15"/>
+        <line num="219" type="stmt" count="15"/>
+        <line num="220" type="stmt" count="1"/>
+        <line num="221" type="stmt" count="1"/>
+        <line num="224" type="stmt" count="14"/>
+        <line num="225" type="stmt" count="1"/>
+        <line num="226" type="stmt" count="1"/>
+        <line num="228" type="stmt" count="13"/>
+        <line num="237" type="method" name="isCascadable" visibility="protected" complexity="1" crap="1" count="16"/>
+        <line num="239" type="stmt" count="16"/>
+        <line num="251" type="method" name="affectedRows" visibility="protected" complexity="1" crap="1" count="13"/>
+        <line num="253" type="stmt" count="13"/>
+        <line num="254" type="stmt" count="13"/>
+        <line num="256" type="stmt" count="13"/>
+        <line num="266" type="method" name="relationResolver" visibility="protected" complexity="3" crap="3" count="16"/>
+        <line num="268" type="stmt" count="16"/>
+        <line num="271" type="stmt" count="16"/>
+        <line num="272" type="stmt" count="3"/>
+        <line num="273" type="stmt" count="13"/>
+        <line num="274" type="stmt" count="13"/>
+        <line num="277" type="stmt" count="16"/>
+        <line num="278" type="stmt" count="1"/>
+        <line num="279" type="stmt" count="1"/>
+        <line num="282" type="stmt" count="15"/>
+        <metrics loc="284" ncloc="178" classes="1" methods="10" coveredmethods="8" conditionals="0" coveredconditionals="0" statements="93" coveredstatements="91" elements="103" coveredelements="99"/>
+      </file>
+    </package>
+    <package name="Askedio\SoftCascade\Exceptions">
+      <file name="/Users/mario/Documents/proyectos/laravel5-soft-cascade/src/Exceptions/SoftCascadeLogicException.php">
+        <class name="Askedio\SoftCascade\Exceptions\SoftCascadeLogicException" namespace="Askedio\SoftCascade\Exceptions">
+          <metrics complexity="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+        </class>
+        <metrics loc="9" ncloc="9" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+      </file>
+      <file name="/Users/mario/Documents/proyectos/laravel5-soft-cascade/src/Exceptions/SoftCascadeNonExistentRelationActionException.php">
+        <class name="Askedio\SoftCascade\Exceptions\SoftCascadeNonExistentRelationActionException" namespace="Askedio\SoftCascade\Exceptions">
+          <metrics complexity="2" methods="2" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="4" coveredstatements="3" elements="6" coveredelements="4"/>
+        </class>
+        <line num="23" type="method" name="setRelation" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="25" type="stmt" count="1"/>
+        <line num="27" type="stmt" count="1"/>
+        <line num="29" type="stmt" count="1"/>
+        <line num="37" type="method" name="getRelation" visibility="public" complexity="1" crap="2.00" count="0"/>
+        <line num="39" type="stmt" count="0"/>
+        <metrics loc="41" ncloc="24" classes="1" methods="2" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="4" coveredstatements="3" elements="6" coveredelements="4"/>
+      </file>
+      <file name="/Users/mario/Documents/proyectos/laravel5-soft-cascade/src/Exceptions/SoftCascadeRestrictedException.php">
+        <class name="Askedio\SoftCascade\Exceptions\SoftCascadeRestrictedException" namespace="Askedio\SoftCascade\Exceptions">
+          <metrics complexity="4" methods="4" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="8" coveredstatements="5" elements="12" coveredelements="6"/>
+        </class>
+        <line num="39" type="method" name="setModel" visibility="public" complexity="1" crap="1" count="1"/>
+        <line num="41" type="stmt" count="1"/>
+        <line num="42" type="stmt" count="1"/>
+        <line num="43" type="stmt" count="1"/>
+        <line num="45" type="stmt" count="1"/>
+        <line num="47" type="stmt" count="1"/>
+        <line num="55" type="method" name="getModel" visibility="public" complexity="1" crap="2.00" count="0"/>
+        <line num="57" type="stmt" count="0"/>
+        <line num="65" type="method" name="getForeignKey" visibility="public" complexity="1" crap="2.00" count="0"/>
+        <line num="67" type="stmt" count="0"/>
+        <line num="75" type="method" name="getForeignKeyIds" visibility="public" complexity="1" crap="2.00" count="0"/>
+        <line num="77" type="stmt" count="0"/>
+        <metrics loc="79" ncloc="40" classes="1" methods="4" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="8" coveredstatements="5" elements="12" coveredelements="6"/>
+      </file>
+    </package>
+    <package name="Askedio\SoftCascade\Listeners">
+      <file name="/Users/mario/Documents/proyectos/laravel5-soft-cascade/src/Listeners/CascadeDeleteListener.php">
+        <class name="Askedio\SoftCascade\Listeners\CascadeDeleteListener" namespace="Askedio\SoftCascade\Listeners">
+          <metrics complexity="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="2" coveredstatements="2" elements="3" coveredelements="3"/>
+        </class>
+        <line num="18" type="method" name="handle" visibility="public" complexity="1" crap="1" count="14"/>
+        <line num="20" type="stmt" count="14"/>
+        <line num="21" type="stmt" count="10"/>
+        <metrics loc="22" ncloc="13" classes="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="2" coveredstatements="2" elements="3" coveredelements="3"/>
+      </file>
+      <file name="/Users/mario/Documents/proyectos/laravel5-soft-cascade/src/Listeners/CascadeQueryListener.php">
+        <class name="Askedio\SoftCascade\Listeners\CascadeQueryListener" namespace="Askedio\SoftCascade\Listeners">
+          <metrics complexity="11" methods="2" coveredmethods="2" conditionals="0" coveredconditionals="0" statements="8" coveredstatements="8" elements="10" coveredelements="10"/>
+        </class>
+        <line num="18" type="method" name="anonymousFunction:18#64" complexity="2" crap="2" count="16"/>
+        <line num="19" type="stmt" count="16"/>
+        <line num="21" type="stmt" count="16"/>
+        <line num="22" type="stmt" count="16"/>
+        <line num="23" type="stmt" count="16"/>
+        <line num="24" type="stmt" count="16"/>
+        <line num="25" type="stmt" count="16"/>
+        <line num="26" type="stmt" count="16"/>
+        <line num="28" type="stmt" count="11"/>
+        <line num="29" type="stmt" count="11"/>
+        <line num="30" type="stmt" count="11"/>
+        <line num="34" type="stmt" count="16"/>
+        <line num="42" type="method" name="handle" visibility="public" complexity="2" crap="2" count="16"/>
+        <line num="44" type="stmt" count="16"/>
+        <line num="45" type="stmt" count="16"/>
+        <line num="46" type="stmt" count="11"/>
+        <line num="47" type="stmt" count="11"/>
+        <line num="49" type="stmt" count="16"/>
+        <metrics loc="50" ncloc="40" classes="1" methods="2" coveredmethods="2" conditionals="0" coveredconditionals="0" statements="16" coveredstatements="16" elements="18" coveredelements="18"/>
+      </file>
+      <file name="/Users/mario/Documents/proyectos/laravel5-soft-cascade/src/Listeners/CascadeRestoreListener.php">
+        <class name="Askedio\SoftCascade\Listeners\CascadeRestoreListener" namespace="Askedio\SoftCascade\Listeners">
+          <metrics complexity="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="2" coveredstatements="2" elements="3" coveredelements="3"/>
+        </class>
+        <line num="18" type="method" name="handle" visibility="public" complexity="1" crap="1" count="5"/>
+        <line num="20" type="stmt" count="5"/>
+        <line num="21" type="stmt" count="5"/>
+        <metrics loc="22" ncloc="13" classes="1" methods="1" coveredmethods="1" conditionals="0" coveredconditionals="0" statements="2" coveredstatements="2" elements="3" coveredelements="3"/>
+      </file>
+    </package>
+    <package name="Askedio\SoftCascade\Providers">
+      <file name="/Users/mario/Documents/proyectos/laravel5-soft-cascade/src/Providers/EventServiceProvider.php">
+        <class name="Askedio\SoftCascade\Providers\EventServiceProvider" namespace="Askedio\SoftCascade\Providers">
+          <metrics complexity="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+        </class>
+        <metrics loc="19" ncloc="14" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+      </file>
+      <file name="/Users/mario/Documents/proyectos/laravel5-soft-cascade/src/Providers/GenericServiceProvider.php">
+        <class name="Askedio\SoftCascade\Providers\GenericServiceProvider" namespace="Askedio\SoftCascade\Providers">
+          <metrics complexity="2" methods="2" coveredmethods="2" conditionals="0" coveredconditionals="0" statements="3" coveredstatements="3" elements="5" coveredelements="5"/>
+        </class>
+        <line num="14" type="method" name="register" visibility="public" complexity="1" crap="1" count="16"/>
+        <line num="17" type="stmt" count="16"/>
+        <line num="24" type="method" name="boot" visibility="public" complexity="1" crap="1" count="16"/>
+        <line num="26" type="stmt" count="16"/>
+        <line num="27" type="stmt" count="16"/>
+        <metrics loc="28" ncloc="16" classes="1" methods="2" coveredmethods="2" conditionals="0" coveredconditionals="0" statements="3" coveredstatements="3" elements="5" coveredelements="5"/>
+      </file>
+      <file name="/Users/mario/Documents/proyectos/laravel5-soft-cascade/src/Providers/LumenEventServiceProvider.php">
+        <class name="Askedio\SoftCascade\Providers\LumenEventServiceProvider" namespace="Askedio\SoftCascade\Providers">
+          <metrics complexity="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+        </class>
+        <metrics loc="19" ncloc="14" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
+      </file>
+      <file name="/Users/mario/Documents/proyectos/laravel5-soft-cascade/src/Providers/LumenServiceProvider.php">
+        <class name="Askedio\SoftCascade\Providers\LumenServiceProvider" namespace="Askedio\SoftCascade\Providers">
+          <metrics complexity="2" methods="2" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="5" coveredstatements="0" elements="7" coveredelements="0"/>
+        </class>
+        <line num="14" type="method" name="register" visibility="public" complexity="1" crap="2.00" count="0"/>
+        <line num="15" type="stmt" count="0"/>
+        <line num="17" type="stmt" count="0"/>
+        <line num="24" type="method" name="boot" visibility="public" complexity="1" crap="2.00" count="0"/>
+        <line num="25" type="stmt" count="0"/>
+        <line num="26" type="stmt" count="0"/>
+        <line num="27" type="stmt" count="0"/>
+        <metrics loc="28" ncloc="16" classes="1" methods="2" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="5" coveredstatements="0" elements="7" coveredelements="0"/>
+      </file>
+    </package>
+    <package name="Askedio\SoftCascade\Traits">
+      <file name="/Users/mario/Documents/proyectos/laravel5-soft-cascade/src/Traits/SoftCascadeTrait.php">
+        <class name="SoftCascadeTrait" namespace="Askedio\SoftCascade\Traits">
+          <metrics complexity="2" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="3" coveredstatements="2" elements="4" coveredelements="2"/>
+        </class>
+        <line num="12" type="method" name="getSoftCascade" visibility="public" complexity="2" crap="2.15" count="16"/>
+        <line num="14" type="stmt" count="16"/>
+        <line num="15" type="stmt" count="0"/>
+        <line num="18" type="stmt" count="16"/>
+        <metrics loc="20" ncloc="15" classes="1" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="3" coveredstatements="2" elements="4" coveredelements="2"/>
+      </file>
+    </package>
+    <metrics files="15" loc="652" ncloc="414" classes="9" methods="25" coveredmethods="16" conditionals="0" coveredconditionals="0" statements="136" coveredstatements="124" elements="161" coveredelements="140"/>
+  </project>
+</coverage>
