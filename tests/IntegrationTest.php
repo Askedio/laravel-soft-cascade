@@ -85,7 +85,6 @@ class IntegrationTest extends TestCase
             $categories->each(function ($category) use ($post) {
                 $category->posts()->attach($post->id);
             });
-
         }
 
         return $this;
