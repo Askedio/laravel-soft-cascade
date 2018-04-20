@@ -1,6 +1,6 @@
 {
-    "name": "askedio/laravel5-soft-cascade",
-    "description": "Soft Delete & Restore Cascader",
+    "name": "askedio/laravel-soft-cascade",
+    "description": "Laravel Cascade Soft Delete & Restore",
     "type": "library",
     "require": {
         "php": ">=7.1.3",
