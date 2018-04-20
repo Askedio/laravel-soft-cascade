@@ -22,7 +22,7 @@ This package is intended to replace those steps with a simple array that defines
 # Installation
 Install with composer
 ~~~
-composer require askedio/laravel5-soft-cascade
+composer require askedio/laravel-soft-cascade
 ~~~
 
 From Laravel 5.5 onwards, it's possible to take advantage of auto-discovery of the service provider.
