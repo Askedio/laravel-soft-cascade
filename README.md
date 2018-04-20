@@ -1,7 +1,9 @@
 ![Header](https://i.imgur.com/fKhbljT.png)
 
-[![Build Status](https://travis-ci.org/Askedio/laravel5-soft-cascade.svg?branch=master)](https://travis-ci.org/Askedio/laravel5-soft-cascade)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/019b9dbd700f42b6a165742c72e64445)](https://www.codacy.com/app/gcphost/laravel5-soft-cascade?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Askedio/laravel5-soft-cascade&amp;utm_campaign=Badge_Grade) [![StyleCI Badge](https://styleci.io/repos/57394710/shield)](https://styleci.io/repos/57394710)
+[![Build Status](https://travis-ci.org/Askedio/laravel-soft-cascade.svg?branch=master)](https://travis-ci.org/Askedio/laravel-soft-cascade)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/58877b88ab38457695217851658a443b)](https://www.codacy.com/app/gcphost/laravel-soft-cascade?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Askedio/laravel-soft-cascade&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://api.codacy.com/project/badge/Coverage/58877b88ab38457695217851658a443b)](https://www.codacy.com/app/gcphost/laravel-soft-cascade?utm_source=github.com&utm_medium=referral&utm_content=Askedio/laravel-soft-cascade&utm_campaign=Badge_Coverage)
+[![StyleCI Badge](https://styleci.io/repos/57394710/shield)](https://styleci.io/repos/57394710)
 
 # Laravel/Lumen 5 Soft Cascade Delete & Restore
 Cascade delete and restore when using the Laravel or Lumen SoftDeletes feature.
