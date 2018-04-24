@@ -1,15 +1,17 @@
 {
-    "name": "askedio/laravel5-soft-cascade",
-    "description": "Soft Delete & Restore Cascader",
+    "name": "askedio/laravel-soft-cascade",
+    "description": "Laravel Cascade Soft Delete & Restore",
     "type": "library",
     "require": {
         "php": ">=7.0.0",
-        "laravel/framework": "5.5.x",
-        "laravel/lumen-framework": "5.5.x"
+        "illuminate/support": "5.5.*",
+        "illuminate/container": "5.5.*",
+        "illuminate/database": "5.5.*",
+        "illuminate/events": "5.5.*"
      },
      "require-dev": {
         "phpunit/phpunit": "~6.0",
-        "laravel/laravel": "5.5.x",
+        "orchestra/testbench": "3.5.x",
         "codacy/coverage": "dev-master"
      },
     "autoload": {

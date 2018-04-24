@@ -6,6 +6,7 @@ use Askedio\SoftCascade\Exceptions\SoftCascadeLogicException;
 use Askedio\Tests\App\BadRelation;
 use Askedio\Tests\App\BadRelationAction;
 use Askedio\Tests\App\BadRelationB;
+use Askedio\Tests\App\Category;
 use Askedio\Tests\App\Comment;
 use Askedio\Tests\App\Languages;
 use Askedio\Tests\App\Post;
@@ -19,7 +20,7 @@ use Askedio\Tests\App\Video;
  *  TO-DO: Need better testing.
  *  Factories, Mocks, etc, but this does the job.
  */
-class IntegrationTest extends BaseTestCase
+class IntegrationTest extends TestCase
 {
     /**
      * Setup Language before each test.
@@ -67,6 +68,28 @@ class IntegrationTest extends BaseTestCase
         return $this;
     }
 
+    private function createPostAndCategoriesRaw()
+    {
+        $categories = collect();
+        for ($i = 0; $i < 5; $i++) {
+            $categories->push(Category::create([
+                'name' => 'Category '.$i,
+            ]));
+        }
+
+        for ($i = 0; $i < 15; $i++) {
+            $post = Post::create([
+                'title' => 'Post '.$i,
+                'body'  => 'Post chulo'.$i,
+            ]);
+            $categories->each(function ($category) use ($post) {
+                $category->posts()->attach($post->id);
+            });
+        }
+
+        return $this;
+    }
+
     private function createRoleRaw()
     {
         RoleWriter::create([
@@ -88,6 +111,19 @@ class IntegrationTest extends BaseTestCase
         ]));
 
         return $this;
+    }
+
+    public function testBelongsToManyRelation()
+    {
+        $this->createPostAndCategoriesRaw();
+
+        $categoryToDelete = Category::with('posts')->first();
+        $categoryToDelete->delete();
+
+        $this->assertSoftDeleted('categories', ['id' => $categoryToDelete->id]);
+        $categoryToDelete->posts->each(function ($post) {
+            $this->assertSoftDeleted('posts', ['id' => $post->id]);
+        });
     }
 
     public function testPolymorphicManyRelation()
