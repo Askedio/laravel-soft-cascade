@@ -5,15 +5,17 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Coverage/58877b88ab38457695217851658a443b)](https://www.codacy.com/app/gcphost/laravel-soft-cascade?utm_source=github.com&utm_medium=referral&utm_content=Askedio/laravel-soft-cascade&utm_campaign=Badge_Coverage)
 [![StyleCI Badge](https://styleci.io/repos/57394710/shield)](https://styleci.io/repos/57394710)
 
-# Laravel/Lumen 5 Soft Cascade Delete & Restore
+# Laravel/Lumen Soft Cascade Delete & Restore
 Cascade delete and restore when using the Laravel or Lumen SoftDeletes feature.
 
-| **Laravel**  |  **laravel5-soft-cascade** |
+| **Laravel** | **laravel-soft-cascade** | **Lifecycle** |
 |---|---|
-| 5.3  | ^1.8  |
-| 5.4  | ^2.6  |
-| 5.5  | ^5.5  |
-| 5.6  | ^5.6  |
+| ^5.5  | ^5.5  | January 24, 2017 |
+||| Bug fixes until January 2019 |
+||| Security fixes until June 2020 |
+| ^5.6  | ^5.6  | February 7, 2018 |
+||| 6 months of bug fixes |
+||| 1 year of security |
 
 # Why do I need it?
 ### To make soft deleting and restoring relations easy.
