@@ -1,10 +1,18 @@
 ![Header](https://i.imgur.com/fKhbljT.png)
 
-[![Build Status](https://travis-ci.org/Askedio/laravel5-soft-cascade.svg?branch=master)](https://travis-ci.org/Askedio/laravel5-soft-cascade)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/019b9dbd700f42b6a165742c72e64445)](https://www.codacy.com/app/gcphost/laravel5-soft-cascade?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Askedio/laravel5-soft-cascade&amp;utm_campaign=Badge_Grade) [![StyleCI Badge](https://styleci.io/repos/57394710/shield)](https://styleci.io/repos/57394710)
+[![Build Status](https://travis-ci.org/Askedio/laravel-soft-cascade.svg?branch=master)](https://travis-ci.org/Askedio/laravel-soft-cascade)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/58877b88ab38457695217851658a443b)](https://www.codacy.com/app/gcphost/laravel-soft-cascade?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Askedio/laravel-soft-cascade&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://api.codacy.com/project/badge/Coverage/58877b88ab38457695217851658a443b)](https://www.codacy.com/app/gcphost/laravel-soft-cascade?utm_source=github.com&utm_medium=referral&utm_content=Askedio/laravel-soft-cascade&utm_campaign=Badge_Coverage)
+[![StyleCI Badge](https://styleci.io/repos/57394710/shield)](https://styleci.io/repos/57394710)
 
-# Laravel/Lumen 5 Soft Cascade Delete & Restore
+# Laravel/Lumen Soft Cascade Delete & Restore
 Cascade delete and restore when using the Laravel or Lumen SoftDeletes feature.
+
+| **Laravel** | **laravel-soft-cascade** | **Lifecycle** |
+|---|---|---|
+| ^5.5  | ^5.5  | January 24, 2017 |
+||| Bug fixes until January 2019 |
+||| Security fixes until June 2020 |
 
 # Why do I need it?
 ### To make soft deleting and restoring relations easy.
@@ -15,7 +23,7 @@ This package is intended to replace those steps with a simple array that defines
 # Installation
 Install with composer
 ~~~
-composer require askedio/laravel5-soft-cascade
+composer require askedio/laravel-soft-cascade
 ~~~
 
 From Laravel 5.5 onwards, it's possible to take advantage of auto-discovery of the service provider.
@@ -73,11 +81,13 @@ try {
 ~~~
 
 # Supported PHP Versions
-* \>=7.0
+* \>=7.1.13
 
 # Supported Databases
 * MySQL
+* PostgreSQL
 * SQLite
+* SQL Server
 
 # Testing
 I have written some very basic tests, certainly more needs to be done here. If you find this useful please help by testing other databases or writing better unit tests because I must move on.

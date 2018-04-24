@@ -23,4 +23,12 @@ class Post extends Model
     {
         return $this->morphMany('Askedio\Tests\App\Comment', 'commentable');
     }
+
+    /**
+     * Get all posts.
+     */
+    public function categories()
+    {
+        return $this->belongsToMany('Askedio\Tests\App\Category');
+    }
 }

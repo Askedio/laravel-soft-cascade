@@ -143,7 +143,7 @@ class SoftCascade implements SoftCascadeable
     {
         $relationConnection = $relation->getConnection()->getName();
         $relationTable = $relation->getTable();
-        $relationRelatedKey = $relation->getQualifiedForeignPivotKeyName();
+        $relationRelatedKey = $relation->getQualifiedRelatedPivotKeyName();
         //Get related ids
         $foreignKeyIdsUse = DB::connection($relationConnection)
             ->table($relationTable)
