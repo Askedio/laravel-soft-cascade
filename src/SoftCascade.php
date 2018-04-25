@@ -117,6 +117,8 @@ class SoftCascade implements SoftCascadeable
                 extract($this->getBelongsToManyData($modelRelation, $foreignKeyUse, $foreignKeyIds));
             } elseif ($modelRelation instanceof MorphOneOrMany) {
                 extract($this->getMorphManyData($modelRelation, $foreignKeyIds));
+            } elseif ($modelRelation instanceof BelongsTo) {
+                extract($this->getBelongsToData($modelRelation));
             }
 
             $affectedRows = $this->affectedRows($modelRelation, $foreignKeyUse, $foreignKeyIdsUse);
@@ -177,6 +179,23 @@ class SoftCascade implements SoftCascadeable
             ->select($foreignKeyUse)
             ->get()->toArray();
         $foreignKeyIdsUse = array_column($foreignKeyIdsUse, $foreignKeyUse);
+
+        return [
+            'foreignKeyIdsUse' => collect($foreignKeyIdsUse),
+            'foreignKeyUse'    => $relation->getRelated()->getKeyName(),
+        ];
+    }
+
+    /**
+     * Get belongs to related key ids and key use.
+     *
+     * @param $relation
+     *
+     * @return array
+     */
+    protected function getBelongsToData($relation)
+    {
+        $foreignKeyIdsUse = $relation->first()->{$relation->getRelated()->getKeyName()};
 
         return [
             'foreignKeyIdsUse' => collect($foreignKeyIdsUse),
