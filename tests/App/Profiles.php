@@ -11,7 +11,7 @@ class Profiles extends Model
 
     protected $fillable = ['phone'];
 
-    protected $softCascade = ['address','user'];
+    protected $softCascade = ['address'];
 
     public function address()
     {
@@ -20,7 +20,7 @@ class Profiles extends Model
 
     public function user()
     {
-        return $this->belongsTo('Askedio\Tests\App\User');
+        return $this->belongsTo('Askedio\Tests\App\Use');
     }
 
     public function badrelation()
