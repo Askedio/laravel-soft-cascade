@@ -15,8 +15,8 @@ class SoftCascade implements SoftCascadeable
     protected $direction;
     protected $directionData;
     protected $availableActions = ['update', 'restrict'];
-    protected $methodsGetForeignKeyName = ['getQualifiedForeignKeyName', 'getQualifiedOwnerKeyName', 'getForeignPivotKeyName'];
-    protected $connectionsToTransact = [];
+    protected $fnGetForeignKey = ['getQualifiedForeignKeyName', 'getQualifiedOwnerKeyName', 'getForeignPivotKeyName'];
+    protected $dbsToTransact = [];
 
     /**
      * Cascade over Eloquent items.
@@ -34,12 +34,12 @@ class SoftCascade implements SoftCascadeable
             $this->directionData = $directionData;
             $this->run($models);
             //All ok we commit all database queries
-            foreach ($this->connectionsToTransact as $connectionToTransact) {
+            foreach ($this->dbsToTransact as $connectionToTransact) {
                 DB::connection($connectionToTransact)->commit();
             }
         } catch (\Exception $e) {
             //Rollback the transaction before throw exception
-            foreach ($this->connectionsToTransact as $connectionToTransact) {
+            foreach ($this->dbsToTransact as $connectionToTransact) {
                 DB::connection($connectionToTransact)->rollBack();
             }
 
@@ -68,8 +68,8 @@ class SoftCascade implements SoftCascadeable
                 return;
             }
 
-            if (!in_array($model->getConnectionName(), $this->connectionsToTransact)) {
-                $this->connectionsToTransact[] = $model->getConnectionName();
+            if (!in_array($model->getConnectionName(), $this->dbsToTransact)) {
+                $this->dbsToTransact[] = $model->getConnectionName();
                 DB::connection($model->getConnectionName())->beginTransaction();
             }
 
@@ -105,11 +105,11 @@ class SoftCascade implements SoftCascadeable
              *
              * @link https://github.com/laravel/framework/issues/20869
              */
-            $methodUseGetForeignKey = array_intersect($this->methodsGetForeignKeyName, get_class_methods($modelRelation));
-            $methodUseGetForeignKey = reset($methodUseGetForeignKey);
+            $fnUseGetForeignKey = array_intersect($this->fnGetForeignKey, get_class_methods($modelRelation));
+            $fnUseGetForeignKey = reset($fnUseGetForeignKey);
 
             //Get foreign key and foreign key ids
-            $foreignKeyUse = $modelRelation->{$methodUseGetForeignKey}();
+            $foreignKeyUse = $modelRelation->{$fnUseGetForeignKey}();
             $foreignKeyIdsUse = $foreignKeyIds;
 
             //Many to many relations need to get related ids and related local key
