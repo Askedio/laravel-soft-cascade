@@ -8,14 +8,11 @@ use Askedio\Tests\App\BadRelationAction;
 use Askedio\Tests\App\BadRelationB;
 use Askedio\Tests\App\Category;
 use Askedio\Tests\App\Comment;
-use Askedio\Tests\App\Customer;
 use Askedio\Tests\App\Languages;
-use Askedio\Tests\App\Phone;
 use Askedio\Tests\App\Post;
 use Askedio\Tests\App\Profiles;
 use Askedio\Tests\App\RoleReader;
 use Askedio\Tests\App\RoleWriter;
-use Askedio\Tests\App\Room;
 use Askedio\Tests\App\User;
 use Askedio\Tests\App\Video;
 
@@ -42,9 +39,7 @@ class IntegrationTest extends TestCase
             'name'     => 'admin',
             'email'    => uniqid().'@localhost.com',
             'password' => bcrypt('password'),
-        ]);
-
-        $user->profiles()->saveMany([
+        ])->profiles()->saveMany([
             new Profiles(['phone' => '1231231234']),
         ]);
 
@@ -116,33 +111,6 @@ class IntegrationTest extends TestCase
         ]));
 
         return $this;
-    }
-
-    private function createCustomerRaw()
-    {
-        $customer = Customer::create(['name' => 'admin_customer']);
-        $room = Room::create(['name' => 'Bedroom']);
-
-        $phone = new Phone(['number' => '1231231234']);
-        $phone->customer()->associate($customer);
-        $phone->room()->associate($room);
-        $phone->save();
-
-        return $customer;
-    }
-
-    public function testBelongsToRelation()
-    {
-        $customer = $this->createCustomerRaw();
-
-        $phone = Phone::first();
-        $room = Room::first();
-
-        $customer->delete();
-
-        $this->assertTrue($customer->deleted_at !== null);
-        $this->assertTrue($phone->deleted_at !== null);
-        $this->assertTrue($room->deleted_at !== null);
     }
 
     public function testBelongsToManyRelation()
@@ -317,16 +285,6 @@ class IntegrationTest extends TestCase
         $this->createUserRaw();
         $this->expectException(SoftCascadeLogicException::class);
         BadRelationAction::first()->delete();
-    }
-
-    public function testBelongsToRelation()
-    {
-        $this->createUserRaw();
-        $user = User::first();
-        $profile = $user->profiles()->first();
-        $profile->delete();
-
-        $this->assertSoftDeleted('users', ['id' => $user->id]);
     }
 
     // public function testNotCascadable()
