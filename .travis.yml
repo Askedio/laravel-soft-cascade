@@ -18,3 +18,5 @@ after_script:
 branches:
   only:
     - master
+    - 5.6
+    - 5.5
