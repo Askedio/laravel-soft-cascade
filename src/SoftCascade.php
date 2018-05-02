@@ -6,6 +6,7 @@ use Askedio\SoftCascade\Contracts\SoftCascadeable;
 use Askedio\SoftCascade\Exceptions\SoftCascadeLogicException;
 use Askedio\SoftCascade\Exceptions\SoftCascadeNonExistentRelationActionException;
 use Askedio\SoftCascade\Exceptions\SoftCascadeRestrictedException;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphOneOrMany;
 use Illuminate\Support\Facades\DB;
@@ -57,8 +58,9 @@ class SoftCascade implements SoftCascadeable
     protected function run($models)
     {
         $models = collect($models);
-        if ($models->count() > 0) {
-            $model = $models->first();
+
+        foreach ($models as $model) {
+            $model->refresh();
 
             if (!is_object($model)) {
                 return;
@@ -117,6 +119,8 @@ class SoftCascade implements SoftCascadeable
                 extract($this->getBelongsToManyData($modelRelation, $foreignKeyUse, $foreignKeyIds));
             } elseif ($modelRelation instanceof MorphOneOrMany) {
                 extract($this->getMorphManyData($modelRelation, $foreignKeyIds));
+            } elseif ($modelRelation instanceof BelongsTo) {
+                extract($this->getBelongsToData($modelRelation));
             }
 
             $affectedRows = $this->affectedRows($modelRelation, $foreignKeyUse, $foreignKeyIdsUse);
@@ -181,6 +185,30 @@ class SoftCascade implements SoftCascadeable
         return [
             'foreignKeyIdsUse' => collect($foreignKeyIdsUse),
             'foreignKeyUse'    => $relation->getRelated()->getKeyName(),
+        ];
+    }
+
+    /**
+     * Get belongs to related key ids and key use.
+     *
+     * @param Illuminate\Database\Eloquent\Relations\Relation $relation
+     *
+     * @return array
+     */
+    protected function getBelongsToData($relation)
+    {
+        $relatedClass = $relation->getRelated();
+        $foreignKeyUse = $relatedClass->getKeyName();
+        $foreignKeyIdsUse = $relatedClass
+            ::where($foreignKeyUse, $relation->getParent()->{$relation->getForeignKey()})
+            ->select($foreignKeyUse)
+            ->get()
+            ->toArray();
+        $foreignKeyIdsUse = array_column($foreignKeyIdsUse, $foreignKeyUse);
+
+        return [
+            'foreignKeyUse'    => $foreignKeyUse,
+            'foreignKeyIdsUse' => collect($foreignKeyIdsUse),
         ];
     }
 

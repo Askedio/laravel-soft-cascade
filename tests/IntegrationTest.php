@@ -145,6 +145,33 @@ class IntegrationTest extends TestCase
         $this->assertTrue($room->deleted_at !== null);
     }
 
+    private function createCustomerRaw()
+    {
+        $customer = Customer::create(['name' => 'admin_customer']);
+        $room = Room::create(['name' => 'Bedroom']);
+
+        $phone = new Phone(['number' => '1231231234']);
+        $phone->customer()->associate($customer);
+        $phone->room()->associate($room);
+        $phone->save();
+
+        return $customer;
+    }
+
+    public function testBelongsToRelation()
+    {
+        $customer = $this->createCustomerRaw();
+
+        $customer->delete();
+
+        $phone = Phone::withTrashed()->first();
+        $room = Room::withTrashed()->first();
+
+        $this->assertTrue($customer->deleted_at !== null);
+        $this->assertTrue($phone->deleted_at !== null);
+        $this->assertTrue($room->deleted_at !== null);
+    }
+
     public function testBelongsToManyRelation()
     {
         $this->createPostAndCategoriesRaw();
