@@ -21,3 +21,5 @@ matrix:
 branches:
   only:
     - master
+    - 5.6
+    - 5.5
