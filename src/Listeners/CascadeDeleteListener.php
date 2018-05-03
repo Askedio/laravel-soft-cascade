@@ -1,8 +1,8 @@
 <?php
 
-namespace Askedio\SoftCascade\Listeners;
+namespace Immofacile\SoftCascade\Listeners;
 
-use Askedio\SoftCascade\EloquentSoftCascade;
+use Immofacile\SoftCascade\EloquentSoftCascade;
 
 class CascadeDeleteListener
 {

@@ -1,13 +1,13 @@
 <?php
 
-namespace Askedio\Tests\App;
+namespace Immofacile\Tests\App;
 
 use Illuminate\Database\Eloquent\Model;
 
 class RoleWriter extends Model
 {
     use \Illuminate\Database\Eloquent\SoftDeletes;
-    use \Askedio\SoftCascade\Traits\SoftCascadeTrait;
+    use \Immofacile\SoftCascade\Traits\SoftCascadeTrait;
 
     protected $table = 'writers';
 
@@ -20,6 +20,6 @@ class RoleWriter extends Model
      */
     public function user()
     {
-        return $this->morphOne('Askedio\Tests\App\User', 'role');
+        return $this->morphOne('Immofacile\Tests\App\User', 'role');
     }
 }

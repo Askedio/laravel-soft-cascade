@@ -1,13 +1,13 @@
 <?php
 
-namespace Askedio\Tests\App;
+namespace Immofacile\Tests\App;
 
 use Illuminate\Database\Eloquent\Model;
 
 class Post extends Model
 {
     use \Illuminate\Database\Eloquent\SoftDeletes;
-    use \Askedio\SoftCascade\Traits\SoftCascadeTrait;
+    use \Immofacile\SoftCascade\Traits\SoftCascadeTrait;
     use \Illuminate\Database\Eloquent\SoftDeletes;
 
     protected $table = 'posts';
@@ -21,7 +21,7 @@ class Post extends Model
      */
     public function comments()
     {
-        return $this->morphMany('Askedio\Tests\App\Comment', 'commentable');
+        return $this->morphMany('Immofacile\Tests\App\Comment', 'commentable');
     }
 
     /**
@@ -29,6 +29,6 @@ class Post extends Model
      */
     public function categories()
     {
-        return $this->belongsToMany('Askedio\Tests\App\Category');
+        return $this->belongsToMany('Immofacile\Tests\App\Category');
     }
 }

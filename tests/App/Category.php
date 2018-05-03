@@ -1,13 +1,13 @@
 <?php
 
-namespace Askedio\Tests\App;
+namespace Immofacile\Tests\App;
 
 use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model
 {
     use \Illuminate\Database\Eloquent\SoftDeletes;
-    use \Askedio\SoftCascade\Traits\SoftCascadeTrait;
+    use \Immofacile\SoftCascade\Traits\SoftCascadeTrait;
     use \Illuminate\Database\Eloquent\SoftDeletes;
 
     protected $table = 'categories';
@@ -21,6 +21,6 @@ class Category extends Model
      */
     public function posts()
     {
-        return $this->belongsToMany('Askedio\Tests\App\Post');
+        return $this->belongsToMany('Immofacile\Tests\App\Post');
     }
 }

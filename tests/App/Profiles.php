@@ -1,13 +1,13 @@
 <?php
 
-namespace Askedio\Tests\App;
+namespace Immofacile\Tests\App;
 
 use Illuminate\Database\Eloquent\Model;
 
 class Profiles extends Model
 {
     use \Illuminate\Database\Eloquent\SoftDeletes;
-    use \Askedio\SoftCascade\Traits\SoftCascadeTrait;
+    use \Immofacile\SoftCascade\Traits\SoftCascadeTrait;
 
     protected $fillable = ['phone'];
 
@@ -15,16 +15,16 @@ class Profiles extends Model
 
     public function address()
     {
-        return $this->hasOne('Askedio\Tests\App\Addresses');
+        return $this->hasOne('Immofacile\Tests\App\Addresses');
     }
 
     public function user()
     {
-        return $this->belongsTo('Askedio\Tests\App\Use');
+        return $this->belongsTo('Immofacile\Tests\App\Use');
     }
 
     public function badrelation()
     {
-        return $this->hasMany('Askedio\Tests\App\Profile');
+        return $this->hasMany('Immofacile\Tests\App\Profile');
     }
 }
