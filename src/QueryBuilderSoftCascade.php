@@ -1,6 +1,6 @@
 <?php
 
-namespace Askedio\SoftCascade;
+namespace Immofacile\SoftCascade;
 
 class QueryBuilderSoftCascade extends SoftCascade
 {

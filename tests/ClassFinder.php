@@ -1,6 +1,6 @@
 <?php
 
-namespace Askedio\Tests;
+namespace Immofacile\Tests;
 
 use Symfony\Component\Finder\Finder;
 

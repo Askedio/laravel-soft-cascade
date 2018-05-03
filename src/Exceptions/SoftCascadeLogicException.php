@@ -1,6 +1,6 @@
 <?php
 
-namespace Askedio\SoftCascade\Exceptions;
+namespace Immofacile\SoftCascade\Exceptions;
 
 use RuntimeException;
 

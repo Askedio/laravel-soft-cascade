@@ -1,8 +1,8 @@
 <?php
 
-namespace Askedio\SoftCascade\Listeners;
+namespace Immofacile\SoftCascade\Listeners;
 
-use Askedio\SoftCascade\QueryBuilderSoftCascade;
+use Immofacile\SoftCascade\QueryBuilderSoftCascade;
 
 class CascadeQueryListener
 {

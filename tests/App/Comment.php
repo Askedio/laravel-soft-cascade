@@ -1,6 +1,6 @@
 <?php
 
-namespace Askedio\Tests\App;
+namespace Immofacile\Tests\App;
 
 use Illuminate\Database\Eloquent\Model;
 
