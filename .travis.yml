@@ -1,8 +1,8 @@
 language: php
+
 php:
-  - "7.0"
   - "7.1"
-  - "hhvm"
+  - "7.2"
 
 before_script:
   - curl -sS https://getcomposer.org/installer | php -- --filename=composer
@@ -15,9 +15,6 @@ script:
 after_script:
   - php vendor/bin/codacycoverage clover build/logs/clover.xml
 
-matrix:
-     allow_failures:
-         - php: "hhvm"
 branches:
   only:
     - master

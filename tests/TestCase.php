@@ -1,6 +1,6 @@
 <?php
 
-namespace Askedio\Tests;
+namespace Immofacile\Tests;
 
 use Illuminate\Filesystem\Filesystem;
 use Orchestra\Testbench\TestCase as BaseTestCase;
@@ -17,7 +17,7 @@ class TestCase extends BaseTestCase
     protected function getPackageProviders($app)
     {
         return [
-            \Askedio\SoftCascade\Providers\GenericServiceProvider::class,
+            \Immofacile\SoftCascade\Providers\GenericServiceProvider::class,
         ];
     }
 

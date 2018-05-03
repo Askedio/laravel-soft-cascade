@@ -1,6 +1,6 @@
 <?php
 
-namespace Askedio\SoftCascade\Traits;
+namespace Immofacile\SoftCascade\Traits;
 
 trait SoftCascadeTrait
 {

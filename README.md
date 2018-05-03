@@ -1,8 +1,8 @@
 ![Header](https://i.imgur.com/fKhbljT.png)
 
-[![Build Status](https://travis-ci.org/Askedio/laravel-soft-cascade.svg?branch=master)](https://travis-ci.org/Askedio/laravel-soft-cascade)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/58877b88ab38457695217851658a443b)](https://www.codacy.com/app/gcphost/laravel-soft-cascade?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Askedio/laravel-soft-cascade&amp;utm_campaign=Badge_Grade)
-[![Codacy Badge](https://api.codacy.com/project/badge/Coverage/58877b88ab38457695217851658a443b)](https://www.codacy.com/app/gcphost/laravel-soft-cascade?utm_source=github.com&utm_medium=referral&utm_content=Askedio/laravel-soft-cascade&utm_campaign=Badge_Coverage)
+[![Build Status](https://travis-ci.org/Immofacile/laravel-soft-cascade.svg?branch=master)](https://travis-ci.org/Immofacile/laravel-soft-cascade)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/58877b88ab38457695217851658a443b)](https://www.codacy.com/app/gcphost/laravel-soft-cascade?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Immofacile/laravel-soft-cascade&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://api.codacy.com/project/badge/Coverage/58877b88ab38457695217851658a443b)](https://www.codacy.com/app/gcphost/laravel-soft-cascade?utm_source=github.com&utm_medium=referral&utm_content=Immofacile/laravel-soft-cascade&utm_campaign=Badge_Coverage)
 [![StyleCI Badge](https://styleci.io/repos/57394710/shield)](https://styleci.io/repos/57394710)
 
 # Laravel/Lumen Soft Cascade Delete & Restore
@@ -23,40 +23,40 @@ This package is intended to replace those steps with a simple array that defines
 # Installation
 Install with composer
 ~~~
-composer require askedio/laravel-soft-cascade
+composer require Immofacile/laravel-soft-cascade
 ~~~
 
 From Laravel 5.5 onwards, it's possible to take advantage of auto-discovery of the service provider.
 For Laravel versions before 5.5, you must register the service provider in your config/app.php
 
 ~~~
-Askedio\SoftCascade\Providers\GenericServiceProvider::class,
+Immofacile\SoftCascade\Providers\GenericServiceProvider::class,
 ~~~
 
 Lumen does not support the auto-discovery feature, you should manually add the provider.
 
 ~~~
-Askedio\SoftCascade\Providers\LumenServiceProvider::class,
+Immofacile\SoftCascade\Providers\LumenServiceProvider::class,
 ~~~
 
 
 
 # Usage
-In your `Model` enable the trait and define `$softCascade`. [Example](https://github.com/Askedio/laravel5-soft-cascade/blob/master/tests/App/User.php).
+In your `Model` enable the trait and define `$softCascade`. [Example](https://github.com/Immofacile/laravel5-soft-cascade/blob/master/tests/App/User.php).
 ~~~
-use \Askedio\SoftCascade\Traits\SoftCascadeTrait;
+use \Immofacile\SoftCascade\Traits\SoftCascadeTrait;
 
 protected $softCascade = ['profiles'];
 ~~~
-For restricted relation use. [Example](https://github.com/Askedio/laravel5-soft-cascade/blob/master/tests/App/Languages.php).
+For restricted relation use. [Example](https://github.com/Immofacile/laravel5-soft-cascade/blob/master/tests/App/Languages.php).
 ~~~
-use \Askedio\SoftCascade\Traits\SoftCascadeTrait;
+use \Immofacile\SoftCascade\Traits\SoftCascadeTrait;
 
 protected $softCascade = ['addresses@restrict'];
 ~~~
-`$softCascade` is an array of your relation names, in the [example](https://github.com/Askedio/laravel5-soft-cascade/blob/master/tests/App/User.php) you'll see we've defined `function profiles()` for the relation.
+`$softCascade` is an array of your relation names, in the [example](https://github.com/Immofacile/laravel5-soft-cascade/blob/master/tests/App/User.php) you'll see we've defined `function profiles()` for the relation.
 
-Nested relations work by defining `$softCascade` in the related `Model` as you can see [here](https://github.com/Askedio/laravel5-soft-cascade/blob/master/tests/App/Profiles.php).
+Nested relations work by defining `$softCascade` in the related `Model` as you can see [here](https://github.com/Immofacile/laravel5-soft-cascade/blob/master/tests/App/Profiles.php).
 
 After you've defined your relations you can simply trigger `delete()` or `restore()` on your `Model` and your relations will have the same task performed.
 
@@ -76,7 +76,7 @@ try {
 } catch (\Exception $e) {
     DB::rollBack(); //Rollback the query
     //Optional, if we need to continue execution only rollback transaction and save message on variable
-    throw new \Askedio\SoftCascade\Exceptions\SoftCascadeLogicException($e->getMessage()); 
+    throw new \Immofacile\SoftCascade\Exceptions\SoftCascadeLogicException($e->getMessage()); 
 }
 ~~~
 

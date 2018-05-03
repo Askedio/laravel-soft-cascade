@@ -1,6 +1,6 @@
 <?php
 
-namespace Askedio\SoftCascade\Contracts;
+namespace Immofacile\SoftCascade\Contracts;
 
 interface SoftCascadeable
 {

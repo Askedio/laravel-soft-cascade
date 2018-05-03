@@ -1,11 +1,11 @@
 <?php
 
-namespace Askedio\SoftCascade;
+namespace Immofacile\SoftCascade;
 
-use Askedio\SoftCascade\Contracts\SoftCascadeable;
-use Askedio\SoftCascade\Exceptions\SoftCascadeLogicException;
-use Askedio\SoftCascade\Exceptions\SoftCascadeNonExistentRelationActionException;
-use Askedio\SoftCascade\Exceptions\SoftCascadeRestrictedException;
+use Immofacile\SoftCascade\Contracts\SoftCascadeable;
+use Immofacile\SoftCascade\Exceptions\SoftCascadeLogicException;
+use Immofacile\SoftCascade\Exceptions\SoftCascadeNonExistentRelationActionException;
+use Immofacile\SoftCascade\Exceptions\SoftCascadeRestrictedException;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphOneOrMany;

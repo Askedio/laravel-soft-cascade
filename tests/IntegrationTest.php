@@ -1,20 +1,20 @@
 <?php
 
-namespace Askedio\Tests;
+namespace Immofacile\Tests;
 
-use Askedio\SoftCascade\Exceptions\SoftCascadeLogicException;
-use Askedio\Tests\App\BadRelation;
-use Askedio\Tests\App\BadRelationAction;
-use Askedio\Tests\App\BadRelationB;
-use Askedio\Tests\App\Category;
-use Askedio\Tests\App\Comment;
-use Askedio\Tests\App\Languages;
-use Askedio\Tests\App\Post;
-use Askedio\Tests\App\Profiles;
-use Askedio\Tests\App\RoleReader;
-use Askedio\Tests\App\RoleWriter;
-use Askedio\Tests\App\User;
-use Askedio\Tests\App\Video;
+use Immofacile\SoftCascade\Exceptions\SoftCascadeLogicException;
+use Immofacile\Tests\App\BadRelation;
+use Immofacile\Tests\App\BadRelationAction;
+use Immofacile\Tests\App\BadRelationB;
+use Immofacile\Tests\App\Category;
+use Immofacile\Tests\App\Comment;
+use Immofacile\Tests\App\Languages;
+use Immofacile\Tests\App\Post;
+use Immofacile\Tests\App\Profiles;
+use Immofacile\Tests\App\RoleReader;
+use Immofacile\Tests\App\RoleWriter;
+use Immofacile\Tests\App\User;
+use Immofacile\Tests\App\Video;
 
 /**
  *  TO-DO: Need better testing.
@@ -139,33 +139,6 @@ class IntegrationTest extends TestCase
         $this->assertTrue($phone->deleted_at !== null);
         $this->assertTrue($room->deleted_at !== null);
     }
-
-    private function createCustomerRaw()
-    {
-        $customer = Customer::create(['name' => 'admin_customer']);
-        $room = Room::create(['name' => 'Bedroom']);
-
-        $phone = new Phone(['number' => '1231231234']);
-        $phone->customer()->associate($customer);
-        $phone->room()->associate($room);
-        $phone->save();
-
-        return $customer;
-    }
-
-    public function testBelongsToRelation()
-    {
-        $customer = $this->createCustomerRaw();
-
-        $customer->delete();
-
-        $phone = Phone::withTrashed()->first();
-        $room = Room::withTrashed()->first();
-
-        $this->assertTrue($customer->deleted_at !== null);
-        $this->assertTrue($phone->deleted_at !== null);
-        $this->assertTrue($room->deleted_at !== null);
-    }
   
     public function testBelongsToManyRelation()
     {
@@ -187,9 +160,9 @@ class IntegrationTest extends TestCase
         Post::first()->delete();
 
         $this->assertDatabaseHas('videos', ['deleted_at' => null]);
-        $this->assertDatabaseHas('comments', ['commentable_type' => 'Askedio\Tests\App\Video',  'deleted_at' => null]);
+        $this->assertDatabaseHas('comments', ['commentable_type' => 'Immofacile\Tests\App\Video',  'deleted_at' => null]);
         $this->assertDatabaseMissing('posts', ['deleted_at' => null]);
-        $this->assertDatabaseMissing('comments', ['commentable_type' => 'Askedio\Tests\App\Post', 'deleted_at' => null]);
+        $this->assertDatabaseMissing('comments', ['commentable_type' => 'Immofacile\Tests\App\Post', 'deleted_at' => null]);
     }
 
     public function testReportPolymorphicManyRelation()
@@ -200,7 +173,7 @@ class IntegrationTest extends TestCase
         Post::withTrashed()->first()->restore();
 
         $this->assertDatabaseHas('posts', ['deleted_at' => null]);
-        $this->assertDatabaseHas('comments', ['commentable_type' => 'Askedio\Tests\App\Post', 'deleted_at' => null]);
+        $this->assertDatabaseHas('comments', ['commentable_type' => 'Immofacile\Tests\App\Post', 'deleted_at' => null]);
     }
 
     public function testPolymorphicOneRelation()
@@ -210,7 +183,7 @@ class IntegrationTest extends TestCase
         RoleWriter::first()->delete();
 
         $this->assertDatabaseMissing('writers', ['deleted_at' => null]);
-        $this->assertDatabaseMissing('users', ['role_type' => 'Askedio\Tests\App\RoleWriter', 'deleted_at' => null]);
+        $this->assertDatabaseMissing('users', ['role_type' => 'Immofacile\Tests\App\RoleWriter', 'deleted_at' => null]);
     }
 
     public function testRestorePolymorphicOneRelation()
@@ -221,9 +194,9 @@ class IntegrationTest extends TestCase
         RoleWriter::withTrashed()->first()->restore();
 
         $this->assertDatabaseHas('writers', ['deleted_at' => null]);
-        $this->assertDatabaseHas('users', ['role_type' => 'Askedio\Tests\App\RoleWriter', 'deleted_at' => null]);
+        $this->assertDatabaseHas('users', ['role_type' => 'Immofacile\Tests\App\RoleWriter', 'deleted_at' => null]);
         $this->assertDatabaseHas('readers', ['deleted_at' => null]);
-        $this->assertDatabaseHas('users', ['role_type' => 'Askedio\Tests\App\RoleReader', 'deleted_at' => null]);
+        $this->assertDatabaseHas('users', ['role_type' => 'Immofacile\Tests\App\RoleReader', 'deleted_at' => null]);
     }
 
     public function testBadRelation()
@@ -346,6 +319,6 @@ class IntegrationTest extends TestCase
         /*
          * TO-DO: Need a 'test' here, not just code coverage.
          */
-    //     (new \Askedio\SoftCascade\SoftCascade())->cascade('notamodel', 'delete');
+    //     (new \Immofacile\SoftCascade\SoftCascade())->cascade('notamodel', 'delete');
     // }
 }
