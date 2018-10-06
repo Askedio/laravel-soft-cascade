@@ -16,6 +16,9 @@ Cascade delete and restore when using the Laravel or Lumen SoftDeletes feature.
 | ^5.6  | ^5.6  | February 7, 2018 |
 ||| 6 months of bug fixes |
 ||| 1 year of security |
+| ^5.7  | ^5.7  | September 4, 2018 |
+||| 6 months of bug fixes |
+||| 1 year of security |
 
 # Why do I need it?
 ### To make soft deleting and restoring relations easy.
