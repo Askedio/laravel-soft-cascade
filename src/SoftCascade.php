@@ -145,14 +145,34 @@ class SoftCascade implements SoftCascadeable
         $relationTable = $relation->getTable();
         $relationRelatedKey = $relation->getQualifiedRelatedPivotKeyName();
         //Get related ids
-        $foreignKeyIdsUse = DB::connection($relationConnection)
+        if ($this->direction === 'delete') {
+            $foreignKeyIdsUse = DB::connection($relationConnection)
             ->table($relationTable)
+            ->where('deleted_at', '=', null)
             ->whereIn($relationForeignKey, $foreignKeyIds)
             ->select([$relationRelatedKey])
             ->get()->toArray();
-        $foreignKeyUse = explode('.', $relationRelatedKey);
-        $foreignKeyUse = end($foreignKeyUse);
-        $foreignKeyIdsUse = array_column($foreignKeyIdsUse, $foreignKeyUse);
+            $foreignKeyUse = explode('.', $relationRelatedKey);
+            $foreignKeyUse = end($foreignKeyUse);
+            $foreignKeyIdsUse = array_column($foreignKeyIdsUse, $foreignKeyUse);
+        }
+        if ($this->direction === 'restore') {
+            $parentTimestamp = DB::connection($relationConnection)
+            ->table($parentTable)
+            ->whereIn('id', $foreignKeyIds)
+            ->select('deleted_at')
+            ->first();
+
+            $foreignKeyIdsUse = DB::connection($relationConnection)
+            ->table($relationTable)
+            ->whereIn($relationForeignKey, $foreignKeyIds)
+            ->where('deleted_at', '=', $parentTimestamp->deleted_at)
+            ->select([$relationRelatedKey])
+            ->get()->toArray();
+            $foreignKeyUse = explode('.', $relationRelatedKey);
+            $foreignKeyUse = end($foreignKeyUse);
+            $foreignKeyIdsUse = array_column($foreignKeyIdsUse, $foreignKeyUse);
+        }
 
         return [
             'foreignKeyIdsUse' => collect($foreignKeyIdsUse),
