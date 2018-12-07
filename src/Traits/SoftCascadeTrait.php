@@ -11,7 +11,7 @@ trait SoftCascadeTrait
      */
     public function getSoftCascade()
     {
-	if (getenv('APP_ENV') === 'testing') {
+        if (getenv('APP_ENV') === 'testing') {
             return []; // Disable cascade soft delete for unit test.
         }
 
