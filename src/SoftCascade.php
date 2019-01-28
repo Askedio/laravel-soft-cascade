@@ -174,10 +174,14 @@ class SoftCascade implements SoftCascadeable
             $foreignKeyIdsUse = array_column($foreignKeyIdsUse, $foreignKeyUse);
         }
 
-        return [
-            'foreignKeyIdsUse' => collect($foreignKeyIdsUse),
-            'foreignKeyUse'    => $relation->getRelated()->getKeyName(),
-        ];
+        if (isset($foreignKeyIdsUse)) {
+            return [
+                'foreignKeyIdsUse' => collect($foreignKeyIdsUse),
+                'foreignKeyUse'    => $relation->getRelated()->getKeyName(),
+            ];
+        } else {
+            return [];
+        }
     }
 
     /**
