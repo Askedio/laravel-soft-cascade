@@ -25,7 +25,7 @@ class IntegrationTest extends TestCase
     /**
      * Setup Language before each test.
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         Languages::create([

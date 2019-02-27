@@ -17,3 +17,6 @@ tests/logs
 
 # Coverage output 
 build/
+
+# PhpStorm
+.idea
