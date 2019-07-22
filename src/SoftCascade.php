@@ -199,12 +199,12 @@ class SoftCascade implements SoftCascadeable
         $relationModel = $relation->getQuery()->getModel();
         $relationModel = new $relationModel();
         if ($affectedRows > 0) {
-        	if ($this->direction == 'delete') {
-        		$relationModel = $relationModel->whereIn($foreignKey, $foreignKeyIds)->limit($affectedRows);
-        	}
-        	else {
-        		$relationModel = $relationModel->withTrashed()->whereIn($foreignKey, $foreignKeyIds)->limit($affectedRows);
-        	}
+            if ($this->direction == 'delete') {
+                $relationModel = $relationModel->whereIn($foreignKey, $foreignKeyIds)->limit($affectedRows);
+            }
+            else {
+                $relationModel = $relationModel->withTrashed()->whereIn($foreignKey, $foreignKeyIds)->limit($affectedRows);
+            }
             $this->run($relationModel->get([$relationModel->getModel()->getKeyName()]));
             $relationModel->{$this->direction}($this->directionData);
         }
@@ -258,10 +258,10 @@ class SoftCascade implements SoftCascadeable
         $relationModel = $relation->getQuery()->getModel();
         $relationModel = new $relationModel();
         if ($this->direction == 'delete') {
-        	return $relationModel->whereIn($foreignKey, $foreignKeyIds)->count();
+            return $relationModel->whereIn($foreignKey, $foreignKeyIds)->count();
         }
         else {
-        	return $relationModel->withTrashed()->whereIn($foreignKey, $foreignKeyIds)->count();
+            return $relationModel->withTrashed()->whereIn($foreignKey, $foreignKeyIds)->count();
         }
     }
 
