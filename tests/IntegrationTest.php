@@ -250,24 +250,24 @@ class IntegrationTest extends TestCase
 
     public function testKeepDeletedDates()
     {
-   		$this->createPostAndCategoriesRaw();
-   		
-   		$post=Post::first();
-   		$post->deleted_at = '2011-01-01';
-   		$post->save();
-   		$this->assertSoftDeleted('posts', ['id' => $post->id]);
+        $this->createPostAndCategoriesRaw();
 
-   		$categoryToDelete = Category::with('posts')->first();
-   		$categoryToDelete->delete();
+        $post=Post::first();
+   	    $post->deleted_at = '2011-01-01';
+   	    $post->save();
+   	    $this->assertSoftDeleted('posts', ['id' => $post->id]);
+
+   	    $categoryToDelete = Category::with('posts')->first();
+   	    $categoryToDelete->delete();
     		
-   		$this->assertSoftDeleted('categories', ['id' => $categoryToDelete->id]);
-   		$categoryToDelete->posts->each(function ($post) {
-   			$this->assertSoftDeleted('posts', ['id' => $post->id]);
-   		});
-   		$posts=Post::withTrashed()->get();
-   		$this->assertNotEquals($posts->first()->deleted_at, $posts->last()->deleted_at);
+   	    $this->assertSoftDeleted('categories', ['id' => $categoryToDelete->id]);
+   	    $categoryToDelete->posts->each(function ($post) {
+   	    	$this->assertSoftDeleted('posts', ['id' => $post->id]);
+   	    });
+   	    $posts=Post::withTrashed()->get();
+   	    $this->assertNotEquals($posts->first()->deleted_at, $posts->last()->deleted_at);
     }
-   
+
     public function testMultipleRestore()
     {
         $this->createUserRaw();
