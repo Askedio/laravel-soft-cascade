@@ -252,7 +252,7 @@ class IntegrationTest extends TestCase
     {
         $this->createPostAndCategoriesRaw();
 
-        $post=Post::first();
+        $post = Post::first();
         $post->deleted_at = '2011-01-01';
         $post->save();
 
@@ -265,7 +265,7 @@ class IntegrationTest extends TestCase
         $categoryToDelete->posts->each(function ($post) {
             $this->assertSoftDeleted('posts', ['id' => $post->id]);
         });
-        $posts=Post::withTrashed()->get();
+        $posts = Post::withTrashed()->get();
         $this->assertNotEquals($posts->first()->deleted_at, $posts->last()->deleted_at);
     }
 
