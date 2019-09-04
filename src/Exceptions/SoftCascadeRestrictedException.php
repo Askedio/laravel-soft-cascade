@@ -2,6 +2,7 @@
 
 namespace Askedio\SoftCascade\Exceptions;
 
+use Illuminate\Support\Arr;
 use RuntimeException;
 
 class SoftCascadeRestrictedException extends RuntimeException
@@ -40,7 +41,7 @@ class SoftCascadeRestrictedException extends RuntimeException
     {
         $this->model = $model;
         $this->foreignKey = $foreignKey;
-        $this->foreignKeyIds = array_wrap($foreignKeyIds);
+        $this->foreignKeyIds = Arr::wrap($foreignKeyIds);
 
         $this->message = "Integrity constraint violation [{$model}] where $foreignKey in (".implode(', ', $foreignKeyIds).')';
 

@@ -3,6 +3,7 @@
 namespace Askedio\SoftCascade\Listeners;
 
 use Askedio\SoftCascade\QueryBuilderSoftCascade;
+use Illuminate\Support\Str;
 
 class CascadeQueryListener
 {
@@ -23,7 +24,7 @@ class CascadeQueryListener
         $checkBacktrace = null;
         $backtraceFile = (isset($debugBacktrace['file'])) ? $debugBacktrace['file'] : null;
         $backtraceFunction = (isset($debugBacktrace['function'])) ? $debugBacktrace['function'] : null;
-        if (!is_null($debugBacktrace) && str_contains($backtraceFile, 'Illuminate/Database/Eloquent/SoftDeletingScope.php') && $backtraceFunction == 'update') {
+        if (!is_null($debugBacktrace) && Str::contains($backtraceFile, 'Illuminate/Database/Eloquent/SoftDeletingScope.php') && $backtraceFunction == 'update') {
             $checkBacktrace = [
                 'object'   => $debugBacktrace['object'],
                 'function' => $debugBacktrace['function'],
