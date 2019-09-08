@@ -10,7 +10,6 @@
          stopOnFailure="false"
          stopOnIncomplete="false"
          stopOnSkipped="false"
-         syntaxCheck="true"
          verbose="true">
     <testsuites>
         <testsuite name="Application Test Suite">
@@ -21,7 +20,7 @@
     <logging>
       <log type="coverage-html" target="build/coverage"/>
       <log type="coverage-clover" target="build/logs/clover.xml"/>
-      <log type="junit" target="build/logs/junit.xml" logIncompleteSkipped="false"/>
+      <log type="junit" target="build/logs/junit.xml"/>
     </logging>
 
     <filter>
