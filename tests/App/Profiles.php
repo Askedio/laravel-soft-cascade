@@ -13,6 +13,8 @@ class Profiles extends Model
 
     protected $softCascade = ['address'];
 
+    protected $with = ['user'];
+
     public function address()
     {
         return $this->hasOne('Askedio\Tests\App\Addresses');
@@ -20,7 +22,7 @@ class Profiles extends Model
 
     public function user()
     {
-        return $this->belongsTo('Askedio\Tests\App\Use');
+        return $this->belongsTo('Askedio\Tests\App\User');
     }
 
     public function badrelation()
