@@ -22,7 +22,7 @@ class Profiles extends Model
 
     public function user()
     {
-        return $this->belongsTo('Askedio\Tests\App\Use');
+        return $this->belongsTo('Askedio\Tests\App\User');
     }
 
     public function badrelation()
