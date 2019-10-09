@@ -13,7 +13,7 @@ class Profiles extends Model
 
     protected $softCascade = ['address'];
 
-    protected $with = ['address'];
+    protected $with = ['user'];
 
     public function address()
     {
