@@ -203,7 +203,7 @@ class SoftCascade implements SoftCascadeable
                 $relationModel = $relationModel->withTrashed();
             }
 
-            $relationModel = $relationModel->whereIn($foreignKey, $foreignKeyIds)->limit($affectedRows);
+            $relationModel = $relationModel->whereIn($foreignKey, $foreignKeyIds)->limit($affectedRows)->setEagerLoads([]);
 
             $this->run($relationModel->get([$relationModel->getModel()->getKeyName()]));
             $relationModel->{$this->direction}($this->directionData);
