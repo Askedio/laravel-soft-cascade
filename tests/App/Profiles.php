@@ -12,6 +12,8 @@ class Profiles extends Model
     protected $fillable = ['phone'];
 
     protected $softCascade = ['address'];
+    
+    protected $with = ['address'];
 
     public function address()
     {
