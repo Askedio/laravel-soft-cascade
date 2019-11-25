@@ -7,6 +7,7 @@ assignees: gcphost, maguilar92
 
 ---
 
+- Laravel version: #.#.#
 - Laravel Soft Cascade Version: #.#.#
 - PHP Version:
 - Database Driver & Version:
