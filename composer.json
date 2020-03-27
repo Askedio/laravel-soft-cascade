@@ -3,15 +3,15 @@
     "description": "Laravel Cascade Soft Delete & Restore",
     "type": "library",
     "require": {
-        "php": "^7.2",
-        "illuminate/support": "^6.0",
-        "illuminate/container": "^6.0",
-        "illuminate/database": "^6.0",
-        "illuminate/events": "^6.0"
+        "php": "^7.2.5",
+        "illuminate/support": "^7.0",
+        "illuminate/container": "^7.0",
+        "illuminate/database": "^7.0",
+        "illuminate/events": "^7.0"
      },
      "require-dev": {
-        "phpunit/phpunit": "~8.0",
-        "orchestra/testbench": "~4.0",
+        "phpunit/phpunit": "^9.0",
+        "orchestra/testbench": "^5.0",
         "codacy/coverage": "dev-master"
      },
     "autoload": {

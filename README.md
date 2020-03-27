@@ -25,6 +25,9 @@ Cascade delete and restore when using the Laravel or Lumen SoftDeletes feature.
 | ^6.0  | ^6.0  | September 3, 2019 |
 ||| Bug fixes until September 3, 2021 |
 ||| Security fixes until September, 3 2022 |
+| ^7.0  | ^7.0  | March 3, 2020 |
+||| Bug fixes until September 3, 2020 |
+||| Security fixes until March, 3 2021 |
 
 
 # Why do I need it?
@@ -92,9 +95,6 @@ try {
     throw new \Askedio\SoftCascade\Exceptions\SoftCascadeLogicException($e->getMessage()); 
 }
 ~~~
-
-# Supported PHP Versions
-* \>=7.1.13
 
 # Supported Databases
 * MySQL
