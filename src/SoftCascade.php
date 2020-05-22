@@ -274,14 +274,9 @@ class SoftCascade implements SoftCascadeable
      */
     protected function relationResolver($relation)
     {
-        $return = ['relation' => '', 'action' => 'update'];
-
-        try {
-            list($relation, $action) = explode('@', $relation);
-            $return = ['relation' => $relation, 'action' => $action];
-        } catch (\Exception $e) {
-            $return['relation'] = $relation;
-        }
+        $parsedAction = explode('@', $relation);
+        $return['relation'] = $parsedAction[0];
+        $return['action'] = isset($parsedAction[1]) ? $parsedAction[1] : 'update';
 
         if (!in_array($return['action'], $this->availableActions)) {
             DB::rollBack(); //Rollback the transaction before throw exception
