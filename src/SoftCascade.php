@@ -172,7 +172,10 @@ class SoftCascade implements SoftCascadeable
     {
         $relatedClass = $relation->getRelated();
         $foreignKeyUse = $relatedClass->getKeyName();
-        $foreignKeyIdsUse = $relatedClass::withTrashed()->where($relation->getMorphType(), $relation->getMorphClass())
+        $baseQuery = $this->direction === 'delete'
+		? $relatedClass::query()
+		: $relatedClass::withTrashed();
+        $foreignKeyIdsUse = $baseQuery->where($relation->getMorphType(), $relation->getMorphClass())
             ->whereIn($relation->getQualifiedForeignKeyName(), $foreignKeyIds)
             ->select($foreignKeyUse)
             ->get()->toArray();
