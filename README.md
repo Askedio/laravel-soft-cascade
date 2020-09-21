@@ -8,28 +8,6 @@
 # Laravel/Lumen Soft Cascade Delete & Restore
 Cascade delete and restore when using the Laravel or Lumen SoftDeletes feature.
 
-| **Laravel** | **laravel-soft-cascade** | **Lifecycle** |
-|---|---|---|
-| ^5.5  | ^5.5  | January 24, 2017 |
-||| Bug fixes until January 2019 |
-||| Security fixes until June 2020 |
-| ^5.6  | ^5.6  | February 7, 2018 |
-||| 6 months of bug fixes |
-||| 1 year of security |
-| ^5.7  | ^5.7  | September 4, 2018 |
-||| 6 months of bug fixes |
-||| 1 year of security |
-| ^5.8  | ^5.8  | February 26, 2019 |
-||| 6 months of bug fixes |
-||| 1 year of security |
-| ^6.0  | ^6.0  | September 3, 2019 |
-||| Bug fixes until September 3, 2021 |
-||| Security fixes until September, 3 2022 |
-| ^7.0  | ^7.0  | March 3, 2020 |
-||| Bug fixes until September 3, 2020 |
-||| Security fixes until March, 3 2021 |
-
-
 # Why do I need it?
 ### To make soft deleting and restoring relations easy.
 If you enjoy features like MySQL cascade deleting but want to use Laravels SoftDeletes feature you'll need to do some extra steps to ensure your relations are properly deleted or restored.
