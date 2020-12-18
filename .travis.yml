@@ -20,5 +20,5 @@ after_script:
 branches:
   only:
     - master
-    - 6.0
     - 7.0
+    - 8.0
