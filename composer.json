@@ -1,6 +1,7 @@
 {
     "name": "askedio/laravel-soft-cascade",
     "description": "Laravel Cascade Soft Delete & Restore",
+    "license": "MIT",
     "type": "library",
     "require": {
         "php": "^7.2.5|^8.0",
