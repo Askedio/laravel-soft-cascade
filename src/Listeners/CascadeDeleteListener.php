@@ -9,8 +9,8 @@ class CascadeDeleteListener
     /**
      * Handel the event for eloquent delete.
      *
-     * @param  $event
-     * @param  $model
+     * @param $event
+     * @param $model
      *
      * @return void
      * @SuppressWarnings(PHPMD.UnusedFormalParameter("event"))
