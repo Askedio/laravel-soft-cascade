@@ -2,7 +2,8 @@
 
 namespace Askedio\SoftCascade\Providers;
 
-use Laravel\Lumen\Providers\EventServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Event;
+use Illuminate\Support\ServiceProvider;
 
 class LumenEventServiceProvider extends ServiceProvider
 {
@@ -11,9 +12,19 @@ class LumenEventServiceProvider extends ServiceProvider
      *
      * @var array
      */
-    protected $listen = [
-        'eloquent.deleting: *'                     => ['Askedio\SoftCascade\Listeners\CascadeDeleteListener'],
-        'eloquent.restoring: *'                    => ['Askedio\SoftCascade\Listeners\CascadeRestoreListener'],
-        'Illuminate\Database\Events\QueryExecuted' => ['Askedio\SoftCascade\Listeners\CascadeQueryListener'],
-    ];
+    public function register()
+    {
+        Event::listen(
+            'eloquent.deleting: *',
+            ['Askedio\SoftCascade\Listeners\CascadeDeleteListener', 'handle']
+        );
+        Event::listen(
+            'eloquent.restoring: *',
+            ['Askedio\SoftCascade\Listeners\CascadeRestoreListener', 'handle']
+        );
+        Event::listen(
+            'Illuminate\Database\Events\QueryExecuted',
+            ['Askedio\SoftCascade\Listeners\CascadeQueryListener', 'handle']
+        );
+    }
 }
