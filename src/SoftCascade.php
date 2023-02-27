@@ -173,9 +173,9 @@ class SoftCascade implements SoftCascadeable
     {
         $relatedClass = $relation->getRelated();
         $foreignKeyUse = $relatedClass->getKeyName();
-        $baseQuery = $this->direction === 'delete'
-        ? $relatedClass::query()
-        : $relatedClass::withTrashed();
+        $baseQuery = $this->direction !== 'delete' && method_exists($relatedClass, 'withTrashed')
+        ? $relatedClass::withTrashed()
+        : $relatedClass::query();
         $foreignKeyIdsUse = $baseQuery->where($relation->getMorphType(), $relation->getMorphClass())
             ->whereIn($relation->getQualifiedForeignKeyName(), $foreignKeyIds)
             ->select($foreignKeyUse)
@@ -203,7 +203,7 @@ class SoftCascade implements SoftCascadeable
         $relationModel = $relation->getQuery()->getModel();
         $relationModel = new $relationModel();
         if ($affectedRows > 0) {
-            if ($this->direction != 'delete') {
+            if ($this->direction !== 'delete' && method_exists($relationModel, 'withTrashed')) {
                 $relationModel = $relationModel->withTrashed();
             }
 
@@ -264,7 +264,7 @@ class SoftCascade implements SoftCascadeable
         $relationModel = $relation->getQuery()->getModel();
         $relationModel = new $relationModel();
 
-        if ($this->direction != 'delete') {
+        if ($this->direction !== 'delete' && method_exists($relationModel, 'withTrashed')) {
             $relationModel = $relationModel->withTrashed();
         }
 
