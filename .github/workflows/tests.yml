@@ -14,6 +14,10 @@ jobs:
       matrix:
         php: ['8.0', '8.1', '8.2']
         stability: ['prefer-lowest', 'prefer-stable']
+        exclude:
+          # Nesbot/Carbon in the lowest version is not fully compatible
+          - php: 8.2
+            stability: 'prefer-lowest'
 
     name: PHP ${{ matrix.php }} - ${{ matrix.stability }}
 
@@ -34,6 +38,9 @@ jobs:
 
       - name: Check composer files
         run:  composer validate --strict
+
+      - name: Lock PhpUnit Version
+        run: composer require --dev phpunit/phpunit:^9.0 --no-install --no-interaction --no-progress
 
       - name: Install dependencies
         run: composer update --${{ matrix.stability }} --prefer-dist --no-interaction --no-progress
