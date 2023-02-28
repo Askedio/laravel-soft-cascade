@@ -2,6 +2,9 @@
 
 namespace Askedio\SoftCascade\Providers;
 
+use Askedio\SoftCascade\Listeners\CascadeDeleteListener;
+use Askedio\SoftCascade\Listeners\CascadeQueryListener;
+use Askedio\SoftCascade\Listeners\CascadeRestoreListener;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
 class EventServiceProvider extends ServiceProvider
@@ -12,8 +15,8 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        'eloquent.deleting: *'                     => ['Askedio\SoftCascade\Listeners\CascadeDeleteListener'],
-        'eloquent.restoring: *'                    => ['Askedio\SoftCascade\Listeners\CascadeRestoreListener'],
-        'Illuminate\Database\Events\QueryExecuted' => ['Askedio\SoftCascade\Listeners\CascadeQueryListener'],
+        'eloquent.deleting: *'          => [CascadeDeleteListener::class],
+        'eloquent.restoring: *'         => [CascadeRestoreListener::class],
+        CascadeQueryListener::EVENT     => [CascadeQueryListener::class],
     ];
 }

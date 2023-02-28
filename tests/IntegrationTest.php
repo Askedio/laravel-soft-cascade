@@ -44,7 +44,8 @@ class IntegrationTest extends TestCase
         ]);
 
         // lazy
-        Profiles::first()->address()->create(['languages_id' => 1, 'city' => 'Los Angeles']);
+        $address = Profiles::first()->address()->create(['languages_id' => 1, 'city' => 'Los Angeles']);
+        $address->logs()->create(['content' => 'created by ...']);
 
         return $user;
     }
@@ -203,11 +204,14 @@ class IntegrationTest extends TestCase
     {
         $this->createUserRaw();
 
+        $this->assertDatabaseCount('audit_logs', 1);
+
         User::whereIn('id', [1])->delete();
 
         $this->assertDatabaseMissing('users', ['deleted_at' => null]);
         $this->assertDatabaseMissing('profiles', ['deleted_at' => null]);
         $this->assertDatabaseMissing('addresses', ['deleted_at' => null]);
+        $this->assertDatabaseCount('audit_logs', 0);
     }
 
     public function testRestore()

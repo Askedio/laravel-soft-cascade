@@ -3,49 +3,87 @@
 namespace Askedio\SoftCascade\Listeners;
 
 use Askedio\SoftCascade\QueryBuilderSoftCascade;
+use BadMethodCallException;
+use Illuminate\Database\Connection;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Database\Events\QueryExecuted;
 use Illuminate\Support\Str;
 
 class CascadeQueryListener
 {
-    protected $listenClass = 'Illuminate\Database\Eloquent\Builder';
+    CONST EVENT = QueryExecuted::class;
 
     /**
-     * Return the backtrace will be use to get model object and function.
-     *
-     * @return type
+     * Check in the backtrace, if models where updated by Builder::delete() or Builder::update()
      */
-    private function getBacktraceUse()
+    private function checkForCascadeEvent(): ?array
     {
-        $debugBacktrace = collect(debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT, 30))->filter(function ($backtrace) {
-            $backtraceClass = (isset($backtrace['class'])) ? $backtrace['class'] : null;
+        $traces = collect(debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT, 30));
 
-            return $backtraceClass === $this->listenClass;
-        })->first();
-        $checkBacktrace = null;
-        $backtraceFile = (isset($debugBacktrace['file'])) ? $debugBacktrace['file'] : null;
-        $backtraceFunction = (isset($debugBacktrace['function'])) ? $debugBacktrace['function'] : null;
-        if (!is_null($debugBacktrace) && Str::contains($backtraceFile, 'Illuminate/Database/Eloquent/SoftDeletingScope.php') && $backtraceFunction == 'update') {
-            $checkBacktrace = [
-                'object'   => $debugBacktrace['object'],
-                'function' => $debugBacktrace['function'],
-                'args'     => $debugBacktrace['args'][0],
-            ];
+        // we limit the backtrace to the current and the previous query (=2 "QueryExecuted"-events),
+        // as otherwise the cascade might be triggered multiple times per user call.
+        $queryExecutedEventLimit = 2;
+        $traces = $traces->takeUntil(function (array $backtrace) use (&$queryExecutedEventLimit) {
+                $btClass = $backtrace['class'] ?? null;
+                $btFunction = $backtrace['function'] ?? null;
+                $btEvent = $backtrace['args'][0] ?? null;
+                if ($btClass === Connection::class && $btFunction  === 'event' && $btEvent === static::EVENT) {
+                    $queryExecutedEventLimit = $queryExecutedEventLimit - 1;
+                }
+
+                return $queryExecutedEventLimit <= 0;
+            });
+
+        foreach ($traces as $backtrace) {
+            $btClass = $backtrace['class'] ?? null;
+            if (!is_a($btClass, \Illuminate\Database\Eloquent\Builder::class, true)) {
+                continue;
+            }
+
+            $btFunction = $backtrace['function'] ?? null;
+            $btFile = $backtrace['file'] ?? null;
+
+            // check for all deletes
+            if ($btFunction === 'delete') {
+                return [
+                    'builder' => $backtrace['object'],
+                    'direction' => $btFunction,
+                    'directionData' => []
+                ];
+            }
+
+            // check for updates, which where triggered from SoftDelete (set or unset deleted_at-column)
+            if ($btFunction === 'update' && Str::contains($btFile, SoftDeletingScope::class)) {
+                return [
+                    'builder' => $backtrace['object'],
+                    'direction' => $btFunction,
+                    'directionData' => $backtrace['args'][0]
+                ];
+            }
         }
 
-        return $checkBacktrace;
+        return null;
     }
 
     /**
      * Handel the event for eloquent delete.
-     *
-     * @return void
      */
-    public function handle()
+    public function handle(): void
     {
-        $checkBacktrace = $this->getBacktraceUse();
-        if (!is_null($checkBacktrace)) {
-            $model = $checkBacktrace['object']->withTrashed()->get([$checkBacktrace['object']->getModel()->getKeyName()]);
-            (new QueryBuilderSoftCascade())->cascade($model, $checkBacktrace['function'], $checkBacktrace['args']);
+        $event = $this->checkForCascadeEvent();
+
+        if (!is_null($event)) {
+            $builder = $event['builder'];
+
+            try {
+                $builder->withTrashed();
+            } catch (BadMethodCallException $e) {
+                // add `withTrashed()`, if the model has SoftDeletes
+                // otherwise, we can just skip it
+            }
+
+            $model = $builder->get([$builder->getModel()->getKeyName()]);
+            (new QueryBuilderSoftCascade())->cascade($model, $event['direction'], $event['directionData']);
         }
     }
 }
