@@ -1,0 +1,49 @@
+name: tests
+
+on:
+  workflow_dispatch:
+  push:
+  pull_request:
+
+jobs:
+  linux_tests:
+    runs-on: ubuntu-20.04
+
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.0', '8.1', '8.2']
+        stability: ['prefer-lowest', 'prefer-stable']
+        exclude:
+          # Nesbot/Carbon in the lowest version is not fully compatible
+          - php: 8.2
+            stability: 'prefer-lowest'
+
+    name: PHP ${{ matrix.php }} - ${{ matrix.stability }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: mbstring, dom, fileinfo
+          tools: composer:v2
+          coverage: none
+
+      - name: Check for syntax errors in PHP files
+        run: find ./ -type f -name '*.php' -print0 | xargs -0 -L1 -P4 -- php -l
+
+      - name: Check composer files
+        run:  composer validate --strict
+
+      - name: Lock PhpUnit Version
+        run: composer require --dev phpunit/phpunit:^9.0 --no-install --no-interaction --no-progress
+
+      - name: Install dependencies
+        run: composer update --${{ matrix.stability }} --prefer-dist --no-interaction --no-progress
+
+      - name: Execute tests in default environment
+        run: vendor/bin/phpunit

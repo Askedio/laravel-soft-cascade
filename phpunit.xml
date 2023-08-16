@@ -1,36 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit cacheTokens="false"
-         backupGlobals="false"
-         backupStaticAttributes="false"
-         colors="true"
-         convertErrorsToExceptions="true"
-         convertNoticesToExceptions="true"
-         convertWarningsToExceptions="true"
-         stopOnError="false"
-         stopOnFailure="false"
-         stopOnIncomplete="false"
-         stopOnSkipped="false"
-         verbose="true">
+<phpunit
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    backupGlobals="false"
+    backupStaticAttributes="false"
+    colors="true"
+    convertErrorsToExceptions="true"
+    convertNoticesToExceptions="true"
+    convertWarningsToExceptions="true"
+    stopOnError="false"
+    stopOnFailure="false"
+    stopOnIncomplete="false"
+    stopOnSkipped="false"
+    verbose="true"
+    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd"
+>
+    <!--
+      <coverage>
+        <include>
+          <directory>./src/</directory>
+        </include>
+        <exclude>
+          <directory>./vendor/</directory>
+        </exclude>
+        <report>
+          <clover outputFile="build/logs/clover.xml"/>
+          <html outputDirectory="build/coverage"/>
+        </report>
+      </coverage>
+     -->
     <testsuites>
         <testsuite name="Application Test Suite">
             <directory>./tests/</directory>
         </testsuite>
     </testsuites>
-
     <logging>
-      <log type="coverage-html" target="build/coverage"/>
-      <log type="coverage-clover" target="build/logs/clover.xml"/>
-      <log type="junit" target="build/logs/junit.xml"/>
+        <junit outputFile="build/logs/junit.xml"/>
     </logging>
-
-    <filter>
-        <whitelist>
-            <directory>./src/</directory>
-            <exclude>
-                <directory>./vendor/</directory>
-            </exclude>
-        </whitelist>
-    </filter>
     <php>
         <env name="APP_ENV" value="testing"/>
         <env name="CACHE_DRIVER" value="array"/>
