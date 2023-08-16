@@ -11,10 +11,10 @@ use Illuminate\Support\Str;
 
 class CascadeQueryListener
 {
-    CONST EVENT = QueryExecuted::class;
+    const EVENT = QueryExecuted::class;
 
     /**
-     * Check in the backtrace, if models where updated by Builder::delete() or Builder::update()
+     * Check in the backtrace, if models where updated by Builder::delete() or Builder::update().
      */
     private function checkForCascadeEvent(): ?array
     {
@@ -24,15 +24,15 @@ class CascadeQueryListener
         // as otherwise the cascade might be triggered multiple times per user call.
         $queryExecutedEventLimit = 2;
         $traces = $traces->takeUntil(function (array $backtrace) use (&$queryExecutedEventLimit) {
-                $btClass = $backtrace['class'] ?? null;
-                $btFunction = $backtrace['function'] ?? null;
-                $btEvent = $backtrace['args'][0] ?? null;
-                if ($btClass === Connection::class && $btFunction  === 'event' && $btEvent === static::EVENT) {
-                    $queryExecutedEventLimit = $queryExecutedEventLimit - 1;
-                }
+            $btClass = $backtrace['class'] ?? null;
+            $btFunction = $backtrace['function'] ?? null;
+            $btEvent = $backtrace['args'][0] ?? null;
+            if ($btClass === Connection::class && $btFunction === 'event' && $btEvent === static::EVENT) {
+                $queryExecutedEventLimit = $queryExecutedEventLimit - 1;
+            }
 
-                return $queryExecutedEventLimit <= 0;
-            });
+            return $queryExecutedEventLimit <= 0;
+        });
 
         foreach ($traces as $backtrace) {
             $btClass = $backtrace['class'] ?? null;
@@ -46,18 +46,18 @@ class CascadeQueryListener
             // check for all deletes
             if ($btFunction === 'delete') {
                 return [
-                    'builder' => $backtrace['object'],
-                    'direction' => $btFunction,
-                    'directionData' => []
+                    'builder'       => $backtrace['object'],
+                    'direction'     => $btFunction,
+                    'directionData' => [],
                 ];
             }
 
             // check for updates, which where triggered from SoftDelete (set or unset deleted_at-column)
             if ($btFunction === 'update' && Str::contains($btFile, SoftDeletingScope::class)) {
                 return [
-                    'builder' => $backtrace['object'],
-                    'direction' => $btFunction,
-                    'directionData' => $backtrace['args'][0]
+                    'builder'       => $backtrace['object'],
+                    'direction'     => $btFunction,
+                    'directionData' => $backtrace['args'][0],
                 ];
             }
         }
