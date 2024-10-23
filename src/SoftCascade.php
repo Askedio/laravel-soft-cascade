@@ -6,6 +6,7 @@ use Askedio\SoftCascade\Contracts\SoftCascadeable;
 use Askedio\SoftCascade\Exceptions\SoftCascadeLogicException;
 use Askedio\SoftCascade\Exceptions\SoftCascadeNonExistentRelationActionException;
 use Askedio\SoftCascade\Exceptions\SoftCascadeRestrictedException;
+use Askedio\SoftCascade\Traits\Cascadable;
 use BadMethodCallException;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -14,6 +15,8 @@ use Illuminate\Support\Facades\DB;
 
 class SoftCascade implements SoftCascadeable
 {
+    use Cascadable;
+
     protected $direction;
     protected $directionData;
     protected $availableActions = ['update', 'restrict'];
@@ -235,18 +238,6 @@ class SoftCascade implements SoftCascadeable
 
             throw new \LogicException(sprintf('%s \'%s\' is not an instance of Illuminate\Database\Eloquent\Relations\Relation.', $class, $relation));
         }
-    }
-
-    /**
-     * Check if the model is enabled to cascade.
-     *
-     * @param Illuminate\Database\Eloquent\Model $model
-     *
-     * @return bool
-     */
-    protected function isCascadable($model)
-    {
-        return method_exists($model, 'getSoftCascade');
     }
 
     /**

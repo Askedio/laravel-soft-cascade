@@ -3,6 +3,7 @@
 namespace Askedio\SoftCascade\Listeners;
 
 use Askedio\SoftCascade\QueryBuilderSoftCascade;
+use Askedio\SoftCascade\Traits\Cascadable;
 use BadMethodCallException;
 use Illuminate\Database\Connection;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -11,6 +12,7 @@ use Illuminate\Support\Str;
 
 class CascadeQueryListener
 {
+    use Cascadable;
     const EVENT = QueryExecuted::class;
 
     /**
@@ -82,7 +84,14 @@ class CascadeQueryListener
                 // otherwise, we can just skip it
             }
 
-            $model = $builder->get([$builder->getModel()->getKeyName()]);
+            $keyName = $builder->getModel()->getKeyName();
+
+            if (!$this->isCascadable($builder->getModel()) or $keyName === null) {
+                // If model doesn't have any primary key, there will be no relations
+                return;
+            }
+
+            $model = $builder->get([$keyName]);
             (new QueryBuilderSoftCascade())->cascade($model, $event['direction'], $event['directionData']);
         }
     }

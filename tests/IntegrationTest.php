@@ -15,6 +15,10 @@ use Askedio\Tests\App\RoleReader;
 use Askedio\Tests\App\RoleWriter;
 use Askedio\Tests\App\User;
 use Askedio\Tests\App\Video;
+use Askedio\Tests\App\Record;
+use Illuminate\Database\Events\QueryExecuted;
+use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Str;
 
 /**
  *  TO-DO: Need better testing.
@@ -310,6 +314,31 @@ class IntegrationTest extends TestCase
         $this->createUserRaw();
         $this->expectException(SoftCascadeLogicException::class);
         BadRelationAction::first()->delete();
+    }
+
+    public function testSkipCascadingModelsWithoutPrimaryKeys()
+    {
+        $testSelect = false;
+
+        Event::listen(QueryExecuted::class, function (QueryExecuted $event) use (&$testSelect) {
+            if ($testSelect && !Str::of($event->sql)->contains('delete', true)) {
+                $this->fail('Model shouldn\'t have been retrieved when it is not cascadable or its primary key is null');
+            }
+        });
+
+        $record = Record::create([
+            'record_id' => 'b61bc6dd-4cee-4fe2-8aed-d8eac5920532',
+            'time' => now()->subMonth(),
+            'value' => 134.12
+        ]);
+
+        $testSelect = true;
+
+        Record::query()->where('time', '<', now())->delete();
+
+        $testSelect = false;
+
+        $this->assertDatabaseMissing('records', ['record_id' => $record->record_id]);
     }
 
     // public function testNotCascadable()
