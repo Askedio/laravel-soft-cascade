@@ -2,7 +2,7 @@
 
 namespace Askedio\SoftCascade\Traits;
 
-trait Cascadable
+trait ChecksCascading
 {
     /**
      * Check if the model is enabled to cascade.
@@ -11,7 +11,7 @@ trait Cascadable
      *
      * @return bool
      */
-    protected function isCascadable($model): bool
+    protected function hasCascadingRelations($model): bool
     {
         return method_exists($model, 'getSoftCascade');
     }

@@ -6,7 +6,7 @@ use Askedio\SoftCascade\Contracts\SoftCascadeable;
 use Askedio\SoftCascade\Exceptions\SoftCascadeLogicException;
 use Askedio\SoftCascade\Exceptions\SoftCascadeNonExistentRelationActionException;
 use Askedio\SoftCascade\Exceptions\SoftCascadeRestrictedException;
-use Askedio\SoftCascade\Traits\Cascadable;
+use Askedio\SoftCascade\Traits\ChecksCascading;
 use BadMethodCallException;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\DB;
 
 class SoftCascade implements SoftCascadeable
 {
-    use Cascadable;
+    use ChecksCascading;
 
     protected $direction;
     protected $directionData;
@@ -69,7 +69,7 @@ class SoftCascade implements SoftCascadeable
                 return;
             }
 
-            if (!$this->isCascadable($model)) {
+            if (!$this->hasCascadingRelations($model)) {
                 return;
             }
 
