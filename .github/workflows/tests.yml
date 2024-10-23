@@ -13,7 +13,7 @@ jobs:
       fail-fast: false
       matrix:
         laravel: ['^10', '^11']
-        php: ['8.2', '8.3']
+        php: ['8.2', '8.3', '8.4']
         stability: ['prefer-lowest', 'prefer-stable']
 
     name: Laravel ${{ matrix.laravel }} - PHP ${{ matrix.php }} - ${{ matrix.stability }}
