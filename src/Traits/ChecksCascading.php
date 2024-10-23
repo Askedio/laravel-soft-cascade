@@ -15,5 +15,4 @@ trait ChecksCascading
     {
         return method_exists($model, 'getSoftCascade');
     }
-
 }
