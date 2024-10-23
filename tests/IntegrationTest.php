@@ -11,11 +11,11 @@ use Askedio\Tests\App\Comment;
 use Askedio\Tests\App\Languages;
 use Askedio\Tests\App\Post;
 use Askedio\Tests\App\Profiles;
+use Askedio\Tests\App\Record;
 use Askedio\Tests\App\RoleReader;
 use Askedio\Tests\App\RoleWriter;
 use Askedio\Tests\App\User;
 use Askedio\Tests\App\Video;
-use Askedio\Tests\App\Record;
 use Illuminate\Database\Events\QueryExecuted;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Str;
@@ -328,8 +328,8 @@ class IntegrationTest extends TestCase
 
         $record = Record::create([
             'record_id' => 'b61bc6dd-4cee-4fe2-8aed-d8eac5920532',
-            'time' => now()->subMonth(),
-            'value' => 134.12
+            'time'      => now()->subMonth(),
+            'value'     => 134.12,
         ]);
 
         $testSelect = true;
