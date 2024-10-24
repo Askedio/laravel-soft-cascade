@@ -4,6 +4,7 @@ namespace Askedio\SoftCascade\Listeners;
 
 use Askedio\SoftCascade\QueryBuilderSoftCascade;
 use Askedio\SoftCascade\Traits\ChecksCascading;
+use BadMethodCallException;
 use Illuminate\Database\Connection;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Database\Events\QueryExecuted;
@@ -76,10 +77,11 @@ class CascadeQueryListener
         if (!is_null($event)) {
             $builder = $event['builder'];
 
-            // add `withTrashed()`, if the model has SoftDeletes
-            // otherwise, we can just skip it
-            if (method_exists($builder, 'withTrashed')) {
+            try {
                 $builder->withTrashed();
+            } catch (BadMethodCallException $e) {
+                // add `withTrashed()`, if the model has SoftDeletes
+                // otherwise, we can just skip it
             }
 
             $keyName = $builder->getModel()->getKeyName();
