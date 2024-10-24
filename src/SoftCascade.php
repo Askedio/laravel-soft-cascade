@@ -7,6 +7,7 @@ use Askedio\SoftCascade\Exceptions\SoftCascadeLogicException;
 use Askedio\SoftCascade\Exceptions\SoftCascadeNonExistentRelationActionException;
 use Askedio\SoftCascade\Exceptions\SoftCascadeRestrictedException;
 use Askedio\SoftCascade\Traits\ChecksCascading;
+use BadMethodCallException;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphOneOrMany;
@@ -285,10 +286,10 @@ class SoftCascade implements SoftCascadeable
         }
 
         // if the Model does not use SoftDeletes, withTrashed() will be unavailable.
-        if (method_exists($builder, 'withTrashed')) {
+        try {
             return $builder->withTrashed();
+        } catch (BadMethodCallException) {
+            return $builder;
         }
-
-        return $builder;
     }
 }
