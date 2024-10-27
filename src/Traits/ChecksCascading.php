@@ -9,7 +9,7 @@ trait ChecksCascading
      *
      * @param \Illuminate\Database\Eloquent\Model $model
      *
-     * @return bool
+     * @return ($model is object{ getSoftCascade: callable } ? true : false)
      */
     protected function hasCascadingRelations($model): bool
     {

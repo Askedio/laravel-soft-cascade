@@ -12,11 +12,11 @@ class EventServiceProvider extends ServiceProvider
     /**
      * The event listener mappings for the application.
      *
-     * @var array
+     * @var array<string, array<int, class-string>>
      */
     protected $listen = [
-        'eloquent.deleting: *'          => [CascadeDeleteListener::class],
-        'eloquent.restoring: *'         => [CascadeRestoreListener::class],
-        CascadeQueryListener::EVENT     => [CascadeQueryListener::class],
+        'eloquent.deleting: *'      => [CascadeDeleteListener::class],
+        'eloquent.restoring: *'     => [CascadeRestoreListener::class],
+        CascadeQueryListener::EVENT => [CascadeQueryListener::class],
     ];
 }
