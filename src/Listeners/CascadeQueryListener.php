@@ -5,6 +5,7 @@ namespace Askedio\SoftCascade\Listeners;
 use Askedio\SoftCascade\QueryBuilderSoftCascade;
 use Askedio\SoftCascade\Traits\ChecksCascading;
 use Illuminate\Database\Connection;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Database\Events\QueryExecuted;
 use Illuminate\Support\Str;
@@ -12,13 +13,31 @@ use Illuminate\Support\Str;
 class CascadeQueryListener
 {
     use ChecksCascading;
-    const EVENT = QueryExecuted::class;
+
+    public const EVENT = QueryExecuted::class;
 
     /**
      * Check in the backtrace, if models where updated by Builder::delete() or Builder::update().
+     *
+     * @return array{
+     *             builder:       object,
+     *             direction:     string,
+     *             directionData: array,
+     *         } | null
      */
     private function checkForCascadeEvent(): ?array
     {
+        /**
+         * @var \Illuminate\Support\Collection<array-key, array{
+         *          function: string,
+         *          line:     int,
+         *          file:     string,
+         *          class?:   string,
+         *          object?:  object,
+         *          type:     string,
+         *          args?:    array,
+         *      }> $traces
+         */
         $traces = collect(debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT, 30));
 
         // we limit the backtrace to the current and the previous query (=2 "QueryExecuted"-events),
@@ -29,7 +48,7 @@ class CascadeQueryListener
             $btFunction = $backtrace['function'] ?? null;
             $btEvent = $backtrace['args'][0] ?? null;
             if ($btClass === Connection::class && $btFunction === 'event' && $btEvent === static::EVENT) {
-                $queryExecutedEventLimit = $queryExecutedEventLimit - 1;
+                $queryExecutedEventLimit--;
             }
 
             return $queryExecutedEventLimit <= 0;
@@ -37,7 +56,7 @@ class CascadeQueryListener
 
         foreach ($traces as $backtrace) {
             $btClass = $backtrace['class'] ?? null;
-            if (!is_a($btClass, \Illuminate\Database\Eloquent\Builder::class, true)) {
+            if (!is_a($btClass, Builder::class, true)) {
                 continue;
             }
 
@@ -73,7 +92,7 @@ class CascadeQueryListener
     {
         $event = $this->checkForCascadeEvent();
 
-        if (!is_null($event)) {
+        if ($event !== null) {
             $builder = $event['builder'];
 
             // add `withTrashed()`, if the model has SoftDeletes
@@ -84,7 +103,7 @@ class CascadeQueryListener
 
             $keyName = $builder->getModel()->getKeyName();
 
-            if (!$this->hasCascadingRelations($builder->getModel()) or $keyName === null) {
+            if ($keyName === null || !$this->hasCascadingRelations($builder->getModel())) {
                 // If model doesn't have any primary key, there will be no relations
                 return;
             }
