@@ -15,6 +15,7 @@ class CascadeDeleteListener
      * @return void
      *
      * @SuppressWarnings(PHPMD.UnusedFormalParameter("event"))
+     *
      * @noinspection PhpUnusedParameterInspection
      */
     public function handle($event, $model)

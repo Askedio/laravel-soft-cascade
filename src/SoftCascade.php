@@ -86,6 +86,7 @@ class SoftCascade implements SoftCascadeable
      * @param Models $models
      *
      * @return void
+     *
      * @noinspection PhpDocMissingThrowsInspection,PhpUnhandledExceptionInspection
      */
     protected function run($models)

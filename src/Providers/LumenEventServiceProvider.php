@@ -3,8 +3,8 @@
 namespace Askedio\SoftCascade\Providers;
 
 use Askedio\SoftCascade\Listeners\CascadeDeleteListener;
-use Askedio\SoftCascade\Listeners\CascadeRestoreListener;
 use Askedio\SoftCascade\Listeners\CascadeQueryListener;
+use Askedio\SoftCascade\Listeners\CascadeRestoreListener;
 use Illuminate\Database\Events\QueryExecuted;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
