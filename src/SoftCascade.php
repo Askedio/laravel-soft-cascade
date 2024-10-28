@@ -236,7 +236,7 @@ class SoftCascade implements SoftCascadeable
     }
 
     /**
-     * Execute delete, or restore.
+     * Execute delete or restore or forcedelete.
      *
      * @param \Illuminate\Database\Eloquent\Relations\Relation $relation
      * @param string                                           $foreignKey
@@ -254,7 +254,13 @@ class SoftCascade implements SoftCascadeable
             $relationModel = $relationModel->whereIn($foreignKey, $foreignKeyIds)->limit($affectedRows);
 
             $this->run($relationModel->get([$relationModel->getModel()->getKeyName()]));
-            $relationModel->{$this->direction}($this->directionData);
+
+            // COMMIT : force delete when parent model "isForceDeleting = true"
+            if ($this->isForceDeleting($relation)) {
+                $relationModel->forceDelete();
+            } else {
+                $relationModel->{$this->direction}($this->directionData);
+            }
         }
     }
 
@@ -300,7 +306,12 @@ class SoftCascade implements SoftCascadeable
     protected function affectedRows($relation, $foreignKey, $foreignKeyIds)
     {
         $relationModel = $relation->getQuery()->getModel();
-        $relationModel = $this->withTrashed($relationModel::query());
+        $relationModel = new $relationModel();
+
+        // COMMIT : retreive relation trashed items when parent model "isForceDeleting = true"
+        if ($this->direction !== 'delete' || $this->isForceDeleting($relation)) {
+            $relationModel = $relationModel->withTrashed();
+        }
 
         return $relationModel->whereIn($foreignKey, $foreignKeyIds)->count();
     }
@@ -348,5 +359,16 @@ class SoftCascade implements SoftCascadeable
         }
 
         return $builder;
+    }
+
+    /**
+     * COMMIT
+     * Check if parent has a force delete enabled
+     * @return boolean
+     */
+    protected function isForceDeleting($relation)
+    {
+        $parent = $relation->getParent();
+        return property_exists($parent, 'forceDeleting') && $parent->isForceDeleting();
     }
 }
