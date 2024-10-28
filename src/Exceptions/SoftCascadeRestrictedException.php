@@ -36,7 +36,7 @@ class SoftCascadeRestrictedException extends RuntimeException
      *
      * @param TModelString $model
      * @param string       $foreignKey
-     * @param int | int[]    $foreignKeyIds
+     * @param int | int[]  $foreignKeyIds
      *
      * @return $this
      */
@@ -46,7 +46,8 @@ class SoftCascadeRestrictedException extends RuntimeException
         $this->foreignKey = $foreignKey;
         $this->foreignKeyIds = Arr::wrap($foreignKeyIds);
 
-        $this->message = "Integrity constraint violation [{$model}] where $foreignKey in (".implode(', ', $foreignKeyIds).')';
+        $this->message =
+            "Integrity constraint violation [{$model}] where $foreignKey in (".implode(', ', $foreignKeyIds).')';
 
         return $this;
     }

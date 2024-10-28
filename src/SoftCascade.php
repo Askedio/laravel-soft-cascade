@@ -50,12 +50,13 @@ class SoftCascade implements SoftCascadeable
     /**
      * Cascade over Eloquent items.
      *
-     * @param  \Illuminate\Database\Eloquent\Model | Models  $models
-     * @param  'update'|'delete'|'restore'                   $direction
-     * @param  array                                         $directionData
+     * @param \Illuminate\Database\Eloquent\Model | Models $models
+     * @param 'update'|'delete'|'restore'                  $direction
+     * @param array                                        $directionData
+     *
+     * @throws \Askedio\SoftCascade\Exceptions\SoftCascadeLogicException
      *
      * @return void
-     * @throws \Askedio\SoftCascade\Exceptions\SoftCascadeLogicException
      *
      * @noinspection PhpDocMissingThrowsInspection,PhpUnhandledExceptionInspection
      */
@@ -82,7 +83,7 @@ class SoftCascade implements SoftCascadeable
     /**
      * Run the cascade.
      *
-     * @param  Models  $models
+     * @param Models $models
      *
      * @return void
      * @noinspection PhpDocMissingThrowsInspection,PhpUnhandledExceptionInspection
@@ -262,8 +263,9 @@ class SoftCascade implements SoftCascadeable
      * @param \Illuminate\Database\Eloquent\Model $model
      * @param string                              $relation
      *
-     * @return void
      * @throws \LogicException If $model doesn't support the given $relation.
+     *
+     * @return void
      */
     protected function validateRelation($model, $relation)
     {

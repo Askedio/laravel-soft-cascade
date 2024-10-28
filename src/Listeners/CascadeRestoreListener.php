@@ -12,8 +12,9 @@ class CascadeRestoreListener
      * @param string                              $event
      * @param \Illuminate\Database\Eloquent\Model $model
      *
-     * @return void
      * @throws \Askedio\SoftCascade\Exceptions\SoftCascadeLogicException
+     *
+     * @return void
      *
      * @SuppressWarnings(PHPMD.UnusedFormalParameter("event"))
      * @noinspection PhpUnusedParameterInspection

@@ -11,7 +11,9 @@ class LumenServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function register() {}
+    public function register()
+    {
+    }
 
     /**
      * Register routes, translations, views and publishers.
