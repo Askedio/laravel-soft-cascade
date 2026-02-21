@@ -13,7 +13,6 @@ class GenericServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
     }
 
     /**

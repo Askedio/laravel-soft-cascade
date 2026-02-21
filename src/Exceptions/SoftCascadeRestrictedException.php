@@ -5,35 +5,38 @@ namespace Askedio\SoftCascade\Exceptions;
 use Illuminate\Support\Arr;
 use RuntimeException;
 
+/**
+ * @template TModelString of class-string<\Illuminate\Database\Eloquent\Model>
+ */
 class SoftCascadeRestrictedException extends RuntimeException
 {
     /**
      * Name of the affected Eloquent model.
      *
-     * @var string
+     * @var TModelString
      */
     protected $model;
 
     /**
      * The affected model foreignKey.
      *
-     * @var int|array
+     * @var string
      */
     protected $foreignKey;
 
     /**
      * The affected model foreignKeyIds.
      *
-     * @var int|array
+     * @var int[]
      */
     protected $foreignKeyIds;
 
     /**
      * Set the affected Eloquent model and instance foreignKeyIds.
      *
-     * @param string    $model
-     * @param string    $foreignKey
-     * @param int|array $foreignKeyIds
+     * @param TModelString $model
+     * @param string       $foreignKey
+     * @param int | int[]  $foreignKeyIds
      *
      * @return $this
      */
@@ -43,7 +46,8 @@ class SoftCascadeRestrictedException extends RuntimeException
         $this->foreignKey = $foreignKey;
         $this->foreignKeyIds = Arr::wrap($foreignKeyIds);
 
-        $this->message = "Integrity constraint violation [{$model}] where $foreignKey in (".implode(', ', $foreignKeyIds).')';
+        $this->message =
+            "Integrity constraint violation [{$model}] where $foreignKey in (".implode(', ', $foreignKeyIds).')';
 
         return $this;
     }
@@ -51,7 +55,7 @@ class SoftCascadeRestrictedException extends RuntimeException
     /**
      * Get the affected Eloquent model.
      *
-     * @return string
+     * @return TModelString
      */
     public function getModel()
     {
@@ -59,9 +63,9 @@ class SoftCascadeRestrictedException extends RuntimeException
     }
 
     /**
-     * Get the affected Eloquent model foreignKeyIds.
+     * Get the affected Eloquent model foreignKey.
      *
-     * @return int|array
+     * @return string
      */
     public function getForeignKey()
     {
@@ -71,7 +75,7 @@ class SoftCascadeRestrictedException extends RuntimeException
     /**
      * Get the affected Eloquent model foreignKeyIds.
      *
-     * @return int|array
+     * @return int[]
      */
     public function getForeignKeyIds()
     {

@@ -13,7 +13,6 @@ class LumenServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
     }
 
     /**
