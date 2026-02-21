@@ -12,9 +12,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        laravel: [ '^10', '^11', '^12' ]
-        php: [ '8.2', '8.3', '8.4' ]
-        stability: [ 'prefer-lowest', 'prefer-stable' ]
+        laravel: [^10, ^11, ^12, ^13]
+        php: ['8.2', '8.3', '8.4']
+        stability: [prefer-lowest, prefer-stable]
+        exclude:
+          - laravel: ^13
+            php: '8.2'
 
     name: Laravel ${{ matrix.laravel }} - PHP ${{ matrix.php }} - ${{ matrix.stability }}
 
@@ -34,7 +37,7 @@ jobs:
         run: find ./ -type f -name '*.php' -print0 | xargs -0 -L1 -P4 -- php -l
 
       - name: Check composer files
-        run:  composer validate --strict
+        run: composer validate --strict
 
       - name: Lock Laravel Version
         run: composer require "illuminate/contracts=${{ matrix.laravel }}" --no-install --no-interaction --no-progress
