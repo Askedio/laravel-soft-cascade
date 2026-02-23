@@ -12,7 +12,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        laravel: [^10, ^11, ^12, ^13]
+        laravel: [^11, ^12, ^13]
         php: ['8.2', '8.3', '8.4', '8.5']
         stability: [prefer-lowest, prefer-stable]
         exclude:
