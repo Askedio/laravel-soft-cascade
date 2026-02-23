@@ -3,17 +3,23 @@ name: tests
 on:
   workflow_dispatch:
   push:
+    branches: [master]
   pull_request:
+    types: [opened, reopened, synchronize]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
 
 jobs:
   linux_tests:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
 
     strategy:
       fail-fast: false
       matrix:
-        laravel: [^10, ^11, ^12, ^13]
-        php: ['8.2', '8.3', '8.4']
+        laravel: [^11, ^12, ^13]
+        php: ['8.2', '8.3', '8.4', '8.5']
         stability: [prefer-lowest, prefer-stable]
         exclude:
           - laravel: ^13
@@ -23,7 +29,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -34,16 +40,21 @@ jobs:
           coverage: none
 
       - name: Check for syntax errors in PHP files
+        # language=bash
         run: find ./ -type f -name '*.php' -print0 | xargs -0 -L1 -P4 -- php -l
 
       - name: Check composer files
+        # language=bash
         run: composer validate --strict
 
       - name: Lock Laravel Version
+        # language=bash
         run: composer require "illuminate/contracts=${{ matrix.laravel }}" --no-install --no-interaction --no-progress
 
       - name: Install dependencies
+        # language=bash
         run: composer update --${{ matrix.stability }} --prefer-dist --no-interaction --no-progress
 
       - name: Execute tests in default environment
+        # language=bash
         run: vendor/bin/phpunit
